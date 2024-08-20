@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject[] player;
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -28,6 +29,11 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         _instance = GetComponent<GameManager>();
+        if (!GameObject.Find("Player"))
+        {
+            GameObject clo = Instantiate(player[0], GameObject.Find("Center").transform.position, Quaternion.identity);
+            clo.name = "Player";
+        }
     }
 
     void Update()

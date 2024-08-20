@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float jumpForce;
 
-    public GameObject HitBox;
     bool smash;
 
     float targetPosition;
@@ -36,14 +35,20 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Animator animator;
 
+    Weapon weapon;
+
     void Start()
     {
         collisions = FindAnyObjectByType<Collisions>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+        weapon = GetComponent<Weapon>();
+        
         animator = GetComponent<Animator>();
 
-        HitBox.SetActive(false);
+        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
+
+
     }
 
     void Update()
@@ -75,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-        hitBoxState();
+       // hitBoxState();
 
 
 
@@ -117,7 +122,8 @@ public class PlayerController : MonoBehaviour
     {
         if(!isJumping)
         MoveHorizontal();
-        //MoveToCenter();
+
+
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ) && !isJumping)
         {
             SetState(EState.Up);
@@ -214,9 +220,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator appearHitBox()
     {
         smash =true;
-        HitBox.SetActive(true);
+        weapon.Triger();
         yield return new WaitForSeconds(1f);
-        HitBox.SetActive(false);
         smash = false;
 
     }
@@ -231,9 +236,6 @@ public class PlayerController : MonoBehaviour
         capsuleCollider.center *= 2;
     }
 
-    void hitBoxState()
-    {
-        HitBox.transform.position = gameObject.transform.position + new Vector3(0, 1f, 1f);
-    }
+
 
 }

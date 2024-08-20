@@ -27,7 +27,7 @@ public class GroundSpawner : MonoBehaviour
         var = Random.Range(0, grounds.Length);
         Instantiate(grounds[var], new Vector3(-0.4133758f, -39.25718f, distance), Quaternion.identity);
         distance += 39;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2.5f);
         isSpawning = false;
     }
 
