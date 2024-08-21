@@ -24,10 +24,12 @@ public class GameManager : MonoBehaviour
     public static bool gameOver = false;
     public GameObject gameOverPanel;
     public GameObject player;
+    public CollectCoin score;
 
     void Awake()
     {
         _instance = GetComponent<GameManager>();
+        score = GameObject.Find("Player").GetComponent<CollectCoin>();
         player = GameObject.Find("Player");
    
     }

@@ -6,7 +6,8 @@ public class GroundSpawner : MonoBehaviour
 {
     public GameObject[] grounds;
     int distance = 78;
-    bool isSpawning = false;
+  //  bool isSpawning = false;
+    static public int isSpawning = 0;
     int var;
 
 
@@ -16,9 +17,14 @@ public class GroundSpawner : MonoBehaviour
 
     void Update()
     {
-        if (!isSpawning)
+        /*if (!isSpawning)
         {
             isSpawning = true;
+            StartCoroutine(SpawnGround());
+        }*/
+        if (isSpawning < 5)
+        {
+            isSpawning ++;
             StartCoroutine(SpawnGround());
         }
     }
@@ -27,8 +33,7 @@ public class GroundSpawner : MonoBehaviour
         var = Random.Range(0, grounds.Length);
         Instantiate(grounds[var], new Vector3(-0.4133758f, -39.25718f, distance), Quaternion.identity);
         distance += 39;
-        yield return new WaitForSeconds(2.5f);
-        isSpawning = false;
+        yield return new WaitForSeconds(0.5f);
     }
 
 

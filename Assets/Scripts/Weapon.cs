@@ -7,6 +7,7 @@ public enum EWeapon
 {
     Bat,
     Ball,
+    Magnetic,
 }
 
 public class Weapon : MonoBehaviour
@@ -40,9 +41,17 @@ public class Weapon : MonoBehaviour
             case EWeapon.Ball:
                 throughtBall();
                 break;
+            case EWeapon.Magnetic:
+                //throughtBall();
+                break;
 
 
         }
+    }
+
+    void Magnetic()
+    {
+
     }
 
     void Batting()

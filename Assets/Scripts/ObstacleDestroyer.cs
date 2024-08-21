@@ -9,7 +9,7 @@ public class ObstacleDestroyer : MonoBehaviour
     {
         if (other.CompareTag(obstacle))
         {
-
+            GameManager.Instance.score.increasObsScore();
             GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value++;
             Destroy(gameObject);
 

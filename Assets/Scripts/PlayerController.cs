@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float jumpForce;
 
-    [SerializeField] int selectEWeapon; // eWeapons[ selectEWeapon ]
-    EWeapon[] eWeapons = { EWeapon.Bat, EWeapon.Ball };
+    [SerializeField] public int selectEWeapon; // eWeapons[ selectEWeapon ]
+    EWeapon[] eWeapons = { EWeapon.Bat, EWeapon.Ball, EWeapon.Magnetic };
 
     bool smash;
 
@@ -223,6 +223,10 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(InvincibilityTimer());
 
     }
+    public void Magnetic()
+    {
+
+    }
 
 
     IEnumerator appearHitBox()
@@ -259,5 +263,7 @@ public class PlayerController : MonoBehaviour
         runningSpeed = tmpSpd;
         Debug.Log("out");
     }
+
+
 
 }

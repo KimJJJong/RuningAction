@@ -8,23 +8,40 @@ public class CollectCoin : MonoBehaviour
     int score;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI EndScoreText;
-    int increaseRate = 1;
+    private int _increaseRate = 1;
+    private int _increaseCoin = 30;
+    private int _increaseObs= 50;
     int highScore;
     public TextMeshProUGUI highScoreText;
     public Color highScoreColor; 
     Color defaultScoreColor;
     void Start()
     {
+        //PlayerPrefs.DeleteAll();
         score = 0;
         scoreText.text = score.ToString();
         highScore = PlayerPrefs.GetInt("highscore");
         highScoreText.text = highScore.ToString();
         defaultScoreColor = scoreText.color; 
-    }
-    void FixedUpdate()
-    {
-        UpdateScore();
 
+        StartCoroutine(UpdateScore());
+    }
+
+    public void setIncreasRate(int increasRate)
+    {
+        _increaseRate += increasRate;
+    }
+    public void setIncreasCoinRate(int increaseCoin)
+    {
+        _increaseCoin += increaseCoin;
+    }
+    public void setIncreasObsRate(int increasObs)
+    {
+        _increaseObs += increasObs;
+    }
+    public void increasObsScore()
+    {
+        score += _increaseObs;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -36,26 +53,31 @@ public class CollectCoin : MonoBehaviour
     }
     public void AddCoin()
     {
-        score += 50;
+        score += _increaseCoin;
         scoreText.text = score.ToString();
         CheckHighScoreColor();
     }
-    public void UpdateScore()
+    IEnumerator UpdateScore()
     {
-        if (score <= highScore)
+        while (true)
         {
-            score += increaseRate;
-            scoreText.text = score.ToString();
-            EndScoreText.text =score.ToString();
-        }
-        else if (score > highScore)
-        {
-            score += increaseRate;
-            EndScoreText.text = score.ToString();
-            CheckHighScoreColor();
-            highScore = score;
-            highScoreText.text = highScore.ToString();
-            PlayerPrefs.SetInt("highscore", highScore);
+            if (score <= highScore)
+            {
+                score += _increaseRate;
+                scoreText.text = score.ToString();
+                EndScoreText.text = score.ToString();
+            }
+            else if (score > highScore)
+            {
+                score += _increaseRate;
+                EndScoreText.text = score.ToString();
+                CheckHighScoreColor();
+                highScore = score;
+                highScoreText.text = highScore.ToString();
+                PlayerPrefs.SetInt("highscore", highScore);
+            }
+
+            yield return new WaitForSeconds(0.1f);
         }
     }
     void CheckHighScoreColor()

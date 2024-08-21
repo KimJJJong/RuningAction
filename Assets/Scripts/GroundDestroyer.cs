@@ -10,6 +10,7 @@ public class GroundDestroyer : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            GroundSpawner.isSpawning--;
             Destroy(gameObject);
         }
     }
