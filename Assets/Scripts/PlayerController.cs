@@ -17,18 +17,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform rightPos;
     public float sideSpeed;
 
-    [SerializeField] float runningSpeed;
+    [SerializeField] public float runningSpeed;
     [SerializeField] float maxSpeed = 22f;
     [SerializeField] float accelerationRate;
 
     [SerializeField] float jumpForce;
+
+    [SerializeField] int selectEWeapon; // eWeapons[ selectEWeapon ]
+    EWeapon[] eWeapons = { EWeapon.Bat, EWeapon.Ball };
 
     bool smash;
 
     float targetPosition;
     float curPosition;
     bool isJumping = false;
-    int curPos=1;// 0 = left, 1 = center, 2 = right;
+    int curPos=1;   // 0 = left, 1 = center, 2 = right;
 
     Collisions collisions;
     CapsuleCollider capsuleCollider;
@@ -80,7 +83,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-       // hitBoxState();
 
 
 
@@ -201,7 +203,6 @@ public class PlayerController : MonoBehaviour
                 break;
                 case EState.Smash:
                 {
-                    Debug.Log("Smash!!");
                     StartCoroutine(appearHitBox());
                 }
                 break;
@@ -216,11 +217,18 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
         }
     }
- 
+
+    public void Invincibility()
+    {
+        StartCoroutine(InvincibilityTimer());
+
+    }
+
+
     IEnumerator appearHitBox()
     {
         smash =true;
-        weapon.Triger();
+        weapon.Triger( eWeapons[selectEWeapon] );
         yield return new WaitForSeconds(1f);
         smash = false;
 
@@ -236,6 +244,20 @@ public class PlayerController : MonoBehaviour
         capsuleCollider.center *= 2;
     }
 
-
+   IEnumerator InvincibilityTimer()
+    {
+       
+        float tmpSpd = runningSpeed;
+        runningSpeed = 30;
+        GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
+        while(GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
+        {
+            GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value--;
+            yield return new WaitForSeconds(1);
+        }
+        GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
+        runningSpeed = tmpSpd;
+        Debug.Log("out");
+    }
 
 }

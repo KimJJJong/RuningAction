@@ -1,21 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum EWeapon
+{
+    Bat,
+    Ball,
+}
 
 public class Weapon : MonoBehaviour
 {
-    GameObject hitBox;
+    //public int Gage=0;
+    public Slider GageSlider;
 
+
+    GameObject hitBox;
+    public GameObject Ball;
     private void Start()
     {
         hitBox = GameObject.Find("HitBox");
         hitBox.SetActive(false);
     }
 
-
-    public void Triger()
+    private void Update()
     {
-        Batting();
+        updateGage();
+
+    }
+
+    public void Triger(EWeapon type)
+    {
+
+        switch ( type)
+        {
+            case  EWeapon.Bat:
+                Batting();
+                break;
+            case EWeapon.Ball:
+                throughtBall();
+                break;
+
+
+        }
     }
 
     void Batting()
@@ -23,8 +50,22 @@ public class Weapon : MonoBehaviour
 
 
         hitBox.SetActive(true);
-        hitBox.transform.position = gameObject.transform.position + new Vector3(0, 1f, 1.5f);
+        hitBox.transform.position = gameObject.transform.position + new Vector3(0, 1f, 2f);
 
     }
 
+    void throughtBall()
+    {
+        Vector3 pos = gameObject.transform.position;
+        GameObject _ball = Instantiate(Ball,new Vector3(pos.x, pos.y + 1 , pos.z + 1) , Quaternion.identity);
+    }
+
+    void updateGage()
+    {
+        if (GageSlider.value >= GageSlider.maxValue)
+        {
+            GameManager.Instance.player.GetComponent<PlayerController>().Invincibility();
+            //GageSlider.value = 0;
+        }
+    }
 }

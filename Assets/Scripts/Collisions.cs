@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class Collisions : MonoBehaviour
 {
@@ -13,8 +12,9 @@ public class Collisions : MonoBehaviour
     [SerializeField] float shakeMagnitude = 0.5f;
 
     public int currentHealth;
+    public bool isDmg;
     private Animator animator;
-    public bool canInteract{get; set;}
+    public bool canInteract { get; set; }
 
     public TextMeshProUGUI cooldownText;
 
@@ -25,19 +25,21 @@ public class Collisions : MonoBehaviour
         hpController = FindAnyObjectByType<HpController>();
         gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
- 
+
         canInteract = true;
         cooldownText.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle") )
-        {
-            Damage();
-            cooldownText.enabled = true;
+        if (!isDmg)
+            if (other.CompareTag("Obstacle"))
+            {
+                other.gameObject.GetComponent<Collider>().enabled = false;
+                Damage();
+                cooldownText.enabled = true;
 
-        }
+            }
     }
 
     void Damage()
@@ -48,7 +50,7 @@ public class Collisions : MonoBehaviour
             animator.Play("Stumble");
             hpController.collsionObstacle();
 
-            if (hpController.getValue()<= 0)
+            if (hpController.getValue() <= 0)
             {
                 Die();
             }
@@ -71,7 +73,7 @@ public class Collisions : MonoBehaviour
     void Die()
     {
         animator.Play("Stumble");
-       GameManager.Instance.GameOver();
+        GameManager.Instance.GameOver();
     }
 
     public void CamShake()
@@ -80,7 +82,7 @@ public class Collisions : MonoBehaviour
     }
     IEnumerator DieAnimation()
     {
-        yield return new WaitForSeconds(3); 
+        yield return new WaitForSeconds(3);
     }
 
     IEnumerator BlinkCooldownText()
@@ -97,7 +99,7 @@ public class Collisions : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < shakeDuration)
         {
-            camera.transform.position +=  (Vector3)Random.insideUnitCircle * shakeMagnitude;
+            camera.transform.position += (Vector3)Random.insideUnitCircle * shakeMagnitude;
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }

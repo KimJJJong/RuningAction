@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] player;
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -22,18 +21,15 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
     public static bool gameOver = false;
     public GameObject gameOverPanel;
+    public GameObject player;
 
     void Awake()
     {
         _instance = GetComponent<GameManager>();
-        if (!GameObject.Find("Player"))
-        {
-            GameObject clo = Instantiate(player[0], GameObject.Find("Center").transform.position, Quaternion.identity);
-            clo.name = "Player";
-        }
+        player = GameObject.Find("Player");
+   
     }
 
     void Update()
@@ -57,4 +53,5 @@ public class GameManager : MonoBehaviour
     {
         UnityEditor.EditorApplication.isPlaying = false;
     }
+
 }
