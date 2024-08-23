@@ -17,7 +17,7 @@ public class Collisions : MonoBehaviour
     public bool canInteract { get; set; }
 
     public TextMeshProUGUI cooldownText;
-   
+
     void Start()
     {
 

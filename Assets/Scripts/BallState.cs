@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallState : MonoBehaviour
@@ -14,11 +12,9 @@ public class BallState : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(transform.position.x,
-                                         transform.position.y , 
+                                         transform.position.y,
                                          transform.position.z + (curSpeed + 10f) * Time.deltaTime);
 
-
-        
     }
 
     void OnTriggerEnter(Collider other)

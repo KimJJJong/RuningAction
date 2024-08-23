@@ -16,28 +16,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform leftPos;
     [SerializeField] Transform rightPos;
     public float sideSpeed;
+    public float runningSpeed;
+    public float maxSpeed = 22f;
+    public float accelerationRate;
+    public float jumpForce;
 
-    [SerializeField] public float runningSpeed;
-    [SerializeField] float maxSpeed = 22f;
-    [SerializeField] float accelerationRate;
-
-    [SerializeField] float jumpForce;
-
-    [SerializeField] public int selectEWeapon; // eWeapons[ selectEWeapon ]
+    [Space(10f)]
+    public int selectEWeapon; // eWeapons[ selectEWeapon ]
     EWeapon[] eWeapons = { EWeapon.Bat, EWeapon.Ball, EWeapon.Magnetic };
 
     bool smash;
-
     float targetPosition;
     float curPosition;
     bool isJumping = false;
-    int curPos=1;   // 0 = left, 1 = center, 2 = right;
+    int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
     Collisions collisions;
     CapsuleCollider capsuleCollider;
     Rigidbody rb;
     Animator animator;
-
     Weapon weapon;
 
     void Start()
@@ -46,9 +43,7 @@ public class PlayerController : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<Weapon>();
-        
         animator = GetComponent<Animator>();
-
         GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
 
 
@@ -58,17 +53,17 @@ public class PlayerController : MonoBehaviour
     {
         if (collisions.canInteract)
         {
-        Running();
-        StateUpdate ();
+            Running();
+            StateUpdate();
         }
-    
+
     }
 
 
 
     void Running()
     {
-     
+
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + runningSpeed * Time.deltaTime);
         transform.position = newPosition;
 
@@ -79,13 +74,6 @@ public class PlayerController : MonoBehaviour
         }
 
         float xPosition = transform.position.x;
-
-
-
-
-
-
-
 
     }
     private void MoveHorizontal()
@@ -118,15 +106,15 @@ public class PlayerController : MonoBehaviour
     }
 
 
-  
-  
+
+
     void StateUpdate()
     {
-        if(!isJumping)
-        MoveHorizontal();
+        if (!isJumping)
+            MoveHorizontal();
 
 
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ) && !isJumping)
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && !isJumping)
         {
             SetState(EState.Up);
         }
@@ -134,7 +122,7 @@ public class PlayerController : MonoBehaviour
         {
             SetState(EState.Down);
         }
-        if( Input.GetKeyDown(KeyCode.Space) && !smash )
+        if (Input.GetKeyDown(KeyCode.Space) && !smash)
         {
             SetState(EState.Smash);
         }
@@ -201,7 +189,7 @@ public class PlayerController : MonoBehaviour
 
                 }
                 break;
-                case EState.Smash:
+            case EState.Smash:
                 {
                     StartCoroutine(appearHitBox());
                 }
@@ -209,7 +197,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -223,16 +211,12 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(InvincibilityTimer());
 
     }
-    public void Magnetic()
-    {
-
-    }
 
 
     IEnumerator appearHitBox()
     {
-        smash =true;
-        weapon.Triger( eWeapons[selectEWeapon] );
+        smash = true;
+        weapon.Triger(eWeapons[selectEWeapon]);
         yield return new WaitForSeconds(1f);
         smash = false;
 
@@ -248,22 +232,19 @@ public class PlayerController : MonoBehaviour
         capsuleCollider.center *= 2;
     }
 
-   IEnumerator InvincibilityTimer()
+    IEnumerator InvincibilityTimer()
     {
-       
+
         float tmpSpd = runningSpeed;
         runningSpeed = 30;
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
-        while(GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
+        while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
         {
             GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value--;
             yield return new WaitForSeconds(1);
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
         runningSpeed = tmpSpd;
-        Debug.Log("out");
     }
-
-
 
 }

@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,17 +23,13 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        _instance = GetComponent<GameManager>();
+      //  _instance = GetComponent<GameManager>();
         score = GameObject.Find("Player").GetComponent<CollectCoin>();
         player = GameObject.Find("Player");
-   
     }
 
-    void Update()
-    {
-        
-    }
-    public void GameOver() 
+
+    public void GameOver()
     {
         gameOver = true;
         gameOverPanel.SetActive(true);

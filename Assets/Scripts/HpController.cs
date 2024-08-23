@@ -16,10 +16,10 @@ public class HpController : MonoBehaviour
     }
 
 
-    void setHp(float maxHp)
+    public void setHp(float maxHp)
     {
-        HpBar.maxValue = maxHp;
-        HpBar.value = maxHp;
+        HpBar.maxValue += maxHp;
+        HpBar.value = HpBar.maxValue;
     }
 
     public void collsionObstacle()
