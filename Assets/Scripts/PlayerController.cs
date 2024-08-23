@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
 
-
     }
 
     void Update()

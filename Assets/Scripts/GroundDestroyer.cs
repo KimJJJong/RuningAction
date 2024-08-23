@@ -5,7 +5,6 @@ using UnityEngine;
 public class GroundDestroyer : MonoBehaviour
 {
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,6 +13,5 @@ public class GroundDestroyer : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 
 }

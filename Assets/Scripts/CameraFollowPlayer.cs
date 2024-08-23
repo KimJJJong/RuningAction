@@ -15,7 +15,6 @@ public class CameraFollowPlayer : MonoBehaviour
         sSpeed = 4;
     }
 
-
     void LateUpdate()
     {
         Vector3 sPos = Vector3.Lerp(new Vector3(0, transform.position.y, transform.position.z), new Vector3(0, cameraTarget.position.y + distance.y, cameraTarget.position.z + distance.z ), sSpeed * Time.deltaTime);
