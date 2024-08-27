@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     float targetPosition;
     float curPosition;
     bool isJumping = false;
+    bool _isRush;
+    bool _isMagnetic;
     int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
     Collisions collisions;
@@ -36,6 +38,14 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Animator animator;
     Weapon weapon;
+
+    public bool IsRush => _isRush;
+    public bool IsMagnetic
+    {
+        get => _isMagnetic;
+        set => _isMagnetic = value;
+    }
+
 
     void Start()
     {
@@ -205,10 +215,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Invincibility()
+    public void Invincibility(bool isIteam)
     {
-        StartCoroutine(InvincibilityTimer());
+        if (!_isRush)
+        {
 
+        if (!isIteam)
+            StartCoroutine(InvincibilityWeaponTimer());
+        else if(isIteam)
+            StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
+
+        }
+    }
+    public void BeMagnetic()
+    {
+        StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
 
 
@@ -231,8 +252,9 @@ public class PlayerController : MonoBehaviour
         capsuleCollider.center *= 2;
     }
 
-    IEnumerator InvincibilityTimer()
+    IEnumerator InvincibilityWeaponTimer()
     {
+        _isRush = true;
 
         float tmpSpd = runningSpeed;
         runningSpeed = 30;
@@ -244,6 +266,28 @@ public class PlayerController : MonoBehaviour
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
         runningSpeed = tmpSpd;
+        _isRush = false;
+
+    }
+    IEnumerator InvincibilityIteamTimer(float time)
+    {
+        _isRush = true;
+        float tmpSpd = runningSpeed;
+        runningSpeed = 30;
+        GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
+
+            yield return new WaitForSeconds(time);
+
+        GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
+        runningSpeed = tmpSpd;
+        _isRush =false;
     }
 
+    IEnumerator MagneticTimer(float time)
+    {
+        IsMagnetic = true;
+        yield return new WaitForSeconds(time);
+        IsMagnetic=false;
+
+    }
 }

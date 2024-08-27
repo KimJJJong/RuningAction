@@ -38,6 +38,7 @@ public class Weapon : MonoBehaviour
                 throughtBall();
                 break;
             case EWeapon.Magnetic:
+                beMagnetic();
                 break;
 
 
@@ -45,6 +46,10 @@ public class Weapon : MonoBehaviour
     }
 
 
+    void beMagnetic()
+    {
+
+    }
 
     void Batting()
     {
@@ -62,7 +67,7 @@ public class Weapon : MonoBehaviour
     {
         if (GageSlider.value >= GageSlider.maxValue)
         {
-            GameManager.Instance.player.GetComponent<PlayerController>().Invincibility();
+            GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
 
         }
     }

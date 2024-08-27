@@ -5,6 +5,8 @@ public enum EEquipment
     None,
     Destroyer,      // Àå¾Ö¹° ÆÄ±«½Ã Á¡¼ö È¹µæ
     Grubber,        // Ãß°¡ Coin || EventStage È®·ü UP 
+    PowerArmor,
+    LuckyGuy,
 }
 public enum ERank
 {
@@ -85,7 +87,47 @@ public class Equipment : MonoBehaviour
         }
     }
 
+    void PowerArmor(ERank rank)
+    {
+        switch (rank)
+        {
+            case ERank.None:
+                GameManager.Instance.score.setIncreasCoinRate(0);
+                break;
+            case ERank.Rare:
+                GameManager.Instance.score.setIncreasCoinRate(10);
+                break;
+            case ERank.Epic:
+                GameManager.Instance.score.setIncreasCoinRate(15);
+                break;
+            case ERank.Legendary:
+                GameManager.Instance.score.setIncreasCoinRate(20);
+                break;
+            case ERank.Mythic:
+                GameManager.Instance.score.setIncreasCoinRate(25);
+                break;
+        }
+    }
 
-
-
+    void LuckyGuy(ERank rank)
+    {
+        switch (rank)
+        {
+            case ERank.None:
+                GameManager.Instance.score.setIncreasCoinRate(0);
+                break;
+            case ERank.Rare:
+                GameManager.Instance.score.setIncreasCoinRate(10);
+                break;
+            case ERank.Epic:
+                GameManager.Instance.score.setIncreasCoinRate(15);
+                break;
+            case ERank.Legendary:
+                GameManager.Instance.score.setIncreasCoinRate(20);
+                break;
+            case ERank.Mythic:
+                GameManager.Instance.score.setIncreasCoinRate(25);
+                break;
+        }
+    }
 }

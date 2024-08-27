@@ -11,7 +11,6 @@ public class Collisions : MonoBehaviour
     [SerializeField] float shakeDuration = 1f;
     [SerializeField] float shakeMagnitude = 0.5f;
 
-    public int currentHealth;
     public bool isDmg;
     private Animator animator;
     public bool canInteract { get; set; }

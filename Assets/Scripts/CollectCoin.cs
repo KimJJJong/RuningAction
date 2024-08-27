@@ -8,13 +8,16 @@ public class CollectCoin : MonoBehaviour
     int score;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI EndScoreText;
+
     private int _increaseRate = 1;
     private int _increaseCoin = 30;
     private int _increaseObs= 50;
+
     int highScore;
+    Color defaultScoreColor;
+
     public TextMeshProUGUI highScoreText;
     public Color highScoreColor; 
-    Color defaultScoreColor;
     void Start()
     {
         //PlayerPrefs.DeleteAll();
@@ -27,7 +30,7 @@ public class CollectCoin : MonoBehaviour
         StartCoroutine(UpdateScore());
     }
 
-    public void setIncreasRate(int increasRate)
+    public void setIncreasRate(int increasRate) // 시간마다 증가율
     {
         _increaseRate += increasRate;
     }
@@ -48,6 +51,17 @@ public class CollectCoin : MonoBehaviour
         if (other.CompareTag("Coin"))
         {
             AddCoin();
+            Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("Rush"))
+        {
+            GameManager.Instance.playerController.Invincibility(true);
+            Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("Magnetic"))
+        {
+            Debug.Log("Magnetic");
+            GameManager.Instance.playerController.BeMagnetic();
             Destroy(other.gameObject);
         }
     }

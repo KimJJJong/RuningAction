@@ -9,6 +9,8 @@ TagManager:
   - Obstacle
   - HitBox
   - Ball
+  - Rush
+  - Magnetic
   layers:
   - Default
   - TransparentFX
