@@ -5,15 +5,33 @@ using static UnityEngine.GraphicsBuffer;
 
 public class CoinMagnetic : MonoBehaviour
 {
+    bool _isMagnetic;
 
+    private void Start()
+    {
+        StartCoroutine(MagneticTimer());
+    }
     void Update()
     {
         Transform Target = GameManager.Instance.player.transform;
-        if (GameManager.Instance.playerController.selectEWeapon == 2||GameManager.Instance.playerController.IsMagnetic)
+        if ((_isMagnetic&&GameManager.Instance.playerController.eWeapons== EWeapon.Magnetic)||GameManager.Instance.playerController.IsMagnetic)
         {
             if( Vector3.Distance(transform.position, Target.position) < 5)
             transform.position = Vector3.MoveTowards(transform.position, Target.position, 30 * Time.deltaTime);
 
         }
+    }
+
+  
+    IEnumerator MagneticTimer()   // Weapon Magnetic Lv
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(10f);      //대기 시간
+            _isMagnetic = true;
+            yield return new WaitForSeconds(5f );        //자석 시간
+            _isMagnetic = false;
+        }
+
     }
 }

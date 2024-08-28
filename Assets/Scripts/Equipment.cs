@@ -40,6 +40,12 @@ public class Equipment : MonoBehaviour
             case EEquipment.Grubber:
                 Grubber(erank);
                 break;
+            case EEquipment.PowerArmor:
+                PowerArmor(erank);
+                break;
+            case EEquipment.LuckyGuy:
+                LuckyGuy(erank);
+                break;
         }
     }
 
@@ -92,19 +98,19 @@ public class Equipment : MonoBehaviour
         switch (rank)
         {
             case ERank.None:
-                GameManager.Instance.score.setIncreasCoinRate(0);
+                GameManager.Instance.collisions.chance = 0;
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.setIncreasCoinRate(10);
+                GameManager.Instance.collisions.chance = 0.15f;
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.setIncreasCoinRate(15);
+                GameManager.Instance.collisions.chance = 0.30f;
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.setIncreasCoinRate(20);
+                GameManager.Instance.collisions.chance = 0.45f;
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.setIncreasCoinRate(25);
+                GameManager.Instance.collisions.chance = 0.60f;
                 break;
         }
     }

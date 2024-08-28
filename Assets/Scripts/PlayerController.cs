@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
 
     [Space(10f)]
-    public int selectEWeapon; // eWeapons[ selectEWeapon ]
-    EWeapon[] eWeapons = { EWeapon.Bat, EWeapon.Ball, EWeapon.Magnetic };
+    //public int selectEWeapon; // eWeapons[ selectEWeapon ]
+    public EWeapon eWeapons;//= { EWeapon.Bat, EWeapon.Ball, EWeapon.Magnetic };
+    public int weaponLv =0;
 
     bool smash;
     float targetPosition;
@@ -227,7 +228,7 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    public void BeMagnetic()
+    public void BeMagnetic()    //Iteam Magnetic
     {
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
@@ -236,7 +237,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator appearHitBox()
     {
         smash = true;
-        weapon.Triger(eWeapons[selectEWeapon]);
+        weapon.Triger(eWeapons);
         yield return new WaitForSeconds(1f);
         smash = false;
 

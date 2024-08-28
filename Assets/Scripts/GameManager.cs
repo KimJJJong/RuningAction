@@ -20,12 +20,14 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject player;
     public CollectCoin score;
+    public Collisions collisions;
     public StrengthenSubstance substance;
     public PlayerController playerController;
     void Awake()
     {
         _instance = GetComponent<GameManager>();
         score = GameObject.Find("Player").GetComponent<CollectCoin>();
+        collisions =GameObject.Find("Player").GetComponent<Collisions>();
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();

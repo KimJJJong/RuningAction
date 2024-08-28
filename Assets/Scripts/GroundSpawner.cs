@@ -20,7 +20,7 @@ public class GroundSpawner : MonoBehaviour
             if (Random.Range(0, 10) == 1)
             {
                 groundsQueue.Enqueue(grounds[grounds.Length - 1]);
-                Debug.Log($"{groundsQueue.Count} : gold spawn");
+                //Debug.Log($"{grounds[grounds.Length-1]}");
             }
             else
             {

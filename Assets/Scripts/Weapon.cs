@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public enum EWeapon
 {
-    Bat,
-    Ball,
-    Magnetic,
+    Bat = 0,
+    Ball = 1,
+    Magnetic = 2,
 }
 
 public class Weapon : MonoBehaviour
@@ -18,11 +18,12 @@ public class Weapon : MonoBehaviour
     {
         hitBox = GameObject.Find("HitBox");
         hitBox.SetActive(false);
+        InitWeapon();
     }
 
     private void Update()
     {
-        updateGage();
+        UpdateGage();
 
     }
 
@@ -33,9 +34,11 @@ public class Weapon : MonoBehaviour
         {
             case EWeapon.Bat:
                 Batting();
+                GageSlider.maxValue = 10;
                 break;
             case EWeapon.Ball:
-                throughtBall();
+                GageSlider.maxValue = 5;
+                ThroughtBall();
                 break;
             case EWeapon.Magnetic:
                 beMagnetic();
@@ -57,18 +60,36 @@ public class Weapon : MonoBehaviour
         hitBox.transform.position = gameObject.transform.position + new Vector3(0, 1f, 2f);
     }
 
-    void throughtBall()
+    void ThroughtBall()
     {
         Vector3 pos = gameObject.transform.position;
         GameObject _ball = Instantiate(Ball, new Vector3(pos.x, pos.y + 1, pos.z + 1), Quaternion.identity);
     }
 
-    void updateGage()
+    void UpdateGage()
     {
         if (GageSlider.value >= GageSlider.maxValue)
         {
             GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
 
         }
+    }
+
+
+    void InitWeapon()
+    {
+        EWeapon type = GameManager.Instance.playerController.eWeapons;
+        switch (type)
+        {
+            case EWeapon.Bat:
+                break;
+            case EWeapon.Ball:
+                break;
+            case EWeapon.Magnetic:
+                GageSlider.gameObject.SetActive(false);
+                break;
+
+        }
+
     }
 }

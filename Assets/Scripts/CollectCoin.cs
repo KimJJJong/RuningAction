@@ -64,6 +64,12 @@ public class CollectCoin : MonoBehaviour
             GameManager.Instance.playerController.BeMagnetic();
             Destroy(other.gameObject);
         }
+        else if (other.CompareTag("Heal"))
+        {
+            Debug.Log("heal");
+            Destroy(other.gameObject);
+
+        }
     }
     public void AddCoin()
     {

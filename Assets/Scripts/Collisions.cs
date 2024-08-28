@@ -12,6 +12,8 @@ public class Collisions : MonoBehaviour
     [SerializeField] float shakeMagnitude = 0.5f;
 
     public bool isDmg;
+    public bool isDmgIteam;
+    public float chance;
     private Animator animator;
     public bool canInteract { get; set; }
 
@@ -31,14 +33,21 @@ public class Collisions : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!isDmg)
-            if (other.CompareTag("Obstacle"))
+        if (other.CompareTag("Obstacle"))
+        {
+            isDmgIteam = UnityEngine.Random.value <= chance;
+            other.gameObject.GetComponent<Collider>().enabled = false;
+            if (!isDmg && !isDmgIteam)
             {
-                other.gameObject.GetComponent<Collider>().enabled = false;
                 Damage();
                 cooldownText.enabled = true;
-
             }
+            else
+            {
+                Debug.Log("뿌순건가?"); // 파괴시 점수 추가는 여기에!!!
+            }
+
+        }
     }
 
     void Damage()

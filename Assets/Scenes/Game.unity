@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f668fed0912c849b095baf10f7c99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equip: 2
+  equip: 3
   erank: 5
 --- !u!114 &201700142
 MonoBehaviour:
@@ -491,7 +491,7 @@ MonoBehaviour:
   _hpLv: 100
   _goldStageLv: 0
   _rushLv: 10
-  _magneticLv: 10
+  _magneticLv: 2
 --- !u!1 &269812352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1782,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1546502238}
   player: {fileID: 0}
   score: {fileID: 0}
+  collisions: {fileID: 0}
   substance: {fileID: 0}
   playerController: {fileID: 0}
 --- !u!4 &866086990
@@ -3341,6 +3342,10 @@ PrefabInstance:
       propertyPath: leftPos
       value: 
       objectReference: {fileID: 1580833136}
+    - target: {fileID: 1861508379770213776, guid: d58c296c495dc064185a4110763faddd, type: 3}
+      propertyPath: eWeapons
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1861508379770213776, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: rightPos
       value: 
