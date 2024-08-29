@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEditor;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Collisions collisions;
     public StrengthenSubstance substance;
     public PlayerController playerController;
+    public HpController HpController;
     void Awake()
     {
         _instance = GetComponent<GameManager>();
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
+        HpController =GameObject.Find("Player").GetComponent<HpController>();
     }
 
 
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
     public void Exit()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        //EditorApplication.isPlaying = false;
     }
 
 }

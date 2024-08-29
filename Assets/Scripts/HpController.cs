@@ -20,7 +20,13 @@ public class HpController : MonoBehaviour
         HpBar.maxValue += maxHp;
         HpBar.value = HpBar.maxValue;
     }
-
+    public void Heal(float heal)
+    {
+        if (HpBar.value + heal >= HpBar.maxValue)
+            HpBar.value = HpBar.maxValue;
+        else
+            HpBar.value += heal;
+    }
     public void collsionObstacle()
     {
         if (HpBar.value <= 0)

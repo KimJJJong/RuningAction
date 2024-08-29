@@ -44,7 +44,7 @@ public class Collisions : MonoBehaviour
             }
             else
             {
-                Debug.Log("뿌순건가?"); // 파괴시 점수 추가는 여기에!!!
+               // Debug.Log("뿌순건가?"); // 파괴시 점수 추가는 여기에!!!
             }
 
         }

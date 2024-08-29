@@ -10,6 +10,7 @@ public class GroundSpawner : MonoBehaviour
     Queue<GameObject> groundsQueue = new Queue<GameObject>();
     int distance = 78;
     int var;
+    [HideInInspector] public int goldStageProbability;
 
 
     void Update()
@@ -17,16 +18,8 @@ public class GroundSpawner : MonoBehaviour
 
         if (groundsQueue.Count <= 10)
         {
-            if (Random.Range(0, 10) == 1)
-            {
-                groundsQueue.Enqueue(grounds[grounds.Length - 1]);
-                //Debug.Log($"{grounds[grounds.Length-1]}");
-            }
-            else
-            {
-                var = Random.Range(0, grounds.Length - 1);
-                groundsQueue.Enqueue(grounds[var]);
-            }
+            EnqueueRandomGround();
+         
         }
         if (isSpawning < 5)
         {
@@ -41,5 +34,25 @@ public class GroundSpawner : MonoBehaviour
         distance += 39;
         yield return new WaitForSeconds(0.5f);
     }
-    
+
+    private void EnqueueRandomGround()
+    {
+        if (Random.Range(0, 100) <= 10 + goldStageProbability)
+        {
+            groundsQueue.Enqueue(grounds[grounds.Length - 1]);
+        }
+        else
+        {
+            int selectedIndex = Random.Range(0, grounds.Length - 1);
+
+            if (groundsQueue.Count > 0 && grounds[selectedIndex] == groundsQueue.Peek())
+            {
+                selectedIndex = Random.Range(0, grounds.Length - 1); // Choose next object in the array
+
+            }
+
+            groundsQueue.Enqueue(grounds[selectedIndex]);
+        }
+    }
+
 }

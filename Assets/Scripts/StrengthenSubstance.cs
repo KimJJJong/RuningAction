@@ -16,6 +16,7 @@ public class StrengthenSubstance : MonoBehaviour
 
     public int RushLv => _rushLv;
     public int MagneticLv => _magneticLv;
+    public int GoldStageLv => _goldStageLv;
 
 
     private void Start()

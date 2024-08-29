@@ -11,6 +11,7 @@ TagManager:
   - Ball
   - Rush
   - Magnetic
+  - Heal
   layers:
   - Default
   - TransparentFX

@@ -117,22 +117,23 @@ public class Equipment : MonoBehaviour
 
     void LuckyGuy(ERank rank)
     {
+        GroundSpawner goldSpawn = GameObject.Find("GroundSpawner").GetComponent<GroundSpawner>();
         switch (rank)
         {
             case ERank.None:
-                GameManager.Instance.score.setIncreasCoinRate(0);
+                goldSpawn.goldStageProbability=12;
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.setIncreasCoinRate(10);
+                goldSpawn.goldStageProbability = 14;
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.setIncreasCoinRate(15);
+                goldSpawn.goldStageProbability = 16; 
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.setIncreasCoinRate(20);
+                goldSpawn.goldStageProbability = 18;
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.setIncreasCoinRate(25);
+                goldSpawn.goldStageProbability = 20;
                 break;
         }
     }

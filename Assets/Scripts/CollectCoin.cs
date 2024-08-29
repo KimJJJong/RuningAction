@@ -67,6 +67,7 @@ public class CollectCoin : MonoBehaviour
         else if (other.CompareTag("Heal"))
         {
             Debug.Log("heal");
+            GameManager.Instance.HpController.Heal(10);
             Destroy(other.gameObject);
 
         }
