@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/02. GameReady Scene.unity
     guid: d947a8221a29b474e80646c03823656e
   - enabled: 1
-    path: Assets/Scenes/03. Management Scene.unity
-    guid: 57502dd55b3ec93489e2c86dce3f874f
+    path: Assets/Scenes/03_1. Storage Scene.unity
+    guid: 3aa70e44f574bc34fb85c2656365ef9a
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab

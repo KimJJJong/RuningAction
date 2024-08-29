@@ -10,11 +10,6 @@ namespace MH
 
         public GameObject checkedOutline;
 
-        void Start()
-        {
-
-        }
-
         void Update()
         {
             if (transform.GetSiblingIndex() == 0)
