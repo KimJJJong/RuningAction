@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-      //  _instance = GetComponent<GameManager>();
+        //  _instance = GetComponent<GameManager>();
         score = GameObject.Find("Player").GetComponent<CollectCoin>();
         player = GameObject.Find("Player");
     }
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     }
     public void Exit()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
     }
 
 }
