@@ -30,11 +30,11 @@ public class GameManager : MonoBehaviour
     {
         _instance = GetComponent<GameManager>();
         score = GameObject.Find("Player").GetComponent<CollectCoin>();
-        collisions =GameObject.Find("Player").GetComponent<Collisions>();
+        collisions = GameObject.Find("Player").GetComponent<Collisions>();
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
-        HpController =GameObject.Find("Player").GetComponent<HpController>();
+        HpController = GameObject.Find("Player").GetComponent<HpController>();
         weapon = GameObject.Find("Player").GetComponent<Weapon>();
     }
 
@@ -56,5 +56,4 @@ public class GameManager : MonoBehaviour
     {
         //EditorApplication.isPlaying = false;
     }
-
 }
