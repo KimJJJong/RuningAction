@@ -34,15 +34,15 @@ public class CollectCoin : MonoBehaviour
     {
         _increaseRate += increasRate;
     }
-    public void setIncreasCoinRate(int increaseCoin)
+    public void SetIncreasCoinRate(int increaseCoin)
     {
         _increaseCoin += increaseCoin;
     }
-    public void setIncreasObsRate(int increasObs)
+    public void SetIncreasObsRate(int increasObs)
     {
         _increaseObs += increasObs;
     }
-    public void increasObsScore()
+    public void IncreasObsScore()
     {
         score += _increaseObs;
     }
@@ -55,18 +55,19 @@ public class CollectCoin : MonoBehaviour
         }
         else if (other.CompareTag("Rush"))
         {
+            //Debug.Log("Rush");
             GameManager.Instance.playerController.Invincibility(true);
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Magnetic"))
         {
-            Debug.Log("Magnetic");
+            //Debug.Log("Magnetic");
             GameManager.Instance.playerController.BeMagnetic();
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Heal"))
         {
-            Debug.Log("heal");
+            //Debug.Log("heal");
             GameManager.Instance.HpController.Heal(10);
             Destroy(other.gameObject);
 

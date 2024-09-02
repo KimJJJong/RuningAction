@@ -17,13 +17,15 @@ public class GameManager : MonoBehaviour
         }
     }
     public static bool gameOver = false;
-    public GameObject gameOverPanel;
-    public GameObject player;
-    public CollectCoin score;
-    public Collisions collisions;
-    public StrengthenSubstance substance;
-    public PlayerController playerController;
-    public HpController HpController;
+    [HideInInspector] public GameObject gameOverPanel;
+    [HideInInspector] public GameObject player;
+    [HideInInspector] public CollectCoin score;
+    [HideInInspector] public Collisions collisions;
+    [HideInInspector] public StrengthenSubstance substance;
+    [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public HpController HpController;
+    [HideInInspector] public Weapon weapon;
+
     void Awake()
     {
         _instance = GetComponent<GameManager>();
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
         HpController =GameObject.Find("Player").GetComponent<HpController>();
+        weapon = GameObject.Find("Player").GetComponent<Weapon>();
     }
 
 

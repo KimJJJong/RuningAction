@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
         Up,
         Down,
         Smash,
+        Throw,
+        Batting,
     }
     [SerializeField] Transform centerPos;
     [SerializeField] Transform leftPos;
@@ -136,6 +138,14 @@ public class PlayerController : MonoBehaviour
         {
             SetState(EState.Smash);
         }
+        if(Input.GetKeyDown(KeyCode.K) && !smash)
+        {
+            SetState(EState.Throw);
+        }
+        if (Input.GetKeyDown(KeyCode.L) && !smash)
+        {
+            SetState(EState.Batting);
+        }
 
     }
 
@@ -199,9 +209,14 @@ public class PlayerController : MonoBehaviour
 
                 }
                 break;
-            case EState.Smash:
+            case EState.Throw:
                 {
-                    StartCoroutine(appearHitBox());
+                    StartCoroutine(appearHitBox(0));
+                }
+                break;
+            case EState.Batting:
+                {
+                    StartCoroutine(appearHitBox(1));
                 }
                 break;
         }
@@ -234,10 +249,10 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    IEnumerator appearHitBox()
+    IEnumerator appearHitBox(int weaponNumber)  // 0 = Throw  1 = Batting
     {
         smash = true;
-        weapon.Triger(eWeapons);
+        weapon.Triger(eWeapons, weaponNumber);
         yield return new WaitForSeconds(1f);
         smash = false;
 
@@ -262,7 +277,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
         while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
         {
-            GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value--;
+            GameManager.Instance.weapon.DecreaseGage(10f);   // Weapon사용 질주 시간 통제
             yield return new WaitForSeconds(1);
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;

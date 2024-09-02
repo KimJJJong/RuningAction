@@ -55,19 +55,19 @@ public class Equipment : MonoBehaviour
         switch (rank)
         {
             case ERank.None:
-                GameManager.Instance.score.setIncreasObsRate(20);
+                GameManager.Instance.score.SetIncreasObsRate(20);
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.setIncreasObsRate(30);
+                GameManager.Instance.score.SetIncreasObsRate(30);
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.setIncreasObsRate(40);
+                GameManager.Instance.score.SetIncreasObsRate(40);
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.setIncreasObsRate(50);
+                GameManager.Instance.score.SetIncreasObsRate(50);
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.setIncreasObsRate(60);
+                GameManager.Instance.score.SetIncreasObsRate(60);
                 break;
         }
     }
@@ -76,19 +76,19 @@ public class Equipment : MonoBehaviour
         switch (rank)
         {
             case ERank.None:
-                GameManager.Instance.score.setIncreasCoinRate(0);
+                GameManager.Instance.score.SetIncreasCoinRate(0);
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.setIncreasCoinRate(10);
+                GameManager.Instance.score.SetIncreasCoinRate(10);
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.setIncreasCoinRate(15);
+                GameManager.Instance.score.SetIncreasCoinRate(15);
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.setIncreasCoinRate(20);
+                GameManager.Instance.score.SetIncreasCoinRate(20);
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.setIncreasCoinRate(25);
+                GameManager.Instance.score.SetIncreasCoinRate(25);
                 break;
         }
     }
