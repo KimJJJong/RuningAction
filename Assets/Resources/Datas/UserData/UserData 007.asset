@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd04288b600bd6044b19e3a090a860e8, type: 3}
+  m_Name: UserData 007
+  m_EditorClassIdentifier: 
+  userID: 7
+  userName: asd
+  userScore: 3234
+  weapons:
+  - {fileID: 11400000, guid: ce62c91f3acea274895d70d094e780af, type: 2}
+  characters:
+  - {fileID: 11400000, guid: 11dffb545abedcb49b2d2d251c6e1773, type: 2}
+  upgrades:
+  - {fileID: 11400000, guid: 6da2f8af8e6b8194a96ad0566ea30ee3, type: 2}
+  - {fileID: 11400000, guid: 197cbe58717098740b615edca981c2a8, type: 2}
+  - {fileID: 11400000, guid: a111e202ee5406848b4de7f5d12ac956, type: 2}

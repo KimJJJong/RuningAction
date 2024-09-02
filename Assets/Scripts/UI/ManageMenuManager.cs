@@ -11,12 +11,46 @@ public class ManageMenuManager : MonoBehaviour
     public GameObject weaponUpgradeList;
     public GameObject innerUpgradeList;
 
-    public Image innerUpImage;
-    public TMP_Text innerText;
+    public GameObject chrUnit;
+    public GameObject weaponUnit;
+    public GameObject upgradeUnit;
 
     public Image upgradeImage;
     public TMP_Text upgradeName;
     public TMP_Text upgradeText;
+
+    private UserData userData;
+    public string userID = "001";
+
+    private void Awake()
+    {
+        userData = Resources.Load<UserData>("Datas/UserData/UserData " + userID);
+    }
+
+    private void Start()
+    {
+        foreach (var chr in userData.characters)
+        {
+            var unit = Instantiate(chrUnit).GetComponent<CharacterUnit>();
+            unit.SetData(chr);
+            unit.transform.parent = chrUpgradeList.transform;
+            unit.transform.localScale = new Vector3(1, 1, 1);
+        }
+        foreach (var weapon in userData.weapons)
+        {
+            var unit = Instantiate(weaponUnit).GetComponent<WeaponUnit>();
+            unit.weaponData = weapon;
+            unit.transform.parent = weaponUpgradeList.transform;
+            unit.transform.localScale = new Vector3(1, 1, 1);
+        }
+        foreach (var upgrade in userData.upgrades)
+        {
+            var unit = Instantiate(upgradeUnit).GetComponent<InUpgradeUnit>();
+            unit.upgradeData = upgrade;
+            unit.transform.parent = innerUpgradeList.transform;
+            unit.transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
 
     public void ChrUpgrade()
     {
