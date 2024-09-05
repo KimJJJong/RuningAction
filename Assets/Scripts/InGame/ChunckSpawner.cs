@@ -13,13 +13,15 @@ public class ChunckSpawner : MonoBehaviour
     [SerializeField] private int _size;
     [HideInInspector] public int goldStageProbability;
 
+    public int stageLv;     // 아직 어떻코론 해야할지 모르것당ㅇㅇㅇㅇㅇ;
+
 
     private List<Queue<GameObject>> _chunksQueueList = new List<Queue<GameObject>>(); //poolList for randomizing
     private Vector3 _spawnPos = new Vector3(0f, -38f, 0f);
 
     private void Awake()
     {
-        _spawnPos = new Vector3(-0.4f, -39.25718f, 78f);
+        _spawnPos = new Vector3(-0.4f, -39.25718f, 93.5f);
     }
     private void Start()
     {

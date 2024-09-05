@@ -463,8 +463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f668fed0912c849b095baf10f7c99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equip: 0
-  erank: 0
+  equip: 4
+  erank: 5
 --- !u!114 &201700142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,7 +828,6 @@ GameObject:
   m_Component:
   - component: {fileID: 433256600}
   - component: {fileID: 433256599}
-  - component: {fileID: 433256601}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -866,18 +865,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &433256601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433256597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &476162664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,7 +1248,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 42.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1507,7 +1494,7 @@ Transform:
   m_GameObject: {fileID: 791778203}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.43, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1533,8 +1520,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.5, y: 2.793614, z: 1.1166077}
-  m_Center: {x: -0.078448534, y: 1.4529753, z: 38.90853}
+  m_Size: {x: 6.5, y: 3.21, z: 1.1166077}
+  m_Center: {x: -0.078448534, y: 1.4529753, z: 42.03}
 --- !u!114 &791778207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1720,7 +1707,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.85
+  m_fontSize: 103.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2014,7 +2001,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2245,16 +2232,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunks:
-  - {fileID: 2621428561389978537, guid: bb07df21c518fb6419a76d02f9df73e7, type: 3}
-  - {fileID: 2621428561389978537, guid: 4dd3ff12eb061c2468049e3c100f46ba, type: 3}
-  - {fileID: 2621428561389978537, guid: 1ec4712f3c8167541905cf7097df8823, type: 3}
-  - {fileID: 2621428561389978537, guid: 46b80275aca0c1549915dd6e3f98cf55, type: 3}
-  - {fileID: 2621428561389978537, guid: 3616df0a31b6e094abe2ea6353999f0d, type: 3}
+  - {fileID: 2621428561389978537, guid: a1107c78de0cc814086c31b9004890a0, type: 3}
+  - {fileID: 2621428561389978537, guid: be1803c1034ee5540870e7f9ebca2bfe, type: 3}
+  - {fileID: 2621428561389978537, guid: 0d8fffa1abea68740bbb4e7bd719894f, type: 3}
+  - {fileID: 2621428561389978537, guid: bf2210f423ede5f49ae3c2cd5d5b2eb0, type: 3}
+  - {fileID: 2621428561389978537, guid: eb0868c6990699f439a3bc4b983c0f0f, type: 3}
   - {fileID: 2621428561389978537, guid: 826df8a162c54e04893fd14e1a61fee2, type: 3}
-  _chunkLenght: 54
+  _chunkLenght: 40
   _playerTransform: {fileID: 201700159}
-  _spawnDistance: 50
-  _size: 10
+  _spawnDistance: 199
+  _size: 6
+  goldStageProbability: 0
 --- !u!4 &1160182145
 Transform:
   m_ObjectHideFlags: 0
@@ -2264,7 +2252,7 @@ Transform:
   m_GameObject: {fileID: 1160182143}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 37.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3104,58 +3092,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1149145547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1852749335
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1852749337}
-  - component: {fileID: 1852749336}
-  m_Layer: 0
-  m_Name: GroundSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1852749336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852749335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c39f43432d9f15b4cbd22304427e312f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grounds:
-  - {fileID: 2621428561389978537, guid: bb07df21c518fb6419a76d02f9df73e7, type: 3}
-  - {fileID: 2621428561389978537, guid: 4dd3ff12eb061c2468049e3c100f46ba, type: 3}
-  - {fileID: 2621428561389978537, guid: 1ec4712f3c8167541905cf7097df8823, type: 3}
-  - {fileID: 2621428561389978537, guid: 46b80275aca0c1549915dd6e3f98cf55, type: 3}
-  - {fileID: 2621428561389978537, guid: 3616df0a31b6e094abe2ea6353999f0d, type: 3}
-  - {fileID: 2621428561389978537, guid: 826df8a162c54e04893fd14e1a61fee2, type: 3}
-  goldStageProbability: 0
---- !u!4 &1852749337
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852749335}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1893565858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,7 +3483,6 @@ SceneRoots:
   - {fileID: 113145764}
   - {fileID: 433256600}
   - {fileID: 866086990}
-  - {fileID: 1852749337}
   - {fileID: 791778204}
   - {fileID: 1149145547}
   - {fileID: 1379954251}

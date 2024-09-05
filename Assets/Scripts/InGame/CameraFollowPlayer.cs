@@ -11,7 +11,7 @@ public class CameraFollowPlayer : MonoBehaviour
     private void Start()
     {
         cameraTarget = GameObject.Find("Player").GetComponent<Transform>();
-        distance = new Vector3(0, 4, -3.5f);
+        distance = new Vector3(0, 3, -0f);
         sSpeed = 4;
     }
 

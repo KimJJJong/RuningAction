@@ -12,11 +12,12 @@ GameObject:
   - component: {fileID: 5661840521232636517}
   - component: {fileID: 7599282025147346607}
   - component: {fileID: 1843753055122863254}
-  - component: {fileID: 3491326877300127802}
   - component: {fileID: 7748884326817398364}
+  - component: {fileID: 6381632968043055847}
+  - component: {fileID: 850211748992324558}
   m_Layer: 0
-  m_Name: Magnetic
-  m_TagString: Ball
+  m_Name: ObstacleBall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8248042332050722682}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.473, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -107,18 +108,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.07
   m_Center: {x: -0.000000009313226, y: 0.0000000018626451, z: 0}
---- !u!114 &3491326877300127802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8248042332050722682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0344997b37dbab54a9d6d8c1ef390c5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7748884326817398364
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,3 +135,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6381632968043055847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248042332050722682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e3f23923163794d87128c334731e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigerDistance: 50
+--- !u!114 &850211748992324558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248042332050722682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b44e49343264e4b97aab546157f6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacle: HitBox

@@ -6,7 +6,7 @@ public class BallState : MonoBehaviour
     void Start()
     {
         curSpeed = GameManager.Instance.player.GetComponent<PlayerController>().runningSpeed;
-        Destroy(gameObject, 300f * Time.deltaTime);
+        Destroy(gameObject, 3f );
     }
 
     void Update()

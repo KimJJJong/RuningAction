@@ -20,6 +20,7 @@ public class GroundDestroyer : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            new WaitForSeconds(1f);
             gameObject.SetActive(false);
         }
     }
