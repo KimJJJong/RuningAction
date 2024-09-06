@@ -463,8 +463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f668fed0912c849b095baf10f7c99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equip: 4
-  erank: 5
+  equip: 0
+  erank: 0
 --- !u!114 &201700142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,7 +511,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0.26, z: 0.18}
@@ -2231,17 +2231,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba1639224ee9da44925121011070c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunks:
-  - {fileID: 2621428561389978537, guid: a1107c78de0cc814086c31b9004890a0, type: 3}
-  - {fileID: 2621428561389978537, guid: be1803c1034ee5540870e7f9ebca2bfe, type: 3}
-  - {fileID: 2621428561389978537, guid: 0d8fffa1abea68740bbb4e7bd719894f, type: 3}
-  - {fileID: 2621428561389978537, guid: bf2210f423ede5f49ae3c2cd5d5b2eb0, type: 3}
-  - {fileID: 2621428561389978537, guid: eb0868c6990699f439a3bc4b983c0f0f, type: 3}
-  - {fileID: 2621428561389978537, guid: 826df8a162c54e04893fd14e1a61fee2, type: 3}
-  _chunkLenght: 40
+  _chunks01:
+  - {fileID: 2621428561389978537, guid: b9d2d8e4d971c3048b3f181c9428ee1b, type: 3}
+  - {fileID: 2621428561389978537, guid: 6e50a0ff1dced494f87a7a5c187c862a, type: 3}
+  - {fileID: 2621428561389978537, guid: d472b395d982eea4e925ca82fc9d87fb, type: 3}
+  - {fileID: 2621428561389978537, guid: b2608b24eb8df05488afa5fe8d47a3c8, type: 3}
+  - {fileID: 2621428561389978537, guid: 5dace483ab417964ba4142fafd98bba0, type: 3}
+  _chunks02:
+  - {fileID: 2621428561389978537, guid: b9d2d8e4d971c3048b3f181c9428ee1b, type: 3}
+  - {fileID: 2621428561389978537, guid: 6e50a0ff1dced494f87a7a5c187c862a, type: 3}
+  - {fileID: 2621428561389978537, guid: d472b395d982eea4e925ca82fc9d87fb, type: 3}
+  - {fileID: 2621428561389978537, guid: b2608b24eb8df05488afa5fe8d47a3c8, type: 3}
+  - {fileID: 2621428561389978537, guid: 5dace483ab417964ba4142fafd98bba0, type: 3}
+  _chunkLenght: 119
   _playerTransform: {fileID: 201700159}
-  _spawnDistance: 199
-  _size: 6
+  _spawnDistance: 300
+  _size: 5
   goldStageProbability: 0
 --- !u!4 &1160182145
 Transform:

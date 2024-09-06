@@ -5,7 +5,9 @@ using UnityEngine;
 public class ChunckSpawner : MonoBehaviour
 {
     //TODO: Get prew chunks
-    [SerializeField] GameObject[] _chunks;
+    [SerializeField] GameObject[] _chunks01;
+    [SerializeField] GameObject[] _chunks02;
+    //[SerializeField] GameObject[] _chunks03;
     [SerializeField] private float _chunkLenght = 40f;      // May be 78f?
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private float _spawnDistance = 199.9f;    // 38f ??
@@ -13,10 +15,11 @@ public class ChunckSpawner : MonoBehaviour
     [SerializeField] private int _size;
     [HideInInspector] public int goldStageProbability;
 
-    public int stageLv;     // 아직 어떻코론 해야할지 모르것당ㅇㅇㅇㅇㅇ;
+   // public int stageLv;     // 아직 어떻코론 해야할지 모르것당ㅇㅇㅇㅇㅇ;
 
 
-    private List<Queue<GameObject>> _chunksQueueList = new List<Queue<GameObject>>(); //poolList for randomizing
+    private List<Queue<GameObject>> _chunksQueueList01 = new List<Queue<GameObject>>(); //poolList for randomizing
+    private List<Queue<GameObject>> _chunksQueueList02 = new List<Queue<GameObject>>();
     private Vector3 _spawnPos = new Vector3(0f, -38f, 0f);
 
     private void Awake()
@@ -25,48 +28,57 @@ public class ChunckSpawner : MonoBehaviour
     }
     private void Start()
     {
-        PoolChunks();
+        PoolChunks(_chunksQueueList01,_chunks01);
+        PoolChunks(_chunksQueueList02, _chunks02);
     }
     private void Update()
     {
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
-            SpawnRandomChunk();
+            if(_spawnPos.z > 500f)
+            {
+            Debug.Log(_spawnPos);
+                SpawnRandomChunk(_chunksQueueList02);
+            }
+            else
+            SpawnRandomChunk(_chunksQueueList01);
         }
     }
-    private void PoolChunks()
+    private void PoolChunks(List<Queue<GameObject>> chuncksQueueList, GameObject[] chuncks)
     {
-        for (int i = 0; i < _chunks.Length; i++)
+        for (int i = 0; i < chuncks.Length; i++)
         {
             Queue<GameObject> newPool = new Queue<GameObject>();
             for (int j = 0; j < _size; j++)
             {
-                GameObject newObj = Instantiate(_chunks[i].gameObject);
+                GameObject newObj = Instantiate(chuncks[i].gameObject);
                 newObj.gameObject.SetActive(false);
                 newPool.Enqueue(newObj);
             }
-            _chunksQueueList.Add(newPool);
+            chuncksQueueList.Add(newPool);
             
         }
     }
-    private void SpawnRandomChunk()
+
+
+    private void SpawnRandomChunk(List<Queue<GameObject>> chuncksQueueList)
     {
         if (Random.Range(0, 100) <= 10 + goldStageProbability)
         {
-            GameObject newChunk = _chunksQueueList[ _chunksQueueList.Count-1].Dequeue();
+            GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count-1].Dequeue();
             newChunk.transform.position = _spawnPos;
             _spawnPos.z += _chunkLenght;
             newChunk.gameObject.SetActive(true);
-            _chunksQueueList[_chunksQueueList.Count-1].Enqueue(newChunk);
+            _chunksQueueList01[chuncksQueueList.Count-1].Enqueue(newChunk);
         }
         else
         {
-            int randValue = Random.Range(0, _chunksQueueList.Count - 1);
-        GameObject newChunk = _chunksQueueList[randValue].Dequeue();
+            int randValue = Random.Range(0, chuncksQueueList.Count - 1);
+        GameObject newChunk = chuncksQueueList[randValue].Dequeue();
         newChunk.transform.position = _spawnPos;
         _spawnPos.z += _chunkLenght;
         newChunk.gameObject.SetActive(true);
-            _chunksQueueList[randValue].Enqueue(newChunk);
+            chuncksQueueList[randValue].Enqueue(newChunk);
         }
     }
 }
