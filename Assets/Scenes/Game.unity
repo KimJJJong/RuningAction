@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8fe3428e605c04ea517f780aa86d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpLv: 0
+  _hpLv: 10
   _goldStageLv: 40
   _rushLv: 2
   _magneticLv: 2
@@ -3397,6 +3397,14 @@ PrefabInstance:
     - target: {fileID: 1861508379770213776, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: _accelerationRate
       value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428492324985126269, guid: d58c296c495dc064185a4110763faddd, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428492324985126269, guid: d58c296c495dc064185a4110763faddd, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4449987811392384393, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: m_Name

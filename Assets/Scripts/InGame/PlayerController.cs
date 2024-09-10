@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float accelerationRate;
     public float jumpForce;
     public float downForce;
+    public float fallMultiplier;
 
     [Space(10f)]
     //public int selectEWeapon; // eWeapons[ selectEWeapon ]
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
         GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
     }
 
@@ -71,11 +73,35 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    /*
+         private void FixedUpdate()
+        {
+            RaycastHit hit;
 
+            Vector3 rayOrigin = transform.position + new Vector3(0,0.1f,0);
+            Vector3 rayDirection = Vector3.forward;
+
+
+            if (Physics.Raycast(rayOrigin, rayDirection, out hit, 0.2f))
+            {
+                if (hit.collider.CompareTag("Ramp"))
+                {
+                    Vector3 newPos = hit.point;
+                    transform.position = newPos;
+
+                    Debug.Log("hit");
+                }
+            }
+        }
+     */
 
 
     void Running()
     {
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
 
         Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + runningSpeed * Time.deltaTime);
         transform.position = newPosition;
