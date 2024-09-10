@@ -24,7 +24,7 @@ public class ChunckSpawner : MonoBehaviour
 
     private void Awake()
     {
-        _spawnPos = new Vector3(-0.4f, -39.25718f, 93.5f);
+        _spawnPos = new Vector3(-0.4f, -39.25718f, 170);
     }
     private void Start()
     {
@@ -35,13 +35,13 @@ public class ChunckSpawner : MonoBehaviour
     {
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
-            if(_spawnPos.z > 500f)
+          if(_spawnPos.z > 2000f)
             {
             Debug.Log(_spawnPos);
                 SpawnRandomChunk(_chunksQueueList02);
             }
-            else
-            SpawnRandomChunk(_chunksQueueList01);
+           else
+           SpawnRandomChunk(_chunksQueueList01);
         }
     }
     private void PoolChunks(List<Queue<GameObject>> chuncksQueueList, GameObject[] chuncks)
