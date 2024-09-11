@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.45
+  m_fontSize: 26.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1707,7 +1707,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 103.15
+  m_fontSize: 150
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3395,12 +3395,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1861508379770213776, guid: d58c296c495dc064185a4110763faddd, type: 3}
+      propertyPath: fallMultiplier
+<<<<<<< Updated upstream
+      value: 4
+=======
+      value: 5
+>>>>>>> Stashed changes
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861508379770213776, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: _accelerationRate
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2428492324985126269, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: m_Drag
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2428492324985126269, guid: d58c296c495dc064185a4110763faddd, type: 3}
       propertyPath: m_UseGravity

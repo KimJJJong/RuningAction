@@ -12,6 +12,7 @@ TagManager:
   - Rush
   - Magnetic
   - Heal
+  - Ramp
   layers:
   - Default
   - TransparentFX
