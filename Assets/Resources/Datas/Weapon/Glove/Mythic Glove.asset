@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25798dc63963465419e0a2af680f6b56, type: 3}
   m_Name: Mythic Glove
   m_EditorClassIdentifier: 
-  weaponId: 4
+  weaponId: 10
   weaponClass: 1
   rarelity: 4
   weaponImg: {fileID: 21300000, guid: 7fd6e0462dd244573a18576c320addbc, type: 3}

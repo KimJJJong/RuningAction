@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9b2ae50e7da634b9a8fb134c76ad14, type: 3}
   m_Name: Legendary Luck
   m_EditorClassIdentifier: 
-  weaponId: 3
+  weaponId: 24
   weaponClass: 2
   rarelity: 3
   weaponImg: {fileID: 21300000, guid: 9f131a6c528eb4e36a35d645d7d80e8d, type: 3}

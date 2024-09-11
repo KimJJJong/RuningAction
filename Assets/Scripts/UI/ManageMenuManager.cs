@@ -125,7 +125,7 @@ public class ManageMenuManager : MonoBehaviour
 
         reinforceImg.sprite = data.characterImg;
 
-        haves = userData.characters.Count(item => (item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()));
+        haves = userData.characters.Count(item => item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()) - 1;
         wantsMat = data.reinMat[data.starRate - 1];
         wantsGold = data.reinGold[data.starRate - 1];
         reinforceText.text = haves.ToString() + " / " + wantsMat.ToString();
@@ -175,7 +175,7 @@ public class ManageMenuManager : MonoBehaviour
         itemData = data;
 
         reinforceImg.sprite = data.weaponImg;
-        haves = userData.weapons.Count(item => (item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()));
+        haves = userData.weapons.Count(item => item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()) - 1;
         wantsMat = data.reinMat[data.starRate - 1];
         wantsGold = data.reinGold[data.starRate - 1];
         reinforceText.text = haves.ToString() + " / " + wantsMat.ToString();
@@ -222,7 +222,7 @@ public class ManageMenuManager : MonoBehaviour
         itemData = data;
 
         reinforceImg.sprite = data.weaponImg;
-        haves = userData.weaponExes.Count(item => (item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()));
+        haves = userData.weaponExes.Count(item => item.GetID() == data.GetID() && item.GetStarRate() == data.GetStarRate()) - 1;
         wantsMat = data.reinMat[data.starRate - 1];
         wantsGold = data.reinGold[data.starRate - 1];
         reinforceText.text = haves.ToString() + " / " + wantsMat.ToString();
@@ -259,7 +259,11 @@ public class ManageMenuManager : MonoBehaviour
 
     public void Upgrade()
     {
+        Debug.Log("지금 별 등급 : " + itemData.GetStarRate());
+        Debug.Log("사용 재료: " + itemData.GetReinforceMat());
+        Debug.Log("사용 골드 : " + itemData.GetReinforceGold());
         GetComponent<UpgradeManager>().UpgradeItem(itemData, itemData.GetReinforceMat(), itemData.GetReinforceGold());
+        Debug.Log("업그레이드 후 별 등급 : " + itemData.GetStarRate());
         UpdateUI();
     }
 }
