@@ -62,11 +62,11 @@ public class ManageMenuManager : MonoBehaviour
         {
             Destroy(it.gameObject);
         }
-        foreach (var it in weaponUpgradeList.GetComponentsInChildren<CharacterUnit>())
+        foreach (var it in weaponUpgradeList.GetComponentsInChildren<WeaponUnit>())
         {
             Destroy(it.gameObject);
         }
-        foreach (var it in weaponExUpgradeList.GetComponentsInChildren<CharacterUnit>())
+        foreach (var it in weaponExUpgradeList.GetComponentsInChildren<WeaponEXUnit>())
         {
             Destroy(it.gameObject);
         }

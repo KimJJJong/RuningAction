@@ -57,7 +57,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (selectItem is WeaponData)
         {
-            foreach (var weapon in userData.characters)
+            foreach (var weapon in userData.weapons)
             {
                 if (weapon != selectItem && weapon.GetID() == selectItem.GetID())
                 {
@@ -67,7 +67,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (selectItem is WeaponEXData)
         {
-            foreach (var weaponEX in userData.characters)
+            foreach (var weaponEX in userData.weaponExes)
             {
                 if (weaponEX != selectItem && weaponEX.GetID() == selectItem.GetID())
                 {

@@ -43,7 +43,7 @@ public class ReadyMenuManager : MonoBehaviour
             btn.GetComponent<ReadyItem>().SetStar(chr);
             btn.GetComponent<Button>().onClick.AddListener(() => UpdateCharImage(btn.GetComponent<Button>()));
             btn.transform.parent = characterSelectList.transform;
-            btn.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
         foreach (var weapon in userData.weapons)
         {
@@ -55,7 +55,7 @@ public class ReadyMenuManager : MonoBehaviour
                     btn_bet.GetComponent<ReadyItem>().SetStar(weapon);
                     btn_bet.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponBetImage(btn_bet.GetComponent<Button>()));
                     btn_bet.transform.parent = weaponBetSelectList.transform;
-                    btn_bet.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                     break;
                 case WeaponData.WeaponClass.Glove:
                     var btn_glove = Instantiate(weaponGloveSelectButton);
@@ -63,7 +63,7 @@ public class ReadyMenuManager : MonoBehaviour
                     btn_glove.GetComponent<ReadyItem>().SetStar(weapon);
                     btn_glove.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponGloveImage(btn_glove.GetComponent<Button>()));
                     btn_glove.transform.parent = weaponGloveSelectList.transform;
-                    btn_glove.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    btn_glove.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                     break;
             }
         }
@@ -74,7 +74,7 @@ public class ReadyMenuManager : MonoBehaviour
             btn.GetComponent<ReadyItem>().SetStar(weaponEx);
             btn.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponExImage(btn.GetComponent<Button>()));
             btn.transform.parent = weaponExSelectList.transform;
-            btn.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
         foreach (var upgrade in userData.upgrades)
         {
