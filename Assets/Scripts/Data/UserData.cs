@@ -11,7 +11,11 @@ public class UserData : ScriptableObject
 
     public int userScore;
 
+    public int money;
+
     public List<WeaponData> weapons = new List<WeaponData>();
+
+    public List<WeaponEXData> weaponExes = new List<WeaponEXData>();
 
     public List<CharacterData> characters = new List<CharacterData>();
 
@@ -22,5 +26,12 @@ public class UserData : ScriptableObject
     public int GetUserID()
     {
         return userID;
+    }
+
+    private void OnValidate()
+    {
+        weapons.Clear();
+        weaponExes.Clear();
+        characters.Clear();
     }
 }

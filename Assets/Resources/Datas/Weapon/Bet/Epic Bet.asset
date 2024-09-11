@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25798dc63963465419e0a2af680f6b56, type: 3}
+  m_Name: Epic Bet
+  m_EditorClassIdentifier: 
+  weaponId: 2
+  weaponClass: 0
+  rarelity: 2
+  weaponImg: {fileID: 1370153319, guid: 1e40c1681e37bd3409f714513fa81833, type: 3}
+  weaponName: Epic Bet
+  description: "\uD0C0\uACA9\uC744 \uC774\uC6A9\uD558\uC5EC \uB3CC\uD30C\uD558\uB294
+    \uC7A5\uC560\uBB3C \uB3CC\uD30C\uC2DC \uBCF4\uB108\uC2A4 \uC810\uC218 +{0}%"
+  starRate: 1
+  upgradeRate: 07000000090000000c0000001100000016000000
+  reinMat: 01000000020000000300000005000000
+  reinGold: e8030000b80b0000581b000010270000

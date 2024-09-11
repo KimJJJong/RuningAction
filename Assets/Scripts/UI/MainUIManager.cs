@@ -11,10 +11,14 @@ namespace MH
 {
     public class MainUIManager : MonoBehaviour
     {
-        public List<UserData> userDatas = new List<UserData>();
+        [SerializeField]
+        private List<UserData> userDatas = new List<UserData>();
 
         public GameObject rankContent;
         public GameObject rankList;
+
+        [SerializeField]
+        private RankContent userRankContent;
 
         public TMP_Text userRank;
         public TMP_Text userName;
@@ -22,29 +26,6 @@ namespace MH
 
         void Start()
         {
-            /*
-            foreach (var obj in Resources.FindObjectsOfTypeAll<UserData>())
-            {
-                userDatas.Add(obj);
-                var rank = Instantiate(rankContent).GetComponent<RankContent>();
-                rank.SetData(obj);
-                rank.transform.parent = rankList.transform;
-                rank.transform.localScale = new Vector3(1, 1, 1);
-
-                if (obj.GetUserID() == 1)
-                {
-                    rank.SetUser();
-                }
-
-            }
-
-            RankContent[] ranks = rankList.GetComponentsInChildren<RankContent>();
-            foreach (var rank in ranks)
-            {
-
-            }
-            */
-
             UserData[] userDatas = Resources.LoadAll<UserData>("Datas/UserData");
             List<UserData> sortedUserData = userDatas.OrderByDescending(userData => userData.userScore).ToList();
 
@@ -54,12 +35,18 @@ namespace MH
                 content.GetComponent<RankContent>().SetData(obj);
                 if (obj.userID == 1)
                 {
+                    userRankContent = content.GetComponent<RankContent>();
                     content.GetComponent<RankContent>().SetUser();
-                    userRank.text = content.GetComponent<RankContent>().rankText.text;
                     userName.text = obj.userName;
                     userScore.text = obj.userScore.ToString();
                 }
             }
         }
+
+        void Update()
+        {
+            userRank.text = userRankContent.rankText.text;
+        }
+
     }
 }

@@ -15,10 +15,10 @@ MonoBehaviour:
   userID: 1
   userName: User
   userScore: 123
-  weapons:
-  - {fileID: 11400000, guid: ce62c91f3acea274895d70d094e780af, type: 2}
-  characters:
-  - {fileID: 11400000, guid: 11dffb545abedcb49b2d2d251c6e1773, type: 2}
+  money: 98500
+  weapons: []
+  weaponExes: []
+  characters: []
   upgrades:
   - {fileID: 11400000, guid: 6da2f8af8e6b8194a96ad0566ea30ee3, type: 2}
   - {fileID: 11400000, guid: 197cbe58717098740b615edca981c2a8, type: 2}
