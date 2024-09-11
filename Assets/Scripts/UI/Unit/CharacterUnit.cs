@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterUnit : MonoBehaviour
+public class CharacterUnit : MonoBehaviour, IUnit
 {
     [SerializeField]
     private CharacterData charData;
 
     [SerializeField]
-    int stars;
+    public int stars;
 
     public int num;
     private Button button;
@@ -19,10 +19,13 @@ public class CharacterUnit : MonoBehaviour
     public Sprite checkedFrame;
     public Sprite unCheckedFrame;
 
+    public GameObject[] StarList;
+
     private void Start()
     {
         button = GetComponent<Button>();
         chrImg.sprite = charData.characterImg;
+        UpgradeUnit();
 
     }
 
@@ -53,4 +56,11 @@ public class CharacterUnit : MonoBehaviour
         return charData;
     }
 
+    public void UpgradeUnit()
+    {
+        for (int i = 0; i < charData.starRate; i++)
+        {
+            StarList[i].gameObject.SetActive(true);
+        }
+    }
 }

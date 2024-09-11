@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GachaManager : MonoBehaviour
 {
-    public List<CharacterData> characters = new List<CharacterData>();
-    public List<WeaponData> weapons = new List<WeaponData>();
+    [SerializeField]
+    private List<CharacterData> characters = new List<CharacterData>();
+
+    [SerializeField]
+    private List<WeaponData> weapons = new List<WeaponData>();
+
+    [SerializeField]
+    private List<WeaponEXData> weaponExes = new List<WeaponEXData>();
 
     public GameObject GachaSet;
     public GameObject gachaList;
@@ -17,13 +24,21 @@ public class GachaManager : MonoBehaviour
 
     private void Awake()
     {
-        userData = Resources.Load<UserData>("Datas/UserData/UserData " + userID);
+        Resources.UnloadUnusedAssets();
+        characters = Resources.LoadAll<CharacterData>("Datas/Character").ToList();
+        weapons = Resources.LoadAll<WeaponData>("Datas/Weapon/").ToList();
+        weaponExes = Resources.LoadAll<WeaponEXData>("Datas/Weapon_EX/").ToList();
+    }
+
+    private void Start()
+    {
+        userData = DataManager.instance.userData;
     }
 
     public void GachaCharacter()
     {
         GachaSet.SetActive(true);
-        var result = characters[Random.Range(0, characters.Count)];
+        var result = Instantiate(characters[Random.Range(0, characters.Count)]);
         userData.characters.Add(result);
         var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
         content[1].sprite = result.characterImg;
@@ -33,8 +48,18 @@ public class GachaManager : MonoBehaviour
     public void GachaWeapon()
     {
         GachaSet.SetActive(true);
-        var result = weapons[Random.Range(0, weapons.Count)];
+        var result = Instantiate(weapons[Random.Range(0, weapons.Count)]);
         userData.weapons.Add(result);
+        var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
+        content[1].sprite = result.weaponImg;
+        content[0].transform.parent = gachaList.transform;
+    }
+
+    public void GachaWeaponEX()
+    {
+        GachaSet.SetActive(true);
+        var result = Instantiate(weaponExes[Random.Range(0, weaponExes.Count)]);
+        userData.weaponExes.Add(result);
         var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
         content[1].sprite = result.weaponImg;
         content[0].transform.parent = gachaList.transform;
@@ -45,7 +70,7 @@ public class GachaManager : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             GachaSet.SetActive(true);
-            var result = characters[Random.Range(0, characters.Count)];
+            var result = Instantiate(characters[Random.Range(0, characters.Count)]);
             userData.characters.Add(result);
             var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
             content[1].sprite = result.characterImg;
@@ -58,8 +83,21 @@ public class GachaManager : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             GachaSet.SetActive(true);
-            var result = weapons[Random.Range(0, weapons.Count)];
+            var result = Instantiate(weapons[Random.Range(0, weapons.Count)]);
             userData.weapons.Add(result);
+            var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
+            content[1].sprite = result.weaponImg;
+            content[0].transform.parent = gachaList.transform;
+        }
+    }
+
+    public void GachaWeaponEX10()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            GachaSet.SetActive(true);
+            var result = Instantiate(weaponExes[Random.Range(0, weaponExes.Count)]);
+            userData.weaponExes.Add(result);
             var content = Instantiate(gachaContent).GetComponentsInChildren<Image>();
             content[1].sprite = result.weaponImg;
             content[0].transform.parent = gachaList.transform;

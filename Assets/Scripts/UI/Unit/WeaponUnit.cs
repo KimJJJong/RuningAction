@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponUnit : MonoBehaviour
+public class WeaponUnit : MonoBehaviour, IUnit
 {
     [SerializeField]
     public WeaponData weaponData;
-
-    [SerializeField]
-    int starts;
 
     public int num;
 
@@ -19,6 +16,8 @@ public class WeaponUnit : MonoBehaviour
 
     public Sprite checkedFrame;
     public Sprite unCheckedFrame;
+
+    public GameObject[] StarList;
 
     private void Start()
     {
@@ -51,5 +50,13 @@ public class WeaponUnit : MonoBehaviour
     public WeaponData GetData()
     {
         return weaponData;
+    }
+
+    public void UpgradeUnit()
+    {
+        for (int i = 0; i < weaponData.starRate; i++)
+        {
+            StarList[i].gameObject.SetActive(true);
+        }
     }
 }
