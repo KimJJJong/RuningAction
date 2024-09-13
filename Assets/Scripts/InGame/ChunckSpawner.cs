@@ -8,9 +8,9 @@ public class ChunckSpawner : MonoBehaviour
     [SerializeField] GameObject[] _chunks01;
     [SerializeField] GameObject[] _chunks02;
     //[SerializeField] GameObject[] _chunks03;
-    [SerializeField] private float _chunkLenght = 40f;      // May be 78f?
+    [SerializeField] private float _chunkLenght = 119f;      // May be 119f?
     [SerializeField] private Transform _playerTransform;
-    [SerializeField] private float _spawnDistance = 199.9f;    // 38f ??
+    [SerializeField] private float _spawnDistance = 299f;    // 299f ??
     [Header("Pool Config")]
     [SerializeField] private int _size;
     [HideInInspector] public int goldStageProbability;

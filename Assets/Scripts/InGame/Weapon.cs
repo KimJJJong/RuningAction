@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public enum EWeapon
 {
-    Bat = 0,
-    Ball = 1,
-    Magnetic = 2,
+    Bat,
+    Ball,
+    Magnetic,
 }
 
 public class Weapon : MonoBehaviour
@@ -39,20 +39,20 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void Triger(EWeapon type, int weaponNumber)
+    public void Triger(EWeapon type, ERank erank, EWeapon chWeapon)
     {
-        if (weaponNumber == 0)
+        if (chWeapon == EWeapon.Bat)
             Throw();
-        if (weaponNumber == 1)
+        if (chWeapon == EWeapon.Ball)
             Batting();
         switch (type)
         {
             case EWeapon.Bat:
-                BatLv(batLv);
+                BatLv(erank);
                 GageSlider.maxValue = 100;
                 break;
             case EWeapon.Ball:
-                BallLv(ballLv);
+                BallLv(erank);
                 GageSlider.maxValue = 100;
                 break;
             case EWeapon.Magnetic:
@@ -85,9 +85,9 @@ public class Weapon : MonoBehaviour
     {
         if (GageSlider.value >= GageSlider.maxValue)
         {
-            if(GameManager.Instance.playerController.eWeapons == EWeapon.Bat)
+            if(GameManager.Instance.playerController.eChWeapons == EWeapon.Bat)
                 GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
-            if (GameManager.Instance.playerController.eWeapons == EWeapon.Ball)
+            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Ball)
                 Debug.Log("아직 구현안함요");
         }
     }
@@ -95,7 +95,7 @@ public class Weapon : MonoBehaviour
 
     void InitWeapon()
     {
-        EWeapon type = GameManager.Instance.playerController.eWeapons;
+        EWeapon type = GameManager.Instance.playerController.eChWeapons;
         switch (type)
         {
             case EWeapon.Bat:
@@ -117,23 +117,23 @@ public class Weapon : MonoBehaviour
     {
         GageSlider.value -= num;
     }
-    public void BatLv(int lv)
+    public void BatLv(ERank rank)
     {
-        switch (lv)
+        switch (rank)
         {
-            case 1:
+            case ERank.Normal:
                 _gageSize = 6.7f;   // 15번
                 break;
-            case 2:
+            case ERank.Rare:
                 _gageSize = 7.7f;   // 13번
                 break;
-            case 3:
+            case ERank.Epic:
                 _gageSize = 9.1f;   // 11번
                 break;
-            case 4:
+            case ERank.Legendary:
                 _gageSize = 11.12f; // 9번
                 break;
-            case 5:
+            case ERank.Mythic:
                 _gageSize = 14.3f;  // 7번
                 break;
             default:
@@ -142,23 +142,23 @@ public class Weapon : MonoBehaviour
 
         }
     }
-    public void BallLv(int lv)
+    public void BallLv(ERank rank)
     {
-        switch (lv)
+        switch (rank)
         {
-            case 1:
+            case ERank.Normal:
                 _gageSize = 11.2f;   // 9번
                 break;
-            case 2:
+            case ERank.Rare:
                 _gageSize = 12.5f;   // 8번
                 break;
-            case 3:
+            case ERank.Epic:
                 _gageSize = 14.3f;   // 7번
                 break;
-            case 4:
+            case ERank.Legendary:
                 _gageSize = 16.7f; // 6번
                 break;
-            case 5:
+            case ERank.Mythic:
                 _gageSize = 20f;  // 5번
                 break;
             default:

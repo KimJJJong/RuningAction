@@ -22,14 +22,15 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 22f;
     public float accelerationRate;
     public float jumpForce;
-    public float downForce;
-    public float fallMultiplier;
+    public float downForce = 400;
+    public float fallMultiplier = 3 ;
 
     [Space(10f)]
-    //public int selectEWeapon; // eWeapons[ selectEWeapon ]
-    public EWeapon eWeapons;//= { EWeapon.Bat, EWeapon.Ball, EWeapon.Magnetic };
-    public int weaponLv =0;
-
+    public EWeapon eChWeapons;      // = { 캐릭터 }; 연결 필요
+    public ERank eChWeaponRank;     // 캐릭터 Lv
+    public EWeapon eMainWeapons;    // Main 무기
+    public ERank eMainWeaponRank;   // Main 무기 Lv  연결 필요
+    
     bool smash;
     float targetPosition;
     float curPosition;
@@ -242,12 +243,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Throw:
                 {
-                    StartCoroutine(appearHitBox(0));
+                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Ball));
                 }
                 break;
             case EState.Batting:
                 {
-                    StartCoroutine(appearHitBox(1));
+                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Bat));
                 }
                 break;
         }
@@ -279,12 +280,13 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
 
+  
 
-    IEnumerator appearHitBox(int weaponNumber)  // 0 = Throw  1 = Batting
+    IEnumerator appearHitBox( ERank chRank , EWeapon chWeapon )  
     {
         smash = true;
-        weapon.Triger(eWeapons, weaponNumber);
-        yield return new WaitForSeconds(1f);
+        weapon.Triger(eChWeapons, chRank, chWeapon );
+        yield return new WaitForSeconds(1f);    // 무기 coolTime
         smash = false;
 
     }

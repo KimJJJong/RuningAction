@@ -6,7 +6,9 @@ public enum EEnforceIteam
     Hp,
 
 }
-
+/// <summary>
+/// ³»½Ç
+/// </summary>
 public class StrengthenSubstance : MonoBehaviour
 {
     [SerializeField] int _hpLv = 0;
@@ -52,4 +54,6 @@ public class StrengthenSubstance : MonoBehaviour
     {
 
     }
+
+
 }

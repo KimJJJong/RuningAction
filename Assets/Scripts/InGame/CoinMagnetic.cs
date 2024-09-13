@@ -14,7 +14,7 @@ public class CoinMagnetic : MonoBehaviour
     void Update()
     {
         Transform Target = GameManager.Instance.player.transform;
-        if ((_isMagnetic&&GameManager.Instance.playerController.eWeapons== EWeapon.Magnetic)||GameManager.Instance.playerController.IsMagnetic)
+        if ((_isMagnetic&&GameManager.Instance.playerController.eChWeapons == EWeapon.Magnetic)||GameManager.Instance.playerController.IsMagnetic)
         {
             if( Vector3.Distance(transform.position, Target.position) < 5)
             transform.position = Vector3.MoveTowards(transform.position, Target.position, 30 * Time.deltaTime);
