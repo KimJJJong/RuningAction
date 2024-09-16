@@ -21,7 +21,11 @@ public class UserData : ScriptableObject
 
     public List<InUpgradeData> upgrades = new List<InUpgradeData>();
 
+    public int selectedWeapon;
 
+    public int selectedWeaponExes;
+
+    public int selectedCharacter;
 
     public int GetUserID()
     {

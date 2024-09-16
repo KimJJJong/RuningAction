@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CharacterData : ScriptableObject, IItemData
 {
-    public enum Rarelity { Normal, Rare, Epic, Legendary, Mythic }
+    public enum Rarelity {  Normal, Rare, Epic, Legendary, Mythic }
 
     //캐릭터 고유 ID
     [SerializeField]

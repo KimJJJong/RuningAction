@@ -27,16 +27,25 @@ public class StrengthenSubstance : MonoBehaviour
     }
     void setState()
     {
-        setHpState(_hpLv);
+        SetHpState(_hpLv);
         setGoldStageState(_goldStageLv);
     }
 
-    void setHpState(int hpLv)
+    public void SetHpState(int hpLv)
     {
         GameManager.Instance.player.GetComponent<HpController>().setHp(hpLv * 10);
         GameManager.Instance.player.GetComponent<HpController>()
             .HpBar.GetComponent<RectTransform>().sizeDelta
             = new Vector2(270 + (hpLv * 10), 30);
+
+    }
+    public void SetCoinState(int coinLv)
+    {
+
+    }
+
+    public void SetRushState(int rushLv)
+    {
 
     }
     //

@@ -13,7 +13,7 @@ public class ObstacleDestroyer : MonoBehaviour
                 Debug.Log("ºü»þ");
                  GameManager.Instance.weapon.GageUpdate();
             }
-            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Ball && obstacle == "Ball")
+            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Glove && obstacle == "Ball")
                 GameManager.Instance.weapon.GageUpdate();
             Destroy(gameObject);
 

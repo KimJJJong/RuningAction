@@ -243,7 +243,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Throw:
                 {
-                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Ball));
+                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Glove));
                 }
                 break;
             case EState.Batting:

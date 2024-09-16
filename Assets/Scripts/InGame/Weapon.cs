@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public enum EWeapon
 {
     Bat,
-    Ball,
+    Glove,
     Magnetic,
 }
 
@@ -43,7 +43,7 @@ public class Weapon : MonoBehaviour
     {
         if (chWeapon == EWeapon.Bat)
             Throw();
-        if (chWeapon == EWeapon.Ball)
+        if (chWeapon == EWeapon.Glove)
             Batting();
         switch (type)
         {
@@ -51,7 +51,7 @@ public class Weapon : MonoBehaviour
                 BatLv(erank);
                 GageSlider.maxValue = 100;
                 break;
-            case EWeapon.Ball:
+            case EWeapon.Glove:
                 BallLv(erank);
                 GageSlider.maxValue = 100;
                 break;
@@ -87,7 +87,7 @@ public class Weapon : MonoBehaviour
         {
             if(GameManager.Instance.playerController.eChWeapons == EWeapon.Bat)
                 GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
-            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Ball)
+            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Glove)
                 Debug.Log("아직 구현안함요");
         }
     }
@@ -100,7 +100,7 @@ public class Weapon : MonoBehaviour
         {
             case EWeapon.Bat:
                 break;
-            case EWeapon.Ball:
+            case EWeapon.Glove:
                 break;
             case EWeapon.Magnetic:
                 GageSlider.gameObject.SetActive(false);

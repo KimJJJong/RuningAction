@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class WeaponData : ScriptableObject, IItemData
 {
-    public enum Rarelity { Normal, Rare, Epic, Legendary, Mythic }
-    public enum WeaponClass { Bet, Glove }
+    public enum Rarelity {  Normal, Rare, Epic, Legendary, Mythic }
+    public enum WeaponClass {  Bet, Glove }
 
     //무기 고유 ID
     [SerializeField]

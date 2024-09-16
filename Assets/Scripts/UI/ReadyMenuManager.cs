@@ -38,6 +38,7 @@ public class ReadyMenuManager : MonoBehaviour
 
         foreach (var chr in userData.characters)
         {
+            
             var btn = Instantiate(characterSelectButton);
             btn.GetComponent<Button>().image.sprite = chr.characterImg;
             btn.GetComponent<ReadyItem>().SetStar(chr);
@@ -90,6 +91,7 @@ public class ReadyMenuManager : MonoBehaviour
     {
         charImage.sprite = btn.image.sprite;
         charImage.color = btn.image.color;
+        //Debug.Log(btn.GetComponent<GameObject>().GetComponent<DataManager>().userData.selectedCharacter);
     }
 
     public void UpdateWeaponBetImage(Button btn)

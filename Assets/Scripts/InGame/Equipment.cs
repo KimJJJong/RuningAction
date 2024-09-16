@@ -2,20 +2,20 @@ using UnityEngine;
 
 public enum EEquipment
 {
-    None,
     Destroyer,      // Àå¾Ö¹° ÆÄ±«½Ã Á¡¼ö È¹µæ
-    Grubber,        // Ãß°¡ Coin || EventStage È®·ü UP 
-    PowerArmor,
+    Gold,        // Ãß°¡ Coin || EventStage È®·ü UP 
     LuckyGuy,
+    NoPain,
+    None,
 }
 public enum ERank
 {
-    None,
     Normal,
     Rare,
     Epic,
     Legendary,
     Mythic,
+    None,
 }
 
 public class Equipment : MonoBehaviour
@@ -37,11 +37,11 @@ public class Equipment : MonoBehaviour
             case EEquipment.Destroyer:
                 Destroyer(erank);
                 break;
-            case EEquipment.Grubber:
-                Grubber(erank);
+            case EEquipment.Gold:
+                Gold(erank);
                 break;
-            case EEquipment.PowerArmor:
-                PowerArmor(erank);
+            case EEquipment.NoPain:
+                NoPain(erank);
                 break;
             case EEquipment.LuckyGuy:
                 LuckyGuy(erank);
@@ -71,7 +71,7 @@ public class Equipment : MonoBehaviour
                 break;
         }
     }
-    void Grubber(ERank rank)
+    void Gold(ERank rank)
     {
         switch (rank)
         {
@@ -93,7 +93,7 @@ public class Equipment : MonoBehaviour
         }
     }
 
-    void PowerArmor(ERank rank)
+    void NoPain(ERank rank)
     {
         switch (rank)
         {
