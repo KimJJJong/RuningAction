@@ -15,7 +15,6 @@ public enum ERank
     Epic,
     Legendary,
     Mythic,
-    None,
 }
 
 public class Equipment : MonoBehaviour
@@ -54,7 +53,7 @@ public class Equipment : MonoBehaviour
     {
         switch (rank)
         {
-            case ERank.None:
+            case ERank.Normal:
                 GameManager.Instance.score.SetIncreasObsRate(20);
                 break;
             case ERank.Rare:
@@ -75,7 +74,7 @@ public class Equipment : MonoBehaviour
     {
         switch (rank)
         {
-            case ERank.None:
+            case ERank.Normal:
                 GameManager.Instance.score.SetIncreasCoinRate(0);
                 break;
             case ERank.Rare:
@@ -97,7 +96,7 @@ public class Equipment : MonoBehaviour
     {
         switch (rank)
         {
-            case ERank.None:
+            case ERank.Normal:
                 GameManager.Instance.collisions.chance = 0;
                 break;
             case ERank.Rare:
@@ -120,7 +119,7 @@ public class Equipment : MonoBehaviour
         ChunckSpawner goldSpawn = GameObject.Find("ChuckSpawner").GetComponent<ChunckSpawner>();
         switch (rank)
         {
-            case ERank.None:
+            case ERank.Normal:
                 goldSpawn.goldStageProbability=12;
                 break;
             case ERank.Rare:

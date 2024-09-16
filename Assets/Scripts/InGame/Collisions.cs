@@ -44,7 +44,8 @@ public class Collisions : MonoBehaviour
             }
             else
             {
-               // Debug.Log("뿌순건가?"); // 파괴시 점수 추가는 여기에!!!
+                GameManager.Instance.score.IncreasObsScore();
+                Debug.Log("뿌순건가?"); // Rush 파괴시 점수 추가는 여기에!!!
             }
 
         }

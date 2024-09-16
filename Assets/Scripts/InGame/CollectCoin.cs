@@ -30,7 +30,7 @@ public class CollectCoin : MonoBehaviour
         StartCoroutine(UpdateScore());
     }
 
-    public void setIncreasRate(int increasRate) // 시간마다 증가율
+    public void SetIncreasRate(int increasRate) // 시간마다 증가율
     {
         _increaseRate += increasRate;
     }
@@ -67,7 +67,7 @@ public class CollectCoin : MonoBehaviour
         }
         else if (other.CompareTag("Heal"))
         {
-            //Debug.Log("heal");
+            //Debug.Log("Heal");
             GameManager.Instance.HpController.Heal(10);
             Destroy(other.gameObject);
 
@@ -79,6 +79,24 @@ public class CollectCoin : MonoBehaviour
         scoreText.text = score.ToString();
         CheckHighScoreColor();
     }
+    void CheckHighScoreColor()
+    {
+        if (score > highScore)
+        {
+            scoreText.color = highScoreColor;
+        }
+        else
+        {
+            scoreText.color = defaultScoreColor;
+        }
+    }
+    
+    public void AddScore(int _score)
+    {
+        score += _score;
+
+    }
+
     IEnumerator UpdateScore()
     {
         while (true)
@@ -102,15 +120,5 @@ public class CollectCoin : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    void CheckHighScoreColor()
-    {
-        if (score > highScore)
-        {
-            scoreText.color = highScoreColor; 
-        }
-        else
-        {
-            scoreText.color = defaultScoreColor; 
-        }
-    }
+   
 }

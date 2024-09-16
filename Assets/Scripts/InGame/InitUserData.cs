@@ -21,7 +21,8 @@ public class InitUserData : MonoBehaviour
     void SetState()
     {
         SetChracter(userData.characters[userData.selectedCharacter]);
-        SetWeapon(userData.weapons[userData.selectedWeapon]);
+        SetWeapon(userData.weapons[userData.selectedWeaponBat]);
+        SetWeapon(userData.weapons[userData.selectedWeaponGlove]);
         SetWeaponEX(userData.weaponExes[userData.selectedWeaponExes]);
         foreach (var obj in userData.upgrades)
         {
@@ -43,13 +44,22 @@ public class InitUserData : MonoBehaviour
 
     void SetWeapon(WeaponData weapon)       //아 잠만.... bat하고 glove하고 각각이였던거임??? ㅠㅠ
     {
-        int wClass = (int)weapon.rarelity;    // 무기 종류
+        int wClass = (int)weapon.weaponClass;    // 무기 종류
         int rarelity = (int)weapon.rarelity;     // 희귀도
         int starRate = weapon.starRate;          // 별
 
-       // controller.eMainWeapons = (ECharacter)wClass;
-       // controller.eMainWeaponRank = (ERank)rarelity;
-        // 별...이라...ㅠㅠ
+
+        if(wClass == 0) // Bat
+        {
+            controller.eBatRank = (ERank)rarelity;
+            // starRate;
+
+        }
+        else if(wClass == 1) // Glove
+        {
+            controller.eGloveRank = (ERank)rarelity;
+            // starRate;             
+        }
 
     }
 
@@ -66,7 +76,7 @@ public class InitUserData : MonoBehaviour
 
     }
 
-    void SetSubstance(InUpgradeData upgrade)
+    void SetSubstance(InUpgradeData upgrade)    //내실
     {
         if (upgrade.GetID() == 0)
             substance.SetHpState(upgrade.stateLv);

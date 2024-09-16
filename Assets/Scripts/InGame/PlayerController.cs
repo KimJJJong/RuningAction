@@ -28,17 +28,18 @@ public class PlayerController : MonoBehaviour
     [Space(10f)]
     [Header("#캐릭터 ")]
     public ECharacter eCh;      // = { 캐릭터 }; 연결 필요
-    public ERank eChRank;     // 캐릭터 Lv
-    //public int chStar;       //별의 갯수??
+    public ERank eChRank;       // 캐릭터 Lv
+    //public int chStar;        //별의 갯수??
     
     [Space(10f)]
     [Header("#메인 무기 ( Bat / Glove ) ")]
     [Space(5f)]
     public ERank eBatRank;   // Glove레어도
-    //public int batStar    //Bat별의 갯수
+    //public int batStar     //Bat별의 갯수
+
     [Space(5f)]
     public ERank eGloveRank;   // Glove레어도
-    //public int gloveStar          //Glove별의 갯수
+    //public int gloveStar     //Glove별의 갯수
 
 
     bool smash;
@@ -278,9 +279,9 @@ public class PlayerController : MonoBehaviour
         if (!_isRush)
         {
 
-        if (!isIteam)
+        if (!isIteam)   // 특수효과 사용할때 Rush
             StartCoroutine(InvincibilityWeaponTimer());
-        else if(isIteam)
+        else if(isIteam)    // 아이템 먹어서 Rush
             StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
 
         }
