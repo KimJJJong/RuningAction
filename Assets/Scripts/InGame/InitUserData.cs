@@ -14,6 +14,7 @@ public class InitUserData : MonoBehaviour
         substance = GetComponent<StrengthenSubstance>();
         userData = DataManager.instance.userData;
 
+
         SetState();
     }
 
@@ -35,8 +36,8 @@ public class InitUserData : MonoBehaviour
         int rarelity = (int)character.rarelity;                // 희귀도
         int starRate = character.starRate;                     // 별
 
-        controller.eChWeapons = (EWeapon)job;
-        controller.eChWeaponRank = (ERank)rarelity;
+        controller.eCh = (ECharacter)job;
+        controller.eChRank = (ERank)rarelity;
         // 별? 구현 이야기를 못들었는데?
     }
 
@@ -46,8 +47,8 @@ public class InitUserData : MonoBehaviour
         int rarelity = (int)weapon.rarelity;     // 희귀도
         int starRate = weapon.starRate;          // 별
 
-        controller.eMainWeapons = (EWeapon)wClass;
-        controller.eMainWeaponRank = (ERank)rarelity;
+       // controller.eMainWeapons = (ECharacter)wClass;
+       // controller.eMainWeaponRank = (ERank)rarelity;
         // 별...이라...ㅠㅠ
 
     }

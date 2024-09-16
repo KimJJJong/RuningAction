@@ -26,11 +26,21 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 3 ;
 
     [Space(10f)]
-    public EWeapon eChWeapons;      // = { 캐릭터 }; 연결 필요
-    public ERank eChWeaponRank;     // 캐릭터 Lv
-    public EWeapon eMainWeapons;    // Main 무기
-    public ERank eMainWeaponRank;   // Main 무기 Lv  연결 필요
+    [Header("#캐릭터 ")]
+    public ECharacter eCh;      // = { 캐릭터 }; 연결 필요
+    public ERank eChRank;     // 캐릭터 Lv
+    //public int chStar;       //별의 갯수??
     
+    [Space(10f)]
+    [Header("#메인 무기 ( Bat / Glove ) ")]
+    [Space(5f)]
+    public ERank eBatRank;   // Glove레어도
+    //public int batStar    //Bat별의 갯수
+    [Space(5f)]
+    public ERank eGloveRank;   // Glove레어도
+    //public int gloveStar          //Glove별의 갯수
+
+
     bool smash;
     float targetPosition;
     float curPosition;
@@ -243,12 +253,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Throw:
                 {
-                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Glove));
+                    StartCoroutine(appearHitBox(eChRank, ECharacter.Glove));
                 }
                 break;
             case EState.Batting:
                 {
-                    StartCoroutine(appearHitBox(eChWeaponRank, EWeapon.Bat));
+                    StartCoroutine(appearHitBox(eChRank, ECharacter.Bat));
                 }
                 break;
         }
@@ -282,10 +292,10 @@ public class PlayerController : MonoBehaviour
 
   
 
-    IEnumerator appearHitBox( ERank chRank , EWeapon chWeapon )  
+    IEnumerator appearHitBox( ERank chRank , ECharacter ch )  
     {
         smash = true;
-        weapon.Triger(eChWeapons, chRank, chWeapon );
+        weapon.Triger(eCh, chRank, ch );
         yield return new WaitForSeconds(1f);    // 무기 coolTime
         smash = false;
 

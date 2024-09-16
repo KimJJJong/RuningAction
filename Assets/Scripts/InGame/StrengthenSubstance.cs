@@ -23,7 +23,7 @@ public class StrengthenSubstance : MonoBehaviour
 
     private void Start()
     {
-        setState();
+    //    setState();
     }
     void setState()
     {

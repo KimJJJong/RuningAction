@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b44e49343264e4b97aab546157f6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: Ball
+  colliObj: Ball
 --- !u!65 &8305359872133254017
 BoxCollider:
   m_ObjectHideFlags: 0

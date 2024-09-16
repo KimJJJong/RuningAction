@@ -2,19 +2,31 @@ using UnityEngine;
 
 public class ObstacleDestroyer : MonoBehaviour
 {
-    [SerializeField] string obstacle;
+    [SerializeField] string colliObj;
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(obstacle))
+        if (other.CompareTag(colliObj))
         {
             GameManager.Instance.score.IncreasObsScore();
-            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Bat && obstacle == "HitBox")
+            if (colliObj == "HitBox")
             {
-                Debug.Log("빠샤");
-                 GameManager.Instance.weapon.GageUpdate();
+                //BatWeapon Rank에 따라 점수 추가
+
+                if (GameManager.Instance.playerController.eCh == ECharacter.Bat)
+                {
+                    GameManager.Instance.weapon.GageUpdate();
+                }
+
             }
-            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Glove && obstacle == "Ball")
-                GameManager.Instance.weapon.GageUpdate();
+            else if (colliObj == "Ball")
+            {
+                //GloveWeapon Rank에 따라 점수 추가
+                Debug.Log("쓔우우우웅ㅅ");
+                if (GameManager.Instance.playerController.eCh == ECharacter.Glove)
+                {
+                    GameManager.Instance.weapon.GageUpdate();
+                }
+            }
             Destroy(gameObject);
 
         }

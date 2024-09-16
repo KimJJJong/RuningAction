@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum EWeapon
+public enum ECharacter
 {
     Bat,
     Glove,
@@ -15,8 +15,8 @@ public class Weapon : MonoBehaviour
 
     [Space(10)]
 
-    public int batLv = 0;
-    public int ballLv = 0;
+   // public int batLv = 0;
+   // public int gloveLv = 0;
     private float _gageSize;
 
     public float GageSize
@@ -38,24 +38,29 @@ public class Weapon : MonoBehaviour
         UpdateGage();
 
     }
-
-    public void Triger(EWeapon type, ERank erank, EWeapon chWeapon)
+    /// <summary>
+    /// 상호작용 제어 메소드
+    /// </summary>
+    /// <param name="type">캐릭터 직업의 타입</param>
+    /// <param name="chRank">캐릭터의 레어도</param>
+    /// <param name="ch">상호작용 Obj소환</param>
+    public void Triger(ECharacter type, ERank chRank, ECharacter ch)
     {
-        if (chWeapon == EWeapon.Bat)
+        if (ch == ECharacter.Bat)
             Throw();
-        if (chWeapon == EWeapon.Glove)
+        if (ch == ECharacter.Glove)
             Batting();
         switch (type)
         {
-            case EWeapon.Bat:
-                BatLv(erank);
+            case ECharacter.Bat:
+                BatLv(chRank);
                 GageSlider.maxValue = 100;
                 break;
-            case EWeapon.Glove:
-                BallLv(erank);
+            case ECharacter.Glove:
+                GloveLv(chRank);
                 GageSlider.maxValue = 100;
                 break;
-            case EWeapon.Magnetic:
+            case ECharacter.Magnetic:
                 BeMagnetic();
                 break;
 
@@ -85,9 +90,9 @@ public class Weapon : MonoBehaviour
     {
         if (GageSlider.value >= GageSlider.maxValue)
         {
-            if(GameManager.Instance.playerController.eChWeapons == EWeapon.Bat)
+            if(GameManager.Instance.playerController.eCh == ECharacter.Bat)
                 GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
-            if (GameManager.Instance.playerController.eChWeapons == EWeapon.Glove)
+            if (GameManager.Instance.playerController.eCh == ECharacter.Glove)
                 Debug.Log("아직 구현안함요");
         }
     }
@@ -95,14 +100,14 @@ public class Weapon : MonoBehaviour
 
     void InitWeapon()
     {
-        EWeapon type = GameManager.Instance.playerController.eChWeapons;
+        ECharacter type = GameManager.Instance.playerController.eCh;
         switch (type)
         {
-            case EWeapon.Bat:
+            case ECharacter.Bat:
                 break;
-            case EWeapon.Glove:
+            case ECharacter.Glove:
                 break;
-            case EWeapon.Magnetic:
+            case ECharacter.Magnetic:
                 GageSlider.gameObject.SetActive(false);
                 break;
 
@@ -142,7 +147,7 @@ public class Weapon : MonoBehaviour
 
         }
     }
-    public void BallLv(ERank rank)
+    public void GloveLv(ERank rank)
     {
         switch (rank)
         {
