@@ -21,6 +21,7 @@ public class WeaponEXUnit : MonoBehaviour, IUnit
 
     private void Start()
     {
+        UpgradeUnit();
         button = GetComponent<Button>();
         weaponImg.sprite = weaponData.weaponImg;
     }
