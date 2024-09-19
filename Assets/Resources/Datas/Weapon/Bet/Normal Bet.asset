@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponId: 0
   weaponClass: 0
   rarelity: 0
-  weaponImg: {fileID: 1370153319, guid: 1e40c1681e37bd3409f714513fa81833, type: 3}
+  weaponImg: {fileID: -509564138, guid: 06600ed71e5cb5a43ab0d0b71cfaedf1, type: 3}
   weaponName: Normal Bet
   description: "\uD0C0\uACA9\uC744 \uC774\uC6A9\uD558\uC5EC \uB3CC\uD30C\uD558\uB294
     \uC7A5\uC560\uBB3C \uB3CC\uD30C\uC2DC \uBCF4\uB108\uC2A4 \uC810\uC218 +{0}%"
