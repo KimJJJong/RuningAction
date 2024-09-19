@@ -13,8 +13,7 @@ public class InitUserData : MonoBehaviour
         equipment = GetComponent<Equipment>();
         substance = GetComponent<StrengthenSubstance>();
         userData = DataManager.instance.userData;
-
-
+        
         SetState();
     }
 
@@ -24,10 +23,16 @@ public class InitUserData : MonoBehaviour
         SetWeapon(userData.weapons[userData.selectedWeaponBat]);
         SetWeapon(userData.weapons[userData.selectedWeaponGlove]);
         SetWeaponEX(userData.weaponExes[userData.selectedWeaponExes]);
+
         foreach (var obj in userData.upgrades)
         {
             SetSubstance(obj);
         }
+
+        Debug.Log(userData.selectedCharacter);
+        Debug.Log(userData.selectedWeaponBat);
+        Debug.Log(userData.selectedWeaponGlove);
+        Debug.Log(userData.selectedWeaponExes);
     }
 
 

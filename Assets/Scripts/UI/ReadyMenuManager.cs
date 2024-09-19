@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,39 +34,109 @@ public class ReadyMenuManager : MonoBehaviour
     {
         userData = DataManager.instance.userData;
 
-        foreach (var chr in userData.characters)
+        for (int i = 0; i < userData.characters.Count; i++)
         {
-            
+            var chr = userData.characters[i];
             var btn = Instantiate(characterSelectButton);
+
             btn.GetComponent<Button>().image.sprite = chr.characterImg;
             btn.GetComponent<ReadyItem>().SetStar(chr);
-            btn.GetComponent<Button>().onClick.AddListener(() => UpdateCharImage(btn.GetComponent<Button>()));
+
+            int index = i; // 람다에서 참조하기 위한 지역 변수로 저장 클로저?
+            btn.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                UpdateCharImage(btn.GetComponent<Button>());
+                DataManager.instance.userData.selectedCharacter = index;
+                Debug.Log("Selected Character Index: " + index);
+            });
+
             btn.transform.parent = characterSelectList.transform;
             btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
-        foreach (var weapon in userData.weapons)
+
+       for( int i=0; i<userData.weapons.Count;i++)
         {
+            var weapon = userData.weapons[i];
             switch (weapon.weaponClass)
             {
                 case WeaponData.WeaponClass.Bet:
                     var btn_bet = Instantiate(weaponBetSelectButton);
-                    btn_bet.GetComponent<Button>().image.sprite = weapon.weaponImg;
+                    btn_bet.GetComponent<Button>().image.sprite= weapon.weaponImg;
                     btn_bet.GetComponent<ReadyItem>().SetStar(weapon);
-                    btn_bet.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponBetImage(btn_bet.GetComponent<Button>()));
-                    btn_bet.transform.parent = weaponBetSelectList.transform;
-                    btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-                    break;
+
+                    int index_bet = i;
+                    btn_bet.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        UpdateWeaponBetImage(btn_bet.GetComponent<Button>());
+                        DataManager.instance.userData.selectedWeaponBat = index_bet;
+                        Debug.Log("Selected WeaponBat Index: " + index_bet);
+                    });
+                        btn_bet.transform.parent = weaponBetSelectList.transform;
+                        btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                break;
                 case WeaponData.WeaponClass.Glove:
                     var btn_glove = Instantiate(weaponGloveSelectButton);
                     btn_glove.GetComponent<Button>().image.sprite = weapon.weaponImg;
                     btn_glove.GetComponent<ReadyItem>().SetStar(weapon);
-                    btn_glove.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponGloveImage(btn_glove.GetComponent<Button>()));
-                    btn_glove.transform.parent = weaponGloveSelectList.transform;
-                    btn_glove.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+
+                    int index_glove = i;
+                    btn_glove.GetComponent<Button>().onClick.AddListener(() =>
+                    { 
+                        UpdateWeaponGloveImage(btn_glove.GetComponent<Button>());
+                        DataManager.instance.userData.selectedWeaponGlove = index_glove;
+                        Debug.Log("Selected WeaponGlove Index: " + index_glove);
+                    });
+                        btn_glove.transform.parent = weaponGloveSelectList.transform;
+                        btn_glove.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                     break;
+
             }
         }
-        foreach (var weaponEx in userData.weaponExes)
+        /*
+           foreach (var weapon in userData.weapons)
+          {
+              switch (weapon.weaponClass)
+              {
+                  case WeaponData.WeaponClass.Bet:
+                      var btn_bet = Instantiate(weaponBetSelectButton);
+                      btn_bet.GetComponent<Button>().image.sprite = weapon.weaponImg;
+                      btn_bet.GetComponent<ReadyItem>().SetStar(weapon);
+                      btn_bet.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponBetImage(btn_bet.GetComponent<Button>()));
+                      btn_bet.transform.parent = weaponBetSelectList.transform;
+                      btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                      break;
+                  case WeaponData.WeaponClass.Glove:
+                      var btn_glove = Instantiate(weaponGloveSelectButton);
+                      btn_glove.GetComponent<Button>().image.sprite = weapon.weaponImg;
+                      btn_glove.GetComponent<ReadyItem>().SetStar(weapon);
+                      btn_glove.GetComponent<Button>().onClick.AddListener(() => UpdateWeaponGloveImage(btn_glove.GetComponent<Button>()));
+                      btn_glove.transform.parent = weaponGloveSelectList.transform;
+                      btn_glove.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                      break;
+              }
+          }
+         */
+
+       for(int i = 0; i < userData.weaponExes.Count; i++)
+        {
+            var weaponEx = userData.weaponExes[i];
+            var btn = Instantiate(weaponExSelectButton);
+
+            btn.GetComponent<Button>().image.sprite= weaponEx.weaponImg;
+            btn.GetComponent <ReadyItem>().SetStar(weaponEx);
+
+            int index_weapon = i;
+            btn.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    UpdateWeaponExImage(btn.GetComponent<Button>());
+                    DataManager.instance.userData.selectedWeaponExes = index_weapon;
+                    Debug.Log("Selected WeaponsExe Index: " + index_weapon);
+            });
+            btn.transform.parent = weaponExSelectList.transform;
+            btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        }
+        /*
+         foreach (var weaponEx in userData.weaponExes)
         {
             var btn = Instantiate(weaponExSelectButton);
             btn.GetComponent<Button>().image.sprite = weaponEx.weaponImg;
@@ -77,6 +145,7 @@ public class ReadyMenuManager : MonoBehaviour
             btn.transform.parent = weaponExSelectList.transform;
             btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
+         */
         foreach (var upgrade in userData.upgrades)
         {
             var img = Instantiate(upgradeImg);
@@ -91,7 +160,6 @@ public class ReadyMenuManager : MonoBehaviour
     {
         charImage.sprite = btn.image.sprite;
         charImage.color = btn.image.color;
-        //Debug.Log(btn.GetComponent<GameObject>().GetComponent<DataManager>().userData.selectedCharacter);
     }
 
     public void UpdateWeaponBetImage(Button btn)
