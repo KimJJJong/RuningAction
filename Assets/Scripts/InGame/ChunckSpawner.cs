@@ -35,7 +35,7 @@ public class ChunckSpawner : MonoBehaviour
     {
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
-          if(_spawnPos.z > 2000f)
+          if(_spawnPos.z > 1200f)
             {
             Debug.Log(_spawnPos);
                 SpawnRandomChunk(_chunksQueueList02);
@@ -63,7 +63,7 @@ public class ChunckSpawner : MonoBehaviour
 
     private void SpawnRandomChunk(List<Queue<GameObject>> chuncksQueueList)
     {
-        if (Random.Range(0, 100) <= 10 + goldStageProbability)
+        if (Random.Range(0, 100) <= 5 + goldStageProbability)
         {
             GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count-1].Dequeue();
             newChunk.transform.position = _spawnPos;
