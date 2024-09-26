@@ -9,13 +9,13 @@ EditorBuildSettings:
     path: Assets/Scenes/01. MainMenu Scene.unity
     guid: 46dec67c9e9a62a4981bb3fa421458ed
   - enabled: 1
-    path: Assets/Scenes/02. GameReady Scene.unity
+    path: Assets/00.Scenes/02. GameReady Scene.unity
     guid: d947a8221a29b474e80646c03823656e
   - enabled: 1
-    path: Assets/Scenes/03. Manage Scene.unity
+    path: Assets/00.Scenes/03. Manage Scene.unity
     guid: 3aa70e44f574bc34fb85c2656365ef9a
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/00.Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: b832869dab59f7640a5e52a5cc720fa5, type: 2}

@@ -16,10 +16,23 @@ MonoBehaviour:
   userName: User
   userScore: 123
   money: 95500
-  weapons: []
-  weaponExes: []
-  characters: []
+  bets:
+  - {fileID: 11400000, guid: 1510dac9ecd2a634d975af960e8054d3, type: 2}
+  gloves:
+  - {fileID: 11400000, guid: 0530d036e99958143bd9ed37ddb13056, type: 2}
+  weaponExes:
+  - {fileID: 11400000, guid: 42c3c628a429d6c4387cce6235dd745c, type: 2}
+  characters:
+  - {fileID: 11400000, guid: fd02c1ae058f37a4a83c9dc0b69e3282, type: 2}
   upgrades:
   - {fileID: 11400000, guid: 6da2f8af8e6b8194a96ad0566ea30ee3, type: 2}
   - {fileID: 11400000, guid: 197cbe58717098740b615edca981c2a8, type: 2}
   - {fileID: 11400000, guid: a111e202ee5406848b4de7f5d12ac956, type: 2}
+  Equipedcharacter: {fileID: 11400000, guid: fd02c1ae058f37a4a83c9dc0b69e3282, type: 2}
+  EquipedBet: {fileID: 11400000, guid: 1510dac9ecd2a634d975af960e8054d3, type: 2}
+  EquipedGlove: {fileID: 11400000, guid: 0530d036e99958143bd9ed37ddb13056, type: 2}
+  EquipedEx: {fileID: 11400000, guid: 42c3c628a429d6c4387cce6235dd745c, type: 2}
+  selectedCharacter: 0
+  selectedWeaponBat: 0
+  selectedWeaponGlove: 0
+  selectedWeaponExes: 0
