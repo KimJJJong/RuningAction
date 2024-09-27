@@ -35,6 +35,16 @@ public class CharacterData : ScriptableObject, IItemData
     public int[] reinMat;
     public int[] reinGold;
 
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetDesc()
+    {
+        return description;
+    }
+
     public int GetID()
     {
         return characterId;
@@ -59,6 +69,16 @@ public class CharacterData : ScriptableObject, IItemData
     public int GetReinforceMat()
     {
         return reinMat[starRate - 1];
+    }
+
+    public int GetUpgradeRate(int rate)
+    {
+        return upgradeRate[rate];
+    }
+
+    public Sprite GetImage()
+    {
+        return characterImg;
     }
 
     public int GetRarelity()

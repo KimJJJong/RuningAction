@@ -20,12 +20,14 @@ public class MainUIManager : MonoBehaviour
     private void Start()
     {
         userData = DataManager.instance.userData;
+        UpdateUI();
+    }
 
+    public void UpdateUI()
+    {
         userName.text = userData.userName;
         userGold.text = userData.money.ToString();
         //userDia.text = userData.dia.ToString();
-
-
     }
 
     public void ChangeMenu(int num)

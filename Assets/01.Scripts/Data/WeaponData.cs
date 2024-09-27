@@ -40,6 +40,16 @@ public class WeaponData : ScriptableObject, IItemData
     public int[] reinMat;
     public int[] reinGold;
 
+    public string GetName()
+    {
+        return weaponName;
+    }
+
+    public string GetDesc()
+    {
+        return description;
+    }
+
     public int GetID()
     {
         return weaponId;
@@ -62,6 +72,16 @@ public class WeaponData : ScriptableObject, IItemData
     public int GetReinforceMat()
     {
         return reinMat[starRate - 1];
+    }
+
+    public int GetUpgradeRate(int rate)
+    {
+        return upgradeRate[rate];
+    }
+
+    public Sprite GetImage()
+    {
+        return weaponImg;
     }
 
     public int GetRarelity()

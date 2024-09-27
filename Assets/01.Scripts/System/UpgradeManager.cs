@@ -11,24 +11,44 @@ public class UpgradeManager : MonoBehaviour
         userData = DataManager.instance.userData;
     }
 
-    public void UpgradeItem(IItemData item, int wantValue, int wantGold)
+    public void UpgradeItem(IItemData item)
     {
         if (item.GetStarRate() >= 5)
         {
             return;
         }
 
-        if (!checkGold(wantGold))
+        if (!checkGold(item.GetReinforceGold()))
         {
             return;
         }
 
-        if (!checkItemCount(item, wantValue))
+        if (!checkItemCount(item, item.GetReinforceMat()))
         {
             return;
         }
 
-        Upgrade(item, wantGold, wantValue);
+        Upgrade(item, item.GetReinforceGold(), item.GetReinforceMat());
+    }
+
+    public bool CheckUpgradable(IItemData item)
+    {
+        if (item.GetStarRate() >= 5)
+        {
+            return false;
+        }
+
+        if (!checkGold(item.GetReinforceGold()))
+        {
+            return false;
+        }
+
+        if (!checkItemCount(item, item.GetReinforceMat()))
+        {
+            return false;
+        }
+
+        return true;
     }
 
 

@@ -14,9 +14,6 @@ public class WeaponEXUnit : MonoBehaviour, IUnit
 
     public Image weaponImg;
 
-    public Sprite checkedFrame;
-    public Sprite unCheckedFrame;
-
     public GameObject[] StarList;
 
     private void Start()
@@ -24,11 +21,6 @@ public class WeaponEXUnit : MonoBehaviour, IUnit
         UpgradeUnit();
         button = GetComponent<Button>();
         weaponImg.sprite = weaponData.weaponImg;
-    }
-
-    void Update()
-    {
-
     }
 
     public void CheckThis()

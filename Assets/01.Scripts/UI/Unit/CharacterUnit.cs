@@ -29,21 +29,10 @@ public class CharacterUnit : MonoBehaviour, IUnit
 
     }
 
-    void Update()
-    {
-        if (transform.GetSiblingIndex() == 0)
-        {
-            button.image.sprite = checkedFrame;
-        }
-        else
-        {
-            button.image.sprite = unCheckedFrame;
-        }
-    }
-
     public void CheckThis()
     {
-        transform.SetAsFirstSibling();
+        DataManager.instance.userData.Equipedcharacter = charData;
+        FindObjectOfType<ManageMenuManager>().UpdateUI();
     }
 
     public void SetData(CharacterData data)
@@ -63,4 +52,6 @@ public class CharacterUnit : MonoBehaviour, IUnit
             StarList[i].gameObject.SetActive(true);
         }
     }
+
+
 }
