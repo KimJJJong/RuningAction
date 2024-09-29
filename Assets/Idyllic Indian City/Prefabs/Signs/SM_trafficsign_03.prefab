@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_trafficsign_03
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 838eea52d4ce7f442bd19e2f7a027b4f, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -63,6 +67,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 838eea52d4ce7f442bd19e2f7a027b4f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4687983456608095457}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 838eea52d4ce7f442bd19e2f7a027b4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4628607788032775392}
   m_SourcePrefab: {fileID: 100100000, guid: 838eea52d4ce7f442bd19e2f7a027b4f, type: 3}
 --- !u!1 &9010890947550611925 stripped
 GameObject:
@@ -91,3 +98,24 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1590466944478410655, guid: 838eea52d4ce7f442bd19e2f7a027b4f, type: 3}
+--- !u!65 &4628607788032775392
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010890947550611925}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.25, y: 3.2519479, z: 0.14992766}
+  m_Center: {x: -0.0015158504, y: 1.6345572, z: -0.0038240626}

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -173,6 +174,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             SetState(EState.Down);
+            
         }
         if (Input.GetKeyDown(KeyCode.K) && !smash)
         {
@@ -235,6 +237,7 @@ public class PlayerController : MonoBehaviour
                     isJumping = true;
                     rb.AddForce(Vector3.up * jumpForce);
                     animator.Play("Jumping");
+                    MasterAudio.PlaySound3DAtTransform("jump 1",transform);
 
                 }
                 break;
@@ -242,6 +245,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!slide)
                     {
+                    animator.Play("Slide");
                       slide = true;
                         if (isJumping)
                         {
@@ -249,7 +253,6 @@ public class PlayerController : MonoBehaviour
                         }
                         StartCoroutine(MoveDownAndUp());
 
-                    animator.Play("Slide");
                     }
 
                 }
@@ -275,6 +278,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isJumping = false;
+            slide = false;
         }
     }
 
