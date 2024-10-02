@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,14 +24,14 @@ public class PlayerController : MonoBehaviour
     public float accelerationRate;
     public float jumpForce;
     public float downForce = 400;
-    public float fallMultiplier = 3 ;
+    public float fallMultiplier = 3;
 
     [Space(10f)]
     [Header("#캐릭터 ")]
     public ECharacter eCh;      // = { 캐릭터 }; 연결 필요
     public ERank eChRank;       // 캐릭터 Lv
-    //public int chStar;        //별의 갯수??
-    
+                                //public int chStar;        //별의 갯수??
+
     [Space(10f)]
     [Header("#메인 무기 ( Bat / Glove ) ")]
     [Space(5f)]
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
 
     bool smash;
+    bool slide;
     float targetPosition;
     float curPosition;
     bool isJumping = false;
@@ -161,9 +163,9 @@ public class PlayerController : MonoBehaviour
 
     void StateUpdate()
     {
-       // if (!isJumping)       // 점프중 좌, 우 이동 통제
-            MoveHorizontal();
-      
+        // if (!isJumping)       // 점프중 좌, 우 이동 통제
+        MoveHorizontal();
+
 
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && !isJumping)
         {
@@ -172,12 +174,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             SetState(EState.Down);
+            
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !smash)
-        {
-            SetState(EState.Smash);
-        }
-        if(Input.GetKeyDown(KeyCode.K) && !smash)
+        if (Input.GetKeyDown(KeyCode.K) && !smash)
         {
             SetState(EState.Throw);
         }
@@ -237,29 +236,37 @@ public class PlayerController : MonoBehaviour
                 {
                     isJumping = true;
                     rb.AddForce(Vector3.up * jumpForce);
-                    animator.Play("Jump");
+                    animator.Play("Jumping");
+                    MasterAudio.PlaySound3DAtTransform("jump 1",transform);
 
                 }
                 break;
             case EState.Down:
                 {
-                    StartCoroutine(MoveDownAndUp());
-                    if( isJumping)
+                    if (!slide)
                     {
-                        rb.AddForce(Vector3.down * downForce);
-                    }
                     animator.Play("Slide");
+                      slide = true;
+                        if (isJumping)
+                        {
+                            rb.AddForce(Vector3.down * downForce);
+                        }
+                        StartCoroutine(MoveDownAndUp());
 
-                }
-                break;
-            case EState.Throw:
-                {
-                    StartCoroutine(appearHitBox(eChRank, ECharacter.Glove));
+                    }
+
                 }
                 break;
             case EState.Batting:
                 {
+                    StartCoroutine(appearHitBox(eChRank, ECharacter.Glove));
+                    animator.Play("Hit");
+                }
+                break;
+            case EState.Throw:
+                {
                     StartCoroutine(appearHitBox(eChRank, ECharacter.Bat));
+                    animator.Play("Pitch");
                 }
                 break;
         }
@@ -271,6 +278,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isJumping = false;
+            slide = false;
         }
     }
 
@@ -279,10 +287,10 @@ public class PlayerController : MonoBehaviour
         if (!_isRush)
         {
 
-        if (!isIteam)   // 특수효과 사용할때 Rush
-            StartCoroutine(InvincibilityWeaponTimer());
-        else if(isIteam)    // 아이템 먹어서 Rush
-            StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
+            if (!isIteam)   // 특수효과 사용할때 Rush
+                StartCoroutine(InvincibilityWeaponTimer());
+            else if (isIteam)    // 아이템 먹어서 Rush
+                StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
 
         }
     }
@@ -291,15 +299,14 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
 
-  
 
-    IEnumerator appearHitBox( ERank chRank , ECharacter ch )  
+
+    IEnumerator appearHitBox(ERank chRank, ECharacter ch)
     {
         smash = true;
-        weapon.Triger(eCh, chRank, ch );
+        weapon.Triger(eCh, chRank, ch);
         yield return new WaitForSeconds(1f);    // 무기 coolTime
         smash = false;
-
     }
     IEnumerator MoveDownAndUp()
     {
@@ -308,6 +315,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        slide = false;
         capsuleCollider.height *= 2;
         capsuleCollider.center *= 2;
     }
@@ -336,18 +344,18 @@ public class PlayerController : MonoBehaviour
         runningSpeed = 30;
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
 
-            yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time);
 
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
         runningSpeed = tmpSpd;
-        _isRush =false;
+        _isRush = false;
     }
 
     IEnumerator MagneticTimer(float time)
     {
         IsMagnetic = true;
         yield return new WaitForSeconds(time);
-        IsMagnetic=false;
+        IsMagnetic = false;
 
     }
 }

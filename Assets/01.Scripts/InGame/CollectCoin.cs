@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DarkTonic.MasterAudio;
 
 public class CollectCoin : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class CollectCoin : MonoBehaviour
         if (other.CompareTag("Coin"))
         {
             AddCoin();
+            MasterAudio.PlaySound("GetItem");
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Rush"))

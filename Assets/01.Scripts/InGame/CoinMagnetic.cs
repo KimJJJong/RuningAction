@@ -9,12 +9,13 @@ public class CoinMagnetic : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(MagneticTimer());
+       // StartCoroutine(MagneticTimer());
+       _isMagnetic = true;
     }
     void Update()
     {
         Transform Target = GameManager.Instance.player.transform;
-        if ((_isMagnetic&&GameManager.Instance.playerController.eCh == ECharacter.Magnetic)||GameManager.Instance.playerController.IsMagnetic)
+        if ((_isMagnetic&&GameManager.Instance.playerController.eCh == ECharacter.Magnetic)||GameManager.Instance.playerController.IsMagnetic)  //앞부분은 캐릭터 능력 뒤는 아이템 능력
         {
             if( Vector3.Distance(transform.position, Target.position) < 5)
             transform.position = Vector3.MoveTowards(transform.position, Target.position, 30 * Time.deltaTime);
