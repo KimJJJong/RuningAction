@@ -129,7 +129,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 125.6, y: 0}
+  m_AnchoredPosition: {x: 125.600006, y: 0}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4131504370461693076
@@ -162,8 +162,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: User Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
-  m_sharedMaterial: {fileID: 4544123722527199931, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
+  m_sharedMaterial: {fileID: 8690591861142563998, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -296,8 +296,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'High Score : 00000'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
-  m_sharedMaterial: {fileID: 4544123722527199931, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
+  m_sharedMaterial: {fileID: 8690591861142563998, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -430,8 +430,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
-  m_sharedMaterial: {fileID: 4544123722527199931, guid: bdc61965bda31d34e89dca1f3db54fc1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
+  m_sharedMaterial: {fileID: 8690591861142563998, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

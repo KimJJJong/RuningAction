@@ -7,31 +7,33 @@ using DarkTonic.MasterAudio;
 public class CollectCoin : MonoBehaviour
 {
     int score;
+    int coin = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI EndScoreText;
+    public TMP_Text coinText;
 
     private int _increaseRate = 1;
     private int _increaseCoin = 30;
-    private int _increaseObs= 50;
+    private int _increaseObs = 50;
 
     int highScore;
     Color defaultScoreColor;
 
     public TextMeshProUGUI highScoreText;
-    public Color highScoreColor; 
+    public Color highScoreColor;
     void Start()
     {
         //PlayerPrefs.DeleteAll();
         score = 0;
-        scoreText.text = score.ToString();
+        scoreText.text = "Score : " + score.ToString();
         highScore = PlayerPrefs.GetInt("highscore");
         highScoreText.text = highScore.ToString();
-        defaultScoreColor = scoreText.color; 
+        defaultScoreColor = scoreText.color;
 
         StartCoroutine(UpdateScore());
     }
 
-    public void SetIncreasRate(int increasRate) // ½Ã°£¸¶´Ù Áõ°¡À²
+    public void SetIncreasRate(int increasRate) // ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         _increaseRate += increasRate;
     }
@@ -78,7 +80,9 @@ public class CollectCoin : MonoBehaviour
     public void AddCoin()
     {
         score += _increaseCoin;
-        scoreText.text = score.ToString();
+        coin += _increaseCoin;
+        scoreText.text = "Score : " + score.ToString();
+        coinText.text = coin.ToString();
         CheckHighScoreColor();
     }
     void CheckHighScoreColor()
@@ -92,7 +96,7 @@ public class CollectCoin : MonoBehaviour
             scoreText.color = defaultScoreColor;
         }
     }
-    
+
     public void AddScore(int _score)
     {
         score += _score;
@@ -106,7 +110,7 @@ public class CollectCoin : MonoBehaviour
             if (score <= highScore)
             {
                 score += _increaseRate;
-                scoreText.text = score.ToString();
+                scoreText.text = "Score : " + score.ToString();
                 EndScoreText.text = score.ToString();
             }
             else if (score > highScore)
@@ -122,5 +126,5 @@ public class CollectCoin : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-   
+
 }

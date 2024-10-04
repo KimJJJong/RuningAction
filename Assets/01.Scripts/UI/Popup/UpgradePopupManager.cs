@@ -17,11 +17,6 @@ public class UpgradePopupManager : MonoBehaviour
     public GameObject confirmPopup;
     public GameObject rejectPopup;
 
-    public Image ItemImage;
-
-    public TMP_Text ItemName;
-    public TMP_Text ItemDesc;
-
     public TMP_Text curDesc;
     public TMP_Text aftDesc;
 
@@ -40,11 +35,6 @@ public class UpgradePopupManager : MonoBehaviour
         userData = DataManager.instance.userData;
 
         upgradeItem = itemData;
-
-        ItemImage.sprite = itemData.GetImage();
-
-        ItemName.text = itemData.GetName();
-        ItemDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
 
         curDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
         if (itemData.upgradeRate.Length > itemData.starRate)
@@ -88,11 +78,6 @@ public class UpgradePopupManager : MonoBehaviour
         userData = DataManager.instance.userData;
 
         upgradeItem = itemData;
-
-        ItemImage.sprite = itemData.GetImage();
-
-        ItemName.text = itemData.GetName();
-        ItemDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
 
         curDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
         if (itemData.upgradeRate.Length > itemData.starRate)
@@ -145,11 +130,6 @@ public class UpgradePopupManager : MonoBehaviour
         userData = DataManager.instance.userData;
 
         upgradeItem = itemData;
-
-        ItemImage.sprite = itemData.GetImage();
-
-        ItemName.text = itemData.GetName();
-        ItemDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
 
         curDesc.text = string.Format(itemData.description, itemData.upgradeRate[itemData.starRate - 1]);
         if (itemData.upgradeRate.Length > itemData.starRate)

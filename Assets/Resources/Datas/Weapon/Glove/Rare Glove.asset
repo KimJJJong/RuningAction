@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponId: 7
   weaponClass: 1
   rarelity: 1
-  weaponImg: {fileID: 21300000, guid: 7fd6e0462dd244573a18576c320addbc, type: 3}
+  weaponImg: {fileID: 801025552, guid: 3ebb651d72c4c1047925438bf172691c, type: 3}
   weaponName: Rare Glove
   description: "\uD53C\uCE6D\uC744 \uC774\uC6A9\uD558\uC5EC \uB3CC\uD30C\uD558\uB294
     \uC7A5\uC560\uBB3C \uB3CC\uD30C\uC2DC, \uBCF4\uB108\uC2A4 \uC810\uC218 +{0}%"

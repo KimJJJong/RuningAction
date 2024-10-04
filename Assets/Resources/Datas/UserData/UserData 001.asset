@@ -15,7 +15,7 @@ MonoBehaviour:
   userID: 1
   userName: User
   userScore: 123
-  money: 99999
+  money: 90574
   bets:
   - {fileID: 11400000, guid: 1510dac9ecd2a634d975af960e8054d3, type: 2}
   gloves:
