@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Value: 2
   globalDensity:
     m_OverrideState: 1
-    m_Value: 0.149
+    m_Value: 0.155
   fogStartDistance:
     m_OverrideState: 1
     m_Value: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
     m_Value: 0
   highQuality:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   distanceFade:
     m_OverrideState: 0
     m_Value: 0
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 500
   amount:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   iterations:
     m_OverrideState: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
     m_Value: {r: 0.66, g: 0, b: 0, a: 1}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.004
+    m_Value: 0
   size:
     m_OverrideState: 1
     m_Value: 0.099

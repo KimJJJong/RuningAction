@@ -63,8 +63,8 @@ public class PostEffectController : MonoBehaviour
     {
         _danger.intensity.value = 0.7f;
         _blur.amount.value = 1.4f;
-        float value = _danger.intensity.value;
-        while(value>0)
+        
+        while(_danger.intensity.value > 0)
         {
             _danger.intensity.value -=0.1f;
             _blur.amount.value -= 0.2f;
