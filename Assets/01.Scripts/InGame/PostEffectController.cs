@@ -8,10 +8,10 @@ using UnityEngine.Rendering;
 public class PostEffectController : MonoBehaviour
 {
     [SerializeField] private Volume _volume;
-     private RadialBlur _radialBlur;
-     private SpeedLines _speedLines;
-     private Danger _danger;
-     private Blur _blur;
+    private RadialBlur _radialBlur;
+    private SpeedLines _speedLines;
+    private Danger _danger;
+    private Blur _blur;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,16 +26,16 @@ public class PostEffectController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // radialBlur.amount.value = 
+        // radialBlur.amount.value = 
     }
 
-    
+
     public void RushPostEffect(float radiaBlur, float speedLines, bool isRush)
     {
-        if(isRush)
+        if (isRush)
         {
-        _radialBlur.amount.value = radiaBlur;
-        _speedLines.intensity.value= speedLines;
+            _radialBlur.amount.value = radiaBlur;
+            _speedLines.intensity.value = speedLines;
         }
         else
         {
@@ -50,12 +50,12 @@ public class PostEffectController : MonoBehaviour
     IEnumerator DecraseRushEffect()
     {
         float value = _radialBlur.amount.value;
-        while (value>0)
+        while (value > 0)
         {
-            _radialBlur.amount.value -= 0.02f;
-            _speedLines.intensity.value -=0.02f;
+            _radialBlur.amount.value -= 0.01f;
+            _speedLines.intensity.value -= 0.02f;
 
-            yield return new WaitForSeconds( 0.05f );
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
@@ -63,10 +63,10 @@ public class PostEffectController : MonoBehaviour
     {
         _danger.intensity.value = 0.7f;
         _blur.amount.value = 1.4f;
-        
-        while(_danger.intensity.value > 0)
+
+        while (_danger.intensity.value > 0)
         {
-            _danger.intensity.value -=0.1f;
+            _danger.intensity.value -= 0.1f;
             _blur.amount.value -= 0.2f;
             yield return new WaitForSeconds(0.08f);
         }
