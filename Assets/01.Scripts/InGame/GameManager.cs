@@ -17,7 +17,10 @@ public class GameManager : MonoBehaviour
         }
     }
     public static bool gameOver = false;
-    [HideInInspector] public GameObject gameOverPanel;
+     public GameObject gameOverPanel;
+     public GameObject hpBar;
+     public GameObject avilBar;
+
     [HideInInspector] public GameObject player;
     [HideInInspector] public CollectCoin score;
     [HideInInspector] public Collisions collisions;
@@ -43,12 +46,16 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
         gameOverPanel.SetActive(true);
+        hpBar.SetActive(false);
+        avilBar.SetActive(false);
         Time.timeScale = 0f;
     }
     public void Restart()
     {
         gameOver = false;
         gameOverPanel.SetActive(false);
+        hpBar.SetActive(true);
+        avilBar.SetActive(true);
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
