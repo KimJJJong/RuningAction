@@ -52,7 +52,7 @@ public class CollectCoin : MonoBehaviour
         if (other.CompareTag("Coin"))
         {
             AddCoin();
-            MasterAudio.PlaySound("GetItem");
+            MasterAudio.PlaySound("item_acquired");
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Rush"))
