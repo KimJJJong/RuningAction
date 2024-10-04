@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour
                     isJumping = true;
                     rb.AddForce(Vector3.up * jumpForce);
                     animator.Play("Jumping");
-                    MasterAudio.PlaySound3DAtTransform("jump 1",transform);
+                    MasterAudio.PlaySound3DAtTransform("jump 2",transform);
 
                 }
                 break;
@@ -251,6 +251,8 @@ public class PlayerController : MonoBehaviour
                         {
                             rb.AddForce(Vector3.down * downForce);
                         }
+                        MasterAudio.PlaySound3DAtTransform("side_move", transform);
+
                         StartCoroutine(MoveDownAndUp());
 
                     }
