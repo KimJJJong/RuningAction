@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public HpController HpController;
     [HideInInspector] public Weapon weapon;
+    [HideInInspector] public PostEffectController postEffectController;
 
     void Awake()
     {
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
         HpController = GameObject.Find("Player").GetComponent<HpController>();
         weapon = GameObject.Find("Player").GetComponent<Weapon>();
+        postEffectController = GameObject.Find("Main Camera").GetComponent<PostEffectController>();
     }
 
 
