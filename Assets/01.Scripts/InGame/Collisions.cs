@@ -65,6 +65,7 @@ public class Collisions : MonoBehaviour
             else
             {
                 CamShake();
+                GameManager.Instance.postEffectController.GetDamage();
 
             }
             StartCoroutine(Cooldown());

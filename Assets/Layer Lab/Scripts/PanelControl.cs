@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace LayerLab.GUIScripts
 {
@@ -73,7 +75,14 @@ namespace LayerLab.GUIScripts
             if (defaultPanels.Count <= 0 || !_isReady) return;
 
 #if ENABLE_INPUT_SYSTEM
-            
+            if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+            {
+                Click_Prev();
+            }
+            else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+            {
+                Click_Next();
+            }
 #else
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {

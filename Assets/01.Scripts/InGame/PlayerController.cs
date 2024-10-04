@@ -288,7 +288,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_isRush)
         {
-
+            GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, true);
             if (!isIteam)   // 특수효과 사용할때 Rush
                 StartCoroutine(InvincibilityWeaponTimer());
             else if (isIteam)    // 아이템 먹어서 Rush
@@ -335,6 +335,8 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
+        GameManager.Instance.postEffectController.RushPostEffect(0.15f, 0.2f, false);
+
         runningSpeed = tmpSpd;
         _isRush = false;
 
@@ -347,6 +349,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
 
         yield return new WaitForSeconds(time);
+        GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, false);
 
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
         runningSpeed = tmpSpd;

@@ -1,0 +1,291 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6861174694304578538
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4084fdf355ba7b74ca4d26495e077c9a, type: 3}
+  m_Name: SpeedLines
+  m_EditorClassIdentifier: 
+  active: 1
+  noiseTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: fe06d9035cfd4064497518ed947395ca, type: 3}
+    dimension: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  size:
+    m_OverrideState: 1
+    m_Value: 0.443
+  falloff:
+    m_OverrideState: 1
+    m_Value: 0.25
+  shader: {fileID: 4800000, guid: 26dde0dec2d56164dad7ebbb7436d149, type: 3}
+--- !u!114 &-4829227782602812218
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74483714bbf784b45b0c9c7c76035dd8, type: 3}
+  m_Name: Fog
+  m_EditorClassIdentifier: 
+  active: 1
+  useSceneSettings:
+    m_OverrideState: 0
+    m_Value: 0
+  fogMode:
+    m_OverrideState: 1
+    m_Value: 2
+  globalDensity:
+    m_OverrideState: 1
+    m_Value: 0.149
+  fogStartDistance:
+    m_OverrideState: 1
+    m_Value: 0
+  fogEndDistance:
+    m_OverrideState: 0
+    m_Value: 600
+  colorSource:
+    m_OverrideState: 1
+    m_Value: 0
+  fogColor:
+    m_OverrideState: 1
+    m_Value: {r: 0.7216981, g: 0.9315651, b: 1, a: 1}
+  fogColorGradient:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+  gradientDistance:
+    m_OverrideState: 0
+    m_Value: 1000
+  gradientUseFarClipPlane:
+    m_OverrideState: 0
+    m_Value: 1
+  distanceFog:
+    m_OverrideState: 0
+    m_Value: 1
+  distanceDensity:
+    m_OverrideState: 0
+    m_Value: 1
+  useRadialDistance:
+    m_OverrideState: 0
+    m_Value: 1
+  horizonMinMax:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 1}
+  skyboxInfluence:
+    m_OverrideState: 0
+    m_Value: 1
+  enableDirectionalLight:
+    m_OverrideState: 0
+    m_Value: 0
+  useLightDirection:
+    m_OverrideState: 0
+    m_Value: 1
+  useLightColor:
+    m_OverrideState: 0
+    m_Value: 1
+  useLightIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+  lightColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 0.89, b: 0.55, a: 1}
+  lightDirection:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0.5, z: -1}
+  lightIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+  lightExponent:
+    m_OverrideState: 0
+    m_Value: 8
+  heightFog:
+    m_OverrideState: 0
+    m_Value: 0
+  height:
+    m_OverrideState: 0
+    m_Value: 10
+  heightDensity:
+    m_OverrideState: 0
+    m_Value: 0.75
+  heightFogNoise:
+    m_OverrideState: 0
+    m_Value: 1
+  heightNoiseTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 82a8d5f38e2ccf44c86362214b2d3e5e, type: 3}
+    dimension: 1
+  heightNoiseSize:
+    m_OverrideState: 0
+    m_Value: 0.25
+  heightNoiseStrength:
+    m_OverrideState: 0
+    m_Value: 1
+  heightNoiseSpeed:
+    m_OverrideState: 0
+    m_Value: 2
+  lightScattering:
+    m_OverrideState: 0
+    m_Value: 0
+  scatterIntensity:
+    m_OverrideState: 0
+    m_Value: 10
+  scatterThreshold:
+    m_OverrideState: 0
+    m_Value: 1
+  scatterDiffusion:
+    m_OverrideState: 0
+    m_Value: 10
+  scatterSoftKnee:
+    m_OverrideState: 0
+    m_Value: 0.5
+  shader: {fileID: 4800000, guid: 8080b34b2281e8945a5ddfe687d717fb, type: 3}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: Main Camera Profile
+  m_EditorClassIdentifier: 
+  components:
+  - {fileID: 8958968958042459173}
+  - {fileID: -6861174694304578538}
+  - {fileID: -4829227782602812218}
+  - {fileID: 4045537808981930595}
+  - {fileID: 9028860699153801754}
+  - {fileID: 1738833530625658427}
+--- !u!114 &1738833530625658427
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6e299dc3638154bbc6de09e3382285, type: 3}
+  m_Name: Blur
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 0
+    m_Value: 0
+  highQuality:
+    m_OverrideState: 0
+    m_Value: 0
+  distanceFade:
+    m_OverrideState: 0
+    m_Value: 0
+  startFadeDistance:
+    m_OverrideState: 0
+    m_Value: 0
+  endFadeDistance:
+    m_OverrideState: 0
+    m_Value: 500
+  amount:
+    m_OverrideState: 0
+    m_Value: 0
+  iterations:
+    m_OverrideState: 0
+    m_Value: 6
+  downscaling:
+    m_OverrideState: 0
+    m_Value: 2
+  shader: {fileID: 4800000, guid: fa78272576207e243bc6ec9f8a6c4f73, type: 3}
+--- !u!114 &4045537808981930595
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+  m_Name: ColorAdjustments
+  m_EditorClassIdentifier: 
+  active: 1
+  postExposure:
+    m_OverrideState: 0
+    m_Value: 5.07
+  contrast:
+    m_OverrideState: 0
+    m_Value: 0
+  colorFilter:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.86768866, b: 0.759434, a: 1}
+  hueShift:
+    m_OverrideState: 0
+    m_Value: 0
+  saturation:
+    m_OverrideState: 0
+    m_Value: 0
+--- !u!114 &8958968958042459173
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6be0f3e2e9c92846ae26c4e591cb156, type: 3}
+  m_Name: RadialBlur
+  m_EditorClassIdentifier: 
+  active: 1
+  amount:
+    m_OverrideState: 1
+    m_Value: 0
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.3}
+  angle:
+    m_OverrideState: 0
+    m_Value: 0
+  iterations:
+    m_OverrideState: 1
+    m_Value: 6
+  shader: {fileID: 4800000, guid: 4f929ddf777dcdb44aa012b2a6bb9538, type: 3}
+--- !u!114 &9028860699153801754
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bddbf4eb73a0224db0d391ab843f7ff, type: 3}
+  m_Name: Danger
+  m_EditorClassIdentifier: 
+  active: 1
+  overlayTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 45b19a0cd41097841bf602e5f503a4a7, type: 3}
+    dimension: 1
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.66, g: 0, b: 0, a: 1}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.004
+  size:
+    m_OverrideState: 1
+    m_Value: 0.099
+  shader: {fileID: 4800000, guid: 1c818ca9da4e68a44b506ad8c87e9c49, type: 3}
