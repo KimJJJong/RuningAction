@@ -53,7 +53,6 @@ public class Collisions : MonoBehaviour
 
     void Damage()
     {
-        CamShake();
         if (canInteract)
         {
             animator.Play("Stumble");
@@ -62,6 +61,11 @@ public class Collisions : MonoBehaviour
             if (hpController.getValue() <= 0)
             {
                 Die();
+            }
+            else
+            {
+                CamShake();
+
             }
             StartCoroutine(Cooldown());
         }
