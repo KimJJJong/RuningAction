@@ -19,7 +19,7 @@ MonoBehaviour:
     dimension: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.492
+    m_Value: 0
   size:
     m_OverrideState: 1
     m_Value: 0.443
@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74483714bbf784b45b0c9c7c76035dd8, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   useSceneSettings:
     m_OverrideState: 0
     m_Value: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Value: 2
   globalDensity:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.149
   fogStartDistance:
     m_OverrideState: 1
     m_Value: 0
@@ -168,6 +168,46 @@ MonoBehaviour:
   - {fileID: -6861174694304578538}
   - {fileID: -4829227782602812218}
   - {fileID: 4045537808981930595}
+  - {fileID: 9028860699153801754}
+  - {fileID: 1738833530625658427}
+--- !u!114 &1738833530625658427
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6e299dc3638154bbc6de09e3382285, type: 3}
+  m_Name: Blur
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 0
+    m_Value: 0
+  highQuality:
+    m_OverrideState: 0
+    m_Value: 0
+  distanceFade:
+    m_OverrideState: 0
+    m_Value: 0
+  startFadeDistance:
+    m_OverrideState: 0
+    m_Value: 0
+  endFadeDistance:
+    m_OverrideState: 0
+    m_Value: 500
+  amount:
+    m_OverrideState: 0
+    m_Value: 0
+  iterations:
+    m_OverrideState: 0
+    m_Value: 6
+  downscaling:
+    m_OverrideState: 0
+    m_Value: 2
+  shader: {fileID: 4800000, guid: fa78272576207e243bc6ec9f8a6c4f73, type: 3}
 --- !u!114 &4045537808981930595
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -211,7 +251,7 @@ MonoBehaviour:
   active: 1
   amount:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 0
   center:
     m_OverrideState: 1
     m_Value: {x: 0.5, y: 0.3}
@@ -219,6 +259,33 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   iterations:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 6
   shader: {fileID: 4800000, guid: 4f929ddf777dcdb44aa012b2a6bb9538, type: 3}
+--- !u!114 &9028860699153801754
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bddbf4eb73a0224db0d391ab843f7ff, type: 3}
+  m_Name: Danger
+  m_EditorClassIdentifier: 
+  active: 1
+  overlayTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 45b19a0cd41097841bf602e5f503a4a7, type: 3}
+    dimension: 1
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.66, g: 0, b: 0, a: 1}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.004
+  size:
+    m_OverrideState: 1
+    m_Value: 0.099
+  shader: {fileID: 4800000, guid: 1c818ca9da4e68a44b506ad8c87e9c49, type: 3}
