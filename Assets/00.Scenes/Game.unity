@@ -634,7 +634,7 @@ MonoBehaviour:
       clip: {fileID: 8300000, guid: 1c8d1be92cd3e03449ff2871fd0edbac, type: 3}
       songName: in-game_BGM
       resourceFileName: 
-      volume: 1
+      volume: 0
       pitch: 1
       isExpanded: 1
       isLoop: 1
@@ -859,7 +859,7 @@ MonoBehaviour:
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
   willCleanUpDelegatesAfterStop: 1
-  frames: 3149
+  frames: 3167
 --- !u!1 &269812352
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,7 +3153,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 866086989}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: Restart
         m_Mode: 1
@@ -5036,7 +5036,7 @@ MonoBehaviour:
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
   willCleanUpDelegatesAfterStop: 1
-  frames: 1038
+  frames: 1046
 --- !u!1 &1830146595
 GameObject:
   m_ObjectHideFlags: 0
