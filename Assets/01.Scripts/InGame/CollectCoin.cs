@@ -23,10 +23,10 @@ public class CollectCoin : MonoBehaviour
     public Color highScoreColor;
     void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
         score = 0;
         scoreText.text = "Score : " + score.ToString();
-        highScore = PlayerPrefs.GetInt("highscore");
+        highScore = DataManager.instance.userData.userScore;
         highScoreText.text = highScore.ToString();
         defaultScoreColor = scoreText.color;
 
@@ -120,7 +120,7 @@ public class CollectCoin : MonoBehaviour
                 CheckHighScoreColor();
                 highScore = score;
                 highScoreText.text = highScore.ToString();
-                PlayerPrefs.SetInt("highscore", highScore);
+                DataManager.instance.userData.userScore = highScore;
             }
 
             yield return new WaitForSeconds(0.1f);

@@ -27,20 +27,20 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 3;
 
     [Space(10f)]
-    [Header("#Ä³¸¯ÅÍ ")]
-    public ECharacter eCh;      // = { Ä³¸¯ÅÍ }; ¿¬°á ÇÊ¿ä
-    public ERank eChRank;       // Ä³¸¯ÅÍ Lv
-                                //public int chStar;        //º°ÀÇ °¹¼ö??
+    [Header("#Ä³ï¿½ï¿½ï¿½ï¿½ ")]
+    public ECharacter eCh;      // = { Ä³ï¿½ï¿½ï¿½ï¿½ }; ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
+    public ERank eChRank;       // Ä³ï¿½ï¿½ï¿½ï¿½ Lv
+                                //public int chStar;        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½??
 
     [Space(10f)]
-    [Header("#¸ÞÀÎ ¹«±â ( Bat / Glove ) ")]
+    [Header("#ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ( Bat / Glove ) ")]
     [Space(5f)]
-    public ERank eBatRank;   // Glove·¹¾îµµ
-    //public int batStar     //Batº°ÀÇ °¹¼ö
+    public ERank eBatRank;   // Gloveï¿½ï¿½ï¿½îµµ
+    //public int batStar     //Batï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     [Space(5f)]
-    public ERank eGloveRank;   // Glove·¹¾îµµ
-    //public int gloveStar     //Gloveº°ÀÇ °¹¼ö
+    public ERank eGloveRank;   // Gloveï¿½ï¿½ï¿½îµµ
+    //public int gloveStar     //Gloveï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 
     bool smash;
@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
 
     void StateUpdate()
     {
-        // if (!isJumping)       // Á¡ÇÁÁß ÁÂ, ¿ì ÀÌµ¿ ÅëÁ¦
+        // if (!isJumping)       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
         MoveHorizontal();
 
 
@@ -288,10 +288,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!_isRush)
         {
-            GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, true);
-            if (!isIteam)   // Æ¯¼öÈ¿°ú »ç¿ëÇÒ¶§ Rush
+            GameManager.Instance.postEffectController.RushPostEffect(0.125f, 0.25f, true);
+            if (!isIteam)   // Æ¯ï¿½ï¿½È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ Rush
                 StartCoroutine(InvincibilityWeaponTimer());
-            else if (isIteam)    // ¾ÆÀÌÅÛ ¸Ô¾î¼­ Rush
+            else if (isIteam)    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¾î¼­ Rush
                 StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
 
         }
@@ -307,7 +307,7 @@ public class PlayerController : MonoBehaviour
     {
         smash = true;
         weapon.Triger(eCh, chRank, ch);
-        yield return new WaitForSeconds(1f);    // ¹«±â coolTime
+        yield return new WaitForSeconds(1f);    // ï¿½ï¿½ï¿½ï¿½ coolTime
         smash = false;
     }
     IEnumerator MoveDownAndUp()
@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
         while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
         {
-            GameManager.Instance.weapon.DecreaseGage(10f);   // Weapon»ç¿ë ÁúÁÖ ½Ã°£ ÅëÁ¦
+            GameManager.Instance.weapon.DecreaseGage(10f);   // Weaponï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
             yield return new WaitForSeconds(1);
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
