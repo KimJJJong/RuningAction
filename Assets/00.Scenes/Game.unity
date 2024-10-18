@@ -1865,7 +1865,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ad5569965d2734880a004e3e3d7d1358, type: 2}
   m_sharedMaterial: {fileID: 3074828514974314926, guid: ad5569965d2734880a004e3e3d7d1358, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 3074828514974314926, guid: ad5569965d2734880a004e3e3d7d1358, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -2061,12 +2062,76 @@ MonoBehaviour:
   preset: 0
   onEnableBehaviour: 2
   onDisableBehaviour: 0
---- !u!850595691 &684798715
-LightingSettings:
+--- !u!1 &705118968
+GameObject:
+
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705118970}
+  - component: {fileID: 705118969}
+  m_Layer: 0
+  m_Name: curved
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &705118969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705118968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651a4c7e50c3274bb02a1b6c03b054b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bendType: 0
+  bendID: 1
+  bendPivotPoint: {fileID: 0}
+  bendPivotPointPosition: {x: 0, y: 0, z: 0}
+  bendRotationCenter: {fileID: 0}
+  bendRotationCenterPosition: {x: 0, y: 0, z: 0}
+  bendRotationAxis: {x: 0, y: 0, z: 0}
+  bendRotationAxisType: 0
+  bendRotationCenter2: {fileID: 0}
+  bendRotationCenter2Position: {x: 0, y: 0, z: 0}
+  bendVerticalSize: 0
+  bendVerticalOffset: 0
+  bendHorizontalSize: 0
+  bendHorizontalOffset: 0
+  bendCurvatureSize: 0
+  bendCurvatureOffset: 0
+  bendAngle: 0
+  bendAngle2: 0
+  bendMinimumRadius: 0
+  bendMinimumRadius2: 0
+  bendRolloff: 0
+  disableInEditor: 0
+  manualUpdate: 0
+  isExpanded: 1
+--- !u!4 &705118970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705118968}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
   m_Name: New Lighting Settings
   serializedVersion: 6
   m_GIWorkflowMode: 0
@@ -2634,7 +2699,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
   m_sharedMaterial: {fileID: 8690591861142563998, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 8690591861142563998, guid: 8d34560b6d49c4469b2174ccd34ae34b, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -3962,13 +4028,11 @@ MonoBehaviour:
   - {fileID: 2621428561389978537, guid: fe0603459f1b94a4eb3311d9d359ba8c, type: 3}
   - {fileID: 2621428561389978537, guid: 42f7a2cf36996f341af08692bb0f2bf2, type: 3}
   - {fileID: 2621428561389978537, guid: ed13f5aeb8c1fea4d954e8275330b1ff, type: 3}
-  - {fileID: 2621428561389978537, guid: fe0603459f1b94a4eb3311d9d359ba8c, type: 3}
-  - {fileID: 2621428561389978537, guid: fe0603459f1b94a4eb3311d9d359ba8c, type: 3}
+  - {fileID: 2621428561389978537, guid: ed13f5aeb8c1fea4d954e8275330b1ff, type: 3}
   _chunks02:
   - {fileID: 2621428561389978537, guid: 3e16e2b88a657e7438e9bad72e7665d9, type: 3}
-  - {fileID: 2621428561389978537, guid: be4da3e594e43bf4a9fe0764166b110d, type: 3}
-  - {fileID: 2621428561389978537, guid: be4da3e594e43bf4a9fe0764166b110d, type: 3}
-  _chunkLenght: 120
+  - {fileID: 2621428561389978537, guid: 3e16e2b88a657e7438e9bad72e7665d9, type: 3}
+  _chunkLenght: 119
   _playerTransform: {fileID: 442673176}
   _spawnDistance: 299
   _size: 10
@@ -6279,3 +6343,4 @@ SceneRoots:
   - {fileID: 246177196}
   - {fileID: 1998967655}
   - {fileID: 2133478422}
+  - {fileID: 705118970}
