@@ -47,6 +47,7 @@ public class UpgradableManager : MonoBehaviour
             }
             content.UpdateData(obj);
             content.transform.parent = ContentList.transform;
+            content.transform.localScale = Vector3.one;
         }
 
         UpgradalbleImage.sprite = data.upgradeImg;

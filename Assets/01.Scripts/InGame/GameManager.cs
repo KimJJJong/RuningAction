@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
@@ -18,9 +19,9 @@ public class GameManager : MonoBehaviour
         }
     }
     public static bool gameOver = false;
-     public GameObject gameOverPanel;
-     public GameObject hpBar;
-     public GameObject avilBar;
+    public GameObject gameOverPanel;
+    public GameObject hpBar;
+    public GameObject avilBar;
 
     [HideInInspector] public GameObject player;
     [HideInInspector] public CollectCoin score;
@@ -65,5 +66,11 @@ public class GameManager : MonoBehaviour
     public void Exit()
     {
         //EditorApplication.isPlaying = false;
+    }
+
+    public void LoadScene(int num)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(num);
     }
 }

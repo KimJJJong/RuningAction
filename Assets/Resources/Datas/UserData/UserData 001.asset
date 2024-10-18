@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userID: 1
   userName: User
-  userScore: 123
-  money: 90574
+  userScore: 0
+  money: 76149
   bets:
   - {fileID: 11400000, guid: 1510dac9ecd2a634d975af960e8054d3, type: 2}
   gloves:

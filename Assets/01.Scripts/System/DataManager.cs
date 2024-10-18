@@ -9,10 +9,10 @@ public class DataManager : MonoBehaviour
     public string userID;
     public UserData userData;
 
-    
-
     private void Awake()
     {
+        Screen.SetResolution(1080, 1920, true);
+
         if (instance == null)
         {
             instance = this;
