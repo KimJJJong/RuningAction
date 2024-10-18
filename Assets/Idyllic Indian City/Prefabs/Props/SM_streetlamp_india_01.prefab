@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_streetlamp_india_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 723d40ca65cf97047b79a3a2a282a78c, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -63,6 +67,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 723d40ca65cf97047b79a3a2a282a78c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7371463487368997073}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 723d40ca65cf97047b79a3a2a282a78c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7724941682864635287}
   m_SourcePrefab: {fileID: 100100000, guid: 723d40ca65cf97047b79a3a2a282a78c, type: 3}
 --- !u!1 &6717810493367804168 stripped
 GameObject:
@@ -86,8 +93,29 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2364628876316239176, guid: 723d40ca65cf97047b79a3a2a282a78c, type: 3}
+--- !u!65 &7724941682864635287
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717810493367804168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5104001, y: 4.074979, z: 0.44201952}
+  m_Center: {x: 0, y: 2.0348268, z: -0.000000029802322}

@@ -14,7 +14,9 @@ Material:
   m_ValidKeywords:
   - _EMISSION
   - _NORMALMAP
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
