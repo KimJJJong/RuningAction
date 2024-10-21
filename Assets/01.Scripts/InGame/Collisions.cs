@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Collisions : MonoBehaviour
 {
-    GameManager gameManager;
     HpController hpController;
     new Camera camera;
     //cam movement
@@ -21,10 +20,8 @@ public class Collisions : MonoBehaviour
 
     void Start()
     {
-
         camera = FindAnyObjectByType<Camera>();
         hpController = FindAnyObjectByType<HpController>();
-        gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
 
         canInteract = true;
@@ -35,7 +32,7 @@ public class Collisions : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            isDmgIteam = UnityEngine.Random.value <= chance;
+            isDmgIteam = Random.value <= chance;
             other.gameObject.GetComponent<Collider>().enabled = false;
             if (!isDmg && !isDmgIteam)
             {

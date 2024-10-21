@@ -27,26 +27,20 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 3;
 
     [Space(10f)]
-    [Header("#ĳ���� ")]
-    public ECharacter eCh;      // = { ĳ���� }; ���� �ʿ�
-    public ERank eChRank;       // ĳ���� Lv
-                                //public int chStar;        //���� ����??
+    [Header("Character")]
+    public ECharacter eCh;
+    public ERank eChRank;
 
     [Space(10f)]
-    [Header("#���� ���� ( Bat / Glove ) ")]
-    [Space(5f)]
-    public ERank eBatRank;   // Glove���
-    //public int batStar     //Bat���� ����
-
-    [Space(5f)]
-    public ERank eGloveRank;   // Glove���
-    //public int gloveStar     //Glove���� ����
+    [Header("Bat/Glove Ranks")]
+    public ERank eBatRank;
+    public ERank eGloveRank;
+    //public int batStar
+    //public int gloveStar 
 
 
     bool smash;
     bool slide;
-    float targetPosition;
-    float curPosition;
     bool isJumping = false;
     bool _isRush;
     bool _isMagnetic;
@@ -73,9 +67,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
-        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
+        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
     }
 
     void Update()
@@ -87,8 +81,9 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
     /*
-         private void FixedUpdate()
+        private void FixedUpdate()
         {
             RaycastHit hit;
 
@@ -125,10 +120,8 @@ public class PlayerController : MonoBehaviour
         {
             runningSpeed = maxSpeed;
         }
-
-        float xPosition = transform.position.x;
-
     }
+
     private void MoveHorizontal()
     {
         if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
@@ -163,7 +156,7 @@ public class PlayerController : MonoBehaviour
 
     void StateUpdate()
     {
-        // if (!isJumping)       // ������ ��, �� �̵� ����
+        // if (!isJumping)
         MoveHorizontal();
 
 
@@ -189,29 +182,16 @@ public class PlayerController : MonoBehaviour
 
     private void MoveToCenter()
     {
-        if (curPos == 1)
+        Vector3 targetPos = transform.position;
+
+        if (curPos == 1) targetPos = new Vector3(centerPos.position.x, transform.position.y, transform.position.z);
+        else if (curPos == 0) targetPos = new Vector3(leftPos.position.x, transform.position.y, transform.position.z);
+        else if (curPos == 2) targetPos = new Vector3(rightPos.position.x, transform.position.y, transform.position.z);
+
+        if (Vector3.Distance(transform.position, targetPos) > 0.1f)
         {
-            if (Vector3.Distance(transform.position, new Vector3(centerPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(centerPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
-        }
-        else if (curPos == 0)
-        {
-            if (Vector3.Distance(transform.position, new Vector3(leftPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(leftPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
-        }
-        else if (curPos == 2)
-        {
-            if (Vector3.Distance(transform.position, new Vector3(rightPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(rightPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
+            Vector3 dir = (targetPos - transform.position).normalized;
+            transform.Translate(dir * sideSpeed * Time.deltaTime, Space.World);
         }
     }
 
@@ -223,13 +203,11 @@ public class PlayerController : MonoBehaviour
             case EState.Left:
                 {
                     animator.Play("MoveLeft");
-
                 }
                 break;
             case EState.Right:
                 {
                     animator.Play("MoveRight");
-
                 }
                 break;
             case EState.Up:
@@ -238,15 +216,14 @@ public class PlayerController : MonoBehaviour
                     rb.AddForce(Vector3.up * jumpForce);
                     animator.Play("Jumping");
                     MasterAudio.PlaySound3DAtTransform("jump 2",transform);
-
                 }
                 break;
             case EState.Down:
                 {
                     if (!slide)
                     {
-                    animator.Play("Slide");
-                      slide = true;
+                        animator.Play("Slide");
+                        slide = true;
                         if (isJumping)
                         {
                             rb.AddForce(Vector3.down * downForce);
@@ -254,9 +231,7 @@ public class PlayerController : MonoBehaviour
                         MasterAudio.PlaySound3DAtTransform("side_move", transform);
 
                         StartCoroutine(MoveDownAndUp());
-
                     }
-
                 }
                 break;
             case EState.Batting:
@@ -293,15 +268,13 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(InvincibilityWeaponTimer());
             else if (isIteam)    // ������ �Ծ Rush
                 StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
-
         }
     }
+
     public void BeMagnetic()    //Iteam Magnetic
     {
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
-
-
 
     IEnumerator appearHitBox(ERank chRank, ECharacter ch)
     {

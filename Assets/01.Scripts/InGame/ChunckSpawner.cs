@@ -23,12 +23,14 @@ public class ChunckSpawner : MonoBehaviour
     private List<Queue<GameObject>> _chunksQueueList02 = new List<Queue<GameObject>>();
     private Vector3 _spawnPos = new Vector3(0f, -38f, 0f);
 
+    #region curved world argument
     private CurvedWorldController curvedController;
     private float currentCurvedValue;
     private float currentTime = 0f;
     private float curveTime = 10f;
     private float curvedZMaxValue = 10;
     private float curvedZMinValue = -10;
+    #endregion
 
     private void Awake()
     {
