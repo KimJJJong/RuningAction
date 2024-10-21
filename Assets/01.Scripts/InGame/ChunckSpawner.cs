@@ -25,6 +25,8 @@ public class ChunckSpawner : MonoBehaviour
 
     private CurvedWorldController curvedController;
     private float currentCurvedValue;
+    private float currentTime = 0f;
+    private float curveTime = 10f;
     private float curvedZMaxValue = 10;
     private float curvedZMinValue = -10;
 
@@ -43,6 +45,8 @@ public class ChunckSpawner : MonoBehaviour
 
     private void Update()
     {
+        currentTime += Time.deltaTime;
+
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
             if (_spawnPos.z > 600f)
@@ -52,17 +56,17 @@ public class ChunckSpawner : MonoBehaviour
             }
             else
                 SpawnRandomChunk(_chunksQueueList01);
+        }
 
-            if (_spawnPos.z > 200f)
-            {
-                Debug.Log("CURVE");
-                SetCurvedWorld(curvedZMinValue);
-            }
+        if(currentTime > curveTime)
+        {
+            currentTime = 0;
+
+            if (currentCurvedValue < 0)
+                StartCoroutine(SetCurvedWorld(currentCurvedValue, curvedZMaxValue, 2));
             else
-            {
+                StartCoroutine(SetCurvedWorld(currentCurvedValue, curvedZMinValue, 2));
 
-                Debug.Log("No CURVE");
-            }
         }
     }
 
@@ -87,27 +91,38 @@ public class ChunckSpawner : MonoBehaviour
     {
         if (Random.Range(0, 100) <= 5 + goldStageProbability)
         {
-            GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count-1].Dequeue();
+            GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count - 1].Dequeue();
             newChunk.transform.position = _spawnPos;
             _spawnPos.z += _chunkLenght;
             newChunk.gameObject.SetActive(true);
-            _chunksQueueList01[chuncksQueueList.Count-1].Enqueue(newChunk);
+            _chunksQueueList01[chuncksQueueList.Count - 1].Enqueue(newChunk);
         }
         else
         {
             int randValue = Random.Range(0, chuncksQueueList.Count - 1);
-        GameObject newChunk = chuncksQueueList[randValue].Dequeue();
-        newChunk.transform.position = _spawnPos;
-        _spawnPos.z += _chunkLenght;
-        newChunk.gameObject.SetActive(true);
+            GameObject newChunk = chuncksQueueList[randValue].Dequeue();
+            newChunk.transform.position = _spawnPos;
+            _spawnPos.z += _chunkLenght;
+            newChunk.gameObject.SetActive(true);
             chuncksQueueList[randValue].Enqueue(newChunk);
         }
     }
 
-    private void SetCurvedWorld(float value)
+    private IEnumerator SetCurvedWorld(float startValue, float endValue, float duration)
     {
-        currentCurvedValue = Mathf.MoveTowards(currentCurvedValue, value, 0.1f * Time.deltaTime);
+        float elapsedTime = 0f;
 
-        curvedController.SetBendHorizontalSize(currentCurvedValue);
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            currentCurvedValue = Mathf.Lerp(startValue, endValue, t);
+            curvedController.SetBendHorizontalSize(currentCurvedValue);
+
+            yield return null;
+        }
+
+        currentCurvedValue = endValue;
     }
 }
