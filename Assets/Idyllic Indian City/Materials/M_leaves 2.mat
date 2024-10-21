@@ -8,24 +8,32 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_leaves 2
-  m_Shader: {fileID: -6465566751694194690, guid: 9920c1f1781549a46ba081a2a15a16ec, type: 3}
+  m_Shader: {fileID: 4800000, guid: 58e52493dfa56ea4190d28ae408f3511, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - BACKFACE_NORMAL_MODE_MIRROR
-  - _WINDQUALITY_NONE
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
-  - EFFECT_SUBSURFACE
+  - CURVEDWORLD_BEND_ID_1
+  - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: b876746aaec516641831054ccc4c5608, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -91,14 +99,19 @@ Material:
     - BACKFACE_NORMAL_MODE: 1
     - EFFECT_BILLBOARD: 0
     - EFFECT_EXTRA_TEX: 0
+    - _AlphaClip: 0
     - _AlphaClipThreshold: 0.33
+    - _AlphaToMask: 0
     - _BillboardKwToggle: 0
     - _BillboardShadowFade: 0.5
+    - _Blend: 0
+    - _BlendOp: 0
     - _BumpScale: 1
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -113,16 +126,20 @@ Material:
     - _QueueOffset: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _SubsurfaceIndirect: 0.784
     - _SubsurfaceKwToggle: 1
+    - _Surface: 1
     - _TwoSided: 0
     - _UVSec: 0
     - _WINDQUALITY: 0
     - _WindQuality: 0
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.7924528, g: 0.6824547, b: 0.3700605, a: 1}
+    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
     - _HueVariationColor: {r: 1, g: 0.5, b: 0, a: 0.1}

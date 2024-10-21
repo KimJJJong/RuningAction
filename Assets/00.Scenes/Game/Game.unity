@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: e0041b5000f02f444872b1495c25531e, type: 2}
   m_LightingSettings: {fileID: 684798715}
 --- !u!196 &4
 NavMeshSettings:
@@ -6448,6 +6448,10 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4930690972262006144, guid: e87ac3d3712e8bf4a950e84c0d72cb0c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6a06cf8472e244b4db9020e04e691584, type: 2}
     - target: {fileID: 7063089045412235516, guid: e87ac3d3712e8bf4a950e84c0d72cb0c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.65529
@@ -6880,6 +6884,10 @@ PrefabInstance:
       propertyPath: bendPivotPoint
       value: 
       objectReference: {fileID: 442673176}
+    - target: {fileID: 4276739076076882214, guid: 40093264fd0e90546b7afdf63b3079e2, type: 3}
+      propertyPath: bendVerticalSize
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 4276739076076882214, guid: 40093264fd0e90546b7afdf63b3079e2, type: 3}
       propertyPath: bendPivotPointPosition.x
       value: 0.045267

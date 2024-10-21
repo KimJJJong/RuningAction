@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AmazingAssets.CurvedWorld;
 
 public class ChunckSpawner : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class ChunckSpawner : MonoBehaviour
     private List<Queue<GameObject>> _chunksQueueList02 = new List<Queue<GameObject>>();
     private Vector3 _spawnPos = new Vector3(0f, -38f, 0f);
 
+    private CurvedWorldController curvedController;
+    private float currentCurvedValue;
+    private float curvedZMaxValue = 10;
+    private float curvedZMinValue = -10;
+
     private void Awake()
     {
         _spawnPos = new Vector3(-0.4f, -39.25718f, 170);
@@ -30,20 +36,36 @@ public class ChunckSpawner : MonoBehaviour
     {
         PoolChunks(_chunksQueueList01,_chunks01);
         PoolChunks(_chunksQueueList02, _chunks02);
+
+        curvedController = GameObject.Find("Curved World Controller").GetComponent<CurvedWorldController>();
+        currentCurvedValue = curvedController.bendHorizontalSize;
     }
+
     private void Update()
     {
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
-          if(_spawnPos.z > 600f)
+            if (_spawnPos.z > 600f)
             {
-            Debug.Log(_spawnPos);
+                Debug.Log(_spawnPos);
                 SpawnRandomChunk(_chunksQueueList02);
             }
-           else
-           SpawnRandomChunk(_chunksQueueList01);
+            else
+                SpawnRandomChunk(_chunksQueueList01);
+
+            if (_spawnPos.z > 200f)
+            {
+                Debug.Log("CURVE");
+                SetCurvedWorld(curvedZMinValue);
+            }
+            else
+            {
+
+                Debug.Log("No CURVE");
+            }
         }
     }
+
     private void PoolChunks(List<Queue<GameObject>> chuncksQueueList, GameObject[] chuncks)
     {
         for (int i = 0; i < chuncks.Length; i++)
@@ -80,5 +102,12 @@ public class ChunckSpawner : MonoBehaviour
         newChunk.gameObject.SetActive(true);
             chuncksQueueList[randValue].Enqueue(newChunk);
         }
+    }
+
+    private void SetCurvedWorld(float value)
+    {
+        currentCurvedValue = Mathf.MoveTowards(currentCurvedValue, value, 0.1f * Time.deltaTime);
+
+        curvedController.SetBendHorizontalSize(currentCurvedValue);
     }
 }
