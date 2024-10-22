@@ -1689,8 +1689,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -3982,6 +3982,62 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &994633485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 994633487}
+  - component: {fileID: 994633486}
+  m_Layer: 0
+  m_Name: ChuckSpawnerByIndex
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &994633486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994633485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26aed2b5e6cc0c046bad60a3dd315e2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunks:
+  - {fileID: 2621428561389978537, guid: 42f7a2cf36996f341af08692bb0f2bf2, type: 3}
+  - {fileID: 2621428561389978537, guid: ed13f5aeb8c1fea4d954e8275330b1ff, type: 3}
+  - {fileID: 2621428561389978537, guid: fe0603459f1b94a4eb3311d9d359ba8c, type: 3}
+  - {fileID: 2621428561389978537, guid: 3e16e2b88a657e7438e9bad72e7665d9, type: 3}
+  chunkLength: 119
+  playerTransform: {fileID: 442673176}
+  spawnDistance: 299
+  chunkArrayTest: 0000000001000000020000000300000003000000010000000200000001000000
+  size: 10
+  curvedZMaxValue: 5
+  curvedZMinValue: -5
+--- !u!4 &994633487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994633485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &995845155
 GameObject:
   m_ObjectHideFlags: 0
@@ -4336,7 +4392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1165790951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4363,6 +4419,8 @@ MonoBehaviour:
   _spawnDistance: 299
   _size: 10
   goldStageProbability: 0
+  curvedZMaxValue: 10
+  curvedZMinValue: -10
 --- !u!4 &1165790952
 Transform:
   m_ObjectHideFlags: 0
@@ -4372,7 +4430,7 @@ Transform:
   m_GameObject: {fileID: 1165790950}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -47612.93, y: 8279.681, z: -472.11246}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5191,7 +5249,7 @@ GameObject:
   - component: {fileID: 1499774217}
   - component: {fileID: 1499774216}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Curved World Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7459,6 +7517,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2003509866}
+  - {fileID: 1499774219}
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 7984476004885448861}
@@ -7469,7 +7528,7 @@ SceneRoots:
   - {fileID: 1149145547}
   - {fileID: 1379954251}
   - {fileID: 1165790952}
-  - {fileID: 1499774219}
+  - {fileID: 994633487}
   - {fileID: 1982210149}
   - {fileID: 246177196}
   - {fileID: 1998967655}
