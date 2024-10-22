@@ -25,11 +25,12 @@ public class ChunckSpawner : MonoBehaviour
 
     #region curved world argument
     private CurvedWorldController curvedController;
+    [Header("Curved World")]
+    [SerializeField] private float curvedZMaxValue = 10;
+    [SerializeField] private float curvedZMinValue = -10;
     private float currentCurvedValue;
     private float currentTime = 0f;
     private float curveTime = 10f;
-    private float curvedZMaxValue = 10;
-    private float curvedZMinValue = -10;
     #endregion
 
     private void Awake()
