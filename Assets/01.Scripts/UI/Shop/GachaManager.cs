@@ -294,10 +294,19 @@ public class GachaManager : MonoBehaviour
 
     public void EndGacha()
     {
+        SortItems();
         GachaSet.SetActive(false);
         foreach (var obj in gachaList.GetComponentsInChildren<Image>())
         {
             Destroy(obj.gameObject);
         }
+    }
+
+    public void SortItems()
+    {
+        userData.characters.Sort((x, y) => y.GetID().CompareTo(x.GetID()));
+        userData.bets.Sort((x, y) => y.GetID().CompareTo(x.GetID()));
+        userData.gloves.Sort((x, y) => y.GetID().CompareTo(x.GetID()));
+        userData.weaponExes.Sort((x, y) => y.GetID().CompareTo(x.GetID()));
     }
 }
