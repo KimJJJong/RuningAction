@@ -18,11 +18,15 @@ public class Collisions : MonoBehaviour
 
     public TextMeshProUGUI cooldownText;
 
+    PlayerController playerController;
+    SoccerBall ball;
+
     void Start()
     {
         camera = FindAnyObjectByType<Camera>();
         hpController = FindAnyObjectByType<HpController>();
         animator = GetComponent<Animator>();
+        playerController = GetComponent<PlayerController>();
 
         canInteract = true;
         cooldownText.enabled = false;
@@ -42,13 +46,36 @@ public class Collisions : MonoBehaviour
             else
             {
                 GameManager.Instance.score.IncreasObsScore();
-                Debug.Log("뿌순건가?"); // Rush 파괴시 점수 추가는 여기에!!!
+                Debug.Log("뿌순건가?");
             }
-
+        }
+        else if(other.CompareTag("ObstacleBonus"))
+        {
+            if(animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))
+            {
+                GameManager.Instance.score.IncreasObsScore();
+            }
+            else
+            {
+                isDmgIteam = Random.value <= chance;
+                if (!isDmg && !isDmgIteam)
+                {
+                    Damage();
+                    cooldownText.enabled = true;
+                }
+            }
+        }
+        else if (other.CompareTag("SoccerBall"))
+        {
+            ball = other.GetComponent<SoccerBall>();
+        }
+        else if (other.CompareTag("ShootingZone"))
+        {
+            Shoot();
         }
     }
 
-    void Damage()
+    public void Damage()
     {
         if (canInteract)
         {
@@ -68,6 +95,13 @@ public class Collisions : MonoBehaviour
             StartCoroutine(Cooldown());
         }
     }
+
+    void Shoot()
+    {
+        Debug.LogError("Shot");
+        ball.Shoot(playerController.curPos);
+    }
+
     IEnumerator Cooldown()
     {
         StartCoroutine(DieAnimation());

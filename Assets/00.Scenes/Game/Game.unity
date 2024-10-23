@@ -1644,6 +1644,7 @@ MonoBehaviour:
   eChRank: 1
   eBatRank: 0
   eGloveRank: 0
+  curPos: 1
 --- !u!136 &442673173
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4012,6 +4013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunks:
+  - {fileID: 2621428561389978537, guid: dda4d72b8c68f3c46a2ccbed464b3fb2, type: 3}
   - {fileID: 2621428561389978537, guid: 42f7a2cf36996f341af08692bb0f2bf2, type: 3}
   - {fileID: 2621428561389978537, guid: ed13f5aeb8c1fea4d954e8275330b1ff, type: 3}
   - {fileID: 2621428561389978537, guid: fe0603459f1b94a4eb3311d9d359ba8c, type: 3}
@@ -4020,7 +4022,7 @@ MonoBehaviour:
   playerTransform: {fileID: 442673176}
   spawnDistance: 299
   chunkArrayTest: 0000000001000000020000000300000003000000010000000200000001000000
-  size: 10
+  size: 3
   curvedZMaxValue: 5
   curvedZMinValue: -5
 --- !u!4 &994633487
@@ -6944,6 +6946,10 @@ PrefabInstance:
       objectReference: {fileID: 442673176}
     - target: {fileID: 4276739076076882214, guid: 40093264fd0e90546b7afdf63b3079e2, type: 3}
       propertyPath: bendVerticalSize
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4276739076076882214, guid: 40093264fd0e90546b7afdf63b3079e2, type: 3}
+      propertyPath: bendHorizontalSize
       value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 4276739076076882214, guid: 40093264fd0e90546b7afdf63b3079e2, type: 3}

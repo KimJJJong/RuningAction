@@ -112,6 +112,23 @@ public class ChunkSpawnerByIndex : MonoBehaviour
         }
     }
 
+    private IEnumerator GetChunkFromGoogleDrive(string fileId)
+    {
+        string googleDriveUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
+        UnityWebRequest request = UnityWebRequest.Get(googleDriveUrl);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error fetching data from Google Drive");
+        }
+        else
+        {
+            string jsonResponse = request.downloadHandler.text;
+            chunkArray = JsonUtility.FromJson<int[]>(jsonResponse);
+        }
+    }
+
     private IEnumerator SetCurvedWorld(float startValue, float endValue, float duration)
     {
         float elapsedTime = 0f;

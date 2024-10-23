@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     bool isJumping = false;
     bool _isRush;
     bool _isMagnetic;
-    int curPos = 1;   // 0 = left, 1 = center, 2 = right;
+    [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
     Collisions collisions;
     CapsuleCollider capsuleCollider;
