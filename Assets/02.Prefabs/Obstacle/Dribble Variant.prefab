@@ -325,7 +325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07030a73eb9c8f4583d803d6ef024d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 10
+  detectRange: 30
   moveSpeed: 5
-  returnDelay: 3
-  disappearTime: 5
+  ball: {fileID: 560907004012381531}
+  dribbleDistance: 1
+  dribbleSpeed: 0.2
+  rotationSpeed: 360
+  fadeTime: 5

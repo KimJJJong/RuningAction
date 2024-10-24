@@ -27,7 +27,7 @@ public class ObstacleTackle : MonoBehaviour
     {
         float playerDistance = Vector3.Distance(transform.position, player.position);
 
-        if (!isMoving && playerDistance < detectRange)
+        if (!isMoving && playerDistance < detectRange && !isSliding)
         {
             isMoving = true;
             targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
@@ -59,7 +59,7 @@ public class ObstacleTackle : MonoBehaviour
 
     private IEnumerator ReturnPosition()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
         transform.position = startPosition;
     }
 
@@ -76,5 +76,7 @@ public class ObstacleTackle : MonoBehaviour
 
         targetPosition = startPosition;
         isSliding = false;
+
+        StopMoving();
     }
 }

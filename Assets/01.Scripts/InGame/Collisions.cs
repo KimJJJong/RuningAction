@@ -36,29 +36,7 @@ public class Collisions : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            isDmgIteam = Random.value <= chance;
-            other.gameObject.GetComponent<Collider>().enabled = false;
-
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))
-            {
-                if (other.TryGetComponent(out IBonusObstacle bonusable))
-                {
-                    bonusable.GetBonus();
-                }
-            }
-            else
-            {
-                if (!isDmg && !isDmgIteam)
-                {
-                    Damage();
-                    cooldownText.enabled = true;
-                }
-                else
-                {
-                    GameManager.Instance.score.IncreasObsScore();
-                    Debug.Log("»Ñ¼ø°Ç°¡?");
-                }
-            }
+            ObstacleCollision(other);
         }
         else if (other.CompareTag("SoccerBall"))
         {
@@ -68,6 +46,45 @@ public class Collisions : MonoBehaviour
         {
             Shoot();
         }
+    }
+
+    void ObstacleCollision(Collider obstacle)
+    {
+        isDmgIteam = Random.value <= chance;
+        obstacle.gameObject.GetComponent<Collider>().enabled = false;
+
+        bool isSliding = animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
+        bool shouldTakeDamage = !isDmg && !isDmgIteam;
+
+        if (isSliding)
+        {
+            if (obstacle.TryGetComponent(out IBonusObstacle bonusable))
+            {
+                bonusable.GetBonus();
+            }
+            else if (shouldTakeDamage)
+            {
+                ApplyDamage();
+            }
+        }
+        else
+        {
+            if (shouldTakeDamage)
+            {
+                ApplyDamage();
+            }
+            else
+            {
+                GameManager.Instance.score.IncreasObsScore();
+                Debug.Log("»Ñ¼ø°Ç°¡?");
+            }
+        }
+    }
+
+    void ApplyDamage()
+    {
+        Damage();
+        cooldownText.enabled = true;
     }
 
     public void Damage()
