@@ -38,30 +38,25 @@ public class Collisions : MonoBehaviour
         {
             isDmgIteam = Random.value <= chance;
             other.gameObject.GetComponent<Collider>().enabled = false;
-            if (!isDmg && !isDmgIteam)
+
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))
             {
-                Damage();
-                cooldownText.enabled = true;
+                if (other.TryGetComponent(out IBonusObstacle bonusable))
+                {
+                    bonusable.GetBonus();
+                }
             }
             else
             {
-                GameManager.Instance.score.IncreasObsScore();
-                Debug.Log("»Ñ¼ø°Ç°¡?");
-            }
-        }
-        else if(other.CompareTag("ObstacleBonus"))
-        {
-            if(animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))
-            {
-                GameManager.Instance.score.IncreasObsScore();
-            }
-            else
-            {
-                isDmgIteam = Random.value <= chance;
                 if (!isDmg && !isDmgIteam)
                 {
                     Damage();
                     cooldownText.enabled = true;
+                }
+                else
+                {
+                    GameManager.Instance.score.IncreasObsScore();
+                    Debug.Log("»Ñ¼ø°Ç°¡?");
                 }
             }
         }

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class ObstacleTackle : MonoBehaviour
 {
-    [SerializeField] private Transform startPosition;
     [SerializeField] private float detectRange = 30f;
     [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float returnSpeed = 5f;
     [SerializeField] private float slideRange = 5f;
     private bool isMoving = false;
-    private bool isReturning = false;
     private bool isSliding = false;
+
+    private Vector3 startPosition;
     private Vector3 targetPosition;
     private Animator animator;
     private Transform player;
@@ -20,7 +19,8 @@ public class ObstacleTackle : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player").transform;
-        targetPosition = startPosition.position;
+        startPosition = transform.position;
+        targetPosition = startPosition;
     }
 
     private void Update()
@@ -30,39 +30,42 @@ public class ObstacleTackle : MonoBehaviour
         if (!isMoving && playerDistance < detectRange)
         {
             isMoving = true;
-            isReturning = false;
             targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
         }
 
         if (isMoving)
         {
-            MoveTowardsTarget(targetPosition, moveSpeed);
+            MoveTowardsTarget(targetPosition);
 
             if (playerDistance > detectRange)
             {
                 isMoving = false;
-                isReturning = true;
-                targetPosition = startPosition.position;
+                targetPosition = startPosition;
+
+                StopMoving();
             }
             else if (playerDistance < slideRange && !isSliding)
             {
                 StartCoroutine(SlideAndReturn());
             }
         }
-
-        if (isReturning)
-        {
-            MoveTowardsTarget(targetPosition, returnSpeed);
-            if (Vector3.Distance(transform.position, startPosition.position) < 0.1f)
-            {
-                isReturning = false;
-            }
-        }
     }
 
-    private void MoveTowardsTarget(Vector3 target, float speed)
+    void StopMoving()
     {
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, target.z), speed * Time.deltaTime);
+        isMoving = false;
+        StartCoroutine(ReturnPosition());
+    }
+
+    private IEnumerator ReturnPosition()
+    {
+        yield return new WaitForSeconds(2f);
+        transform.position = startPosition;
+    }
+
+    private void MoveTowardsTarget(Vector3 target)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, target.z), moveSpeed * Time.deltaTime);
     }
 
     private IEnumerator SlideAndReturn()
@@ -71,8 +74,7 @@ public class ObstacleTackle : MonoBehaviour
         animator.Play("Slide");
         yield return new WaitForSeconds(1f);
 
-        isReturning = true;
-        targetPosition = startPosition.position;
+        targetPosition = startPosition;
         isSliding = false;
     }
 }

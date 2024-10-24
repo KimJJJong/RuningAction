@@ -2,78 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleDribble : MonoBehaviour
+public class ObstacleDribble : MonoBehaviour, IBonusObstacle
 {
-    public float detectionRange = 10f;       //플레이어 감지 범위
-    public float moveSpeed = 5f;             //이동 속도
-    public float returnDelay = 3f;           //충돌 후 처음 위치로 돌아가는 시간
-    public float disappearTime = 5f;         //장애물 사라졌다가 다시 나타나는 시간
-    private Vector3 originalPosition;        //처음 위치 저장
-    private bool isMoving = false;           //장애물 이동 여부
-    private bool hasCollided = false;        //플레이어 충돌 여부
-    private GameObject player;               //플레이어
+    [SerializeField] private float detectRange = 30f;
+    [SerializeField] private float moveSpeed = 10f;
+    private bool isMoving = false;
+    private bool hasCollided = false;
 
+    private Vector3 startPosition;
+    private Vector3 targetPosition;
     private Animator animator;
+    private Transform player;
+
+    public float fadeTime = 5f;
 
     void Start()
     {
-        originalPosition = transform.position;
-        player = GameObject.FindGameObjectWithTag("Player");
         animator = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        startPosition = transform.position;
+        targetPosition = startPosition;
     }
 
     void Update()
     {
-        if (!isMoving && Vector3.Distance(player.transform.position, transform.position) <= detectionRange)
+        float playerDistance = Vector3.Distance(transform.position, player.position);
+
+        if (!isMoving && playerDistance < detectRange && !hasCollided)
         {
-            StartMoving();
+            isMoving = true;
+            targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
         }
 
-        if (isMoving && Vector3.Distance(player.transform.position, transform.position) > detectionRange)
+        if (isMoving)
         {
-            StopMoving();
-        }
+            MoveTowardsTarget(targetPosition);
 
-        if (hasCollided)
-        {
-            StopMoving();
+            if (playerDistance > detectRange || hasCollided)
+            {
+                StopMoving();
+            }
         }
     }
 
-    void StartMoving()
+    private void MoveTowardsTarget(Vector3 target)
     {
-        isMoving = true;
-        animator.SetBool("IsDribbling", true); // 공을 튕기며 이동하는 애니메이션 시작
-        StartCoroutine(MoveTowardsPlayer());
-    }
-
-    IEnumerator MoveTowardsPlayer()
-    {
-        while (isMoving)
-        {
-            Vector3 direction = (player.transform.position - transform.position).normalized;
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
-
-            yield return null;
-        }
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, target.z), moveSpeed * Time.deltaTime);
     }
 
     void StopMoving()
     {
+        targetPosition = startPosition;
         isMoving = false;
-        animator.SetBool("IsDribbling", false);
-        StartCoroutine(ReturnToOriginalPosition());
+        StartCoroutine(ReturnPosition());
     }
 
-    IEnumerator ReturnToOriginalPosition()
+    private IEnumerator ReturnPosition()
     {
-        yield return new WaitForSeconds(returnDelay);
-        transform.position = originalPosition;
+        yield return new WaitForSeconds(2f);
+        transform.position = startPosition;
     }
 
-    void Respawn()
+    public void GetBonus()
+    {
+        Debug.LogError("get bonus");
+        StopMoving();
+        FadeOut();
+
+        hasCollided = true;
+        GameManager.Instance.score.IncreasObsScore();
+    }
+
+    private void FadeOut()
+    {
+        Debug.LogError("FadeObstacle");
+        animator.Play("Stumble");
+    }
+
+    private void Respawn()
     {
         gameObject.SetActive(true);
-        transform.position = originalPosition;
+        transform.position = startPosition;
     }
 }
