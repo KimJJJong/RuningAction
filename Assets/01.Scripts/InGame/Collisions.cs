@@ -110,7 +110,11 @@ public class Collisions : MonoBehaviour
 
     void Shoot()
     {
-        ball.Shoot(playerController.curPos);
+        if (ball != null)
+        {
+            ball.Shoot(playerController.curPos);
+            ball = null;
+        }
     }
 
     IEnumerator Cooldown()
