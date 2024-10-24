@@ -25,7 +25,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         startPosition = transform.position;
         targetPosition = startPosition;
 
-        // 드리블 시작
         StartDribblingBall();
     }
 
@@ -82,12 +81,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     {
         Debug.LogError("FadeObstacle");
         animator.Play("Stumble");
-    }
-
-    private void Respawn()
-    {
-        gameObject.SetActive(true);
-        transform.position = startPosition;
     }
 
     private void StartDribblingBall()
