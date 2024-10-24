@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ObstacleDribble : MonoBehaviour, IBonusObstacle
 {
     [SerializeField] private float detectRange = 30f;
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private GameObject ball;
-    [SerializeField] private float dribbleDistance = 0.5f;
-    [SerializeField] private float dribbleSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 360f;
-
     private bool isMoving = false;
     private bool hasCollided = false;
 
@@ -20,7 +17,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     private Transform player;
 
     public float fadeTime = 5f;
-    private Coroutine dribbleCoroutine;
 
     void Start()
     {
@@ -28,6 +24,9 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         player = GameObject.FindGameObjectWithTag("Player").transform;
         startPosition = transform.position;
         targetPosition = startPosition;
+
+        // 드리블 시작
+        StartDribblingBall();
     }
 
     void Update()
@@ -38,7 +37,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         {
             isMoving = true;
             targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
-            dribbleCoroutine = StartCoroutine(DribbleBall());
         }
 
         if (isMoving)
@@ -62,12 +60,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         targetPosition = startPosition;
         isMoving = false;
         StartCoroutine(ReturnPosition());
-        
-        if (dribbleCoroutine != null)
-        {
-            StopCoroutine(dribbleCoroutine);
-            dribbleCoroutine = null;
-        }
     }
 
     private IEnumerator ReturnPosition()
@@ -96,32 +88,13 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        hasCollided = false;
     }
 
-    private IEnumerator DribbleBall()
+    private void StartDribblingBall()
     {
-        Vector3 ballStartPos = ball.transform.localPosition;
+        ball.transform.DOLocalMoveZ(1f, 0.3f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutQuad);
 
-        while (true)
-        { 
-            float elapsed = 0f;
-            while (elapsed < dribbleSpeed)
-            {
-                elapsed += Time.deltaTime;
-                ball.transform.localPosition = Vector3.Lerp(ballStartPos, ballStartPos + Vector3.forward * dribbleDistance, elapsed / dribbleSpeed);
-                ball.transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime); 
-                yield return null;
-            }
-
-            elapsed = 0f;
-            while (elapsed < dribbleSpeed)
-            {
-                elapsed += Time.deltaTime;
-                ball.transform.localPosition = Vector3.Lerp(ballStartPos + Vector3.forward * dribbleDistance, ballStartPos, elapsed / dribbleSpeed);
-                ball.transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime);
-                yield return null;
-            }
-        }
+        ball.transform.DOLocalRotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360)
+            .SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
     }
 }

@@ -36,7 +36,6 @@ public class SoccerBall : MonoBehaviour
 
     public void Goal()
     {
-        Debug.LogError("Goal");
         shotOnGoal.GoalEvent();
 
         isShooting = false;
@@ -44,8 +43,6 @@ public class SoccerBall : MonoBehaviour
 
     public void Blocked()
     {
-        Debug.LogError("Blocked");
-
         isShooting = false;
     }
 

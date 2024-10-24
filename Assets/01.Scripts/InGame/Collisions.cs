@@ -110,7 +110,6 @@ public class Collisions : MonoBehaviour
 
     void Shoot()
     {
-        Debug.LogError("Shot");
         ball.Shoot(playerController.curPos);
     }
 
