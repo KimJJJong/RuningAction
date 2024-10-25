@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class Collisions : MonoBehaviour
 {
@@ -18,8 +19,10 @@ public class Collisions : MonoBehaviour
 
     public TextMeshProUGUI cooldownText;
 
-    PlayerController playerController;
-    SoccerBall ball;
+    private PlayerController playerController;
+    private SoccerBall ball;
+    private float shootCooldown = 2f;
+    private bool canShoot = true;
 
     void Start()
     {
@@ -40,18 +43,17 @@ public class Collisions : MonoBehaviour
         }
         else if (other.CompareTag("SoccerBall"))
         {
-            ball = other.GetComponent<SoccerBall>();
-        }
-        else if (other.CompareTag("ShootingZone"))
-        {
-            Shoot();
+            if (ball == null && canShoot)
+            {
+                ball = other.GetComponent<SoccerBall>();
+                Shoot();
+            }
         }
     }
 
     void ObstacleCollision(Collider obstacle)
     {
         isDmgIteam = Random.value <= chance;
-        obstacle.gameObject.GetComponent<Collider>().enabled = false;
 
         bool isSliding = animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
         bool shouldTakeDamage = !isDmg && !isDmgIteam;
@@ -91,6 +93,7 @@ public class Collisions : MonoBehaviour
     {
         if (canInteract)
         {
+            isDmg = true;
             animator.Play("Stumble");
             hpController.collsionObstacle();
 
@@ -112,22 +115,51 @@ public class Collisions : MonoBehaviour
     {
         if (ball != null)
         {
-            ball.Shoot(playerController.curPos);
+            ball.Shoot(ball.ballLine);
             ball = null;
+            StartCoroutine(ShootCooldown());
         }
+    }
+
+    IEnumerator ShootCooldown()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(shootCooldown);
+        canShoot = true;
     }
 
     IEnumerator Cooldown()
     {
         StartCoroutine(DieAnimation());
         canInteract = false;
-        StartCoroutine(BlinkCooldownText());
-
+        //StartCoroutine(BlinkCooldownText());
+        cooldownText.DOFade(0, 0.5f).SetLoops(-1, LoopType.Yoyo);
 
         yield return new WaitForSeconds(2f);
         cooldownText.enabled = false;
-
         canInteract = true;
+
+        BlinkPlayer();
+        yield return new WaitForSeconds(2f);
+        isDmg = false;
+    }
+
+    private SkinnedMeshRenderer[] renderers;
+    private void BlinkPlayer()
+    {
+        renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        foreach (var renderer in renderers)
+        {
+            foreach (var material in renderer.materials)
+            {
+                material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
+                {
+                    material.DOFade(1, 0.1f);
+                    Debug.LogError("dofade");
+                });
+            }
+        }
     }
 
     void Die()

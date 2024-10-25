@@ -9,11 +9,7 @@ public class ShotOnGoal : MonoBehaviour
     [SerializeField] Transform[] ballsPosition;
 
     public GoalKeeper goalKeeper;
-
-    private void OnEnable()
-    {
-        SetGoalKeeperAndGoalPost(true);
-    }
+    private Coroutine coroutine;
 
     public void ShootEvent(int playerLane)
     {
@@ -23,17 +19,42 @@ public class ShotOnGoal : MonoBehaviour
     public void GoalEvent()
     {
         //이벤트 실행
-        SetGoalKeeperAndGoalPost(false);
-        ResetBallPosition();
+        SetGoalObj();
     }
 
-    public void SetGoalKeeperAndGoalPost(bool isActive)
+    public void BlockEvent()
     {
+        //이벤트 실행
+        SetGoalObj();
+    }
+
+    public void SetGoalObj()
+    {
+        if (coroutine != null)
+            coroutine = null;
+
+        coroutine = StartCoroutine(SetGoalObjCor());
+    }
+
+    private IEnumerator SetGoalObjCor()
+    {
+        yield return new WaitForSeconds(1f);
+
         foreach (GameObject obj in goalObjects)
         {
-            if (obj.activeSelf != isActive)
-                obj.SetActive(isActive);
+            obj.SetActive(false);
         }
+
+        yield return new WaitForSeconds(2f);
+
+        foreach (GameObject obj in goalObjects)
+        {
+            obj.SetActive(true);
+        }
+
+        ResetBallPosition();
+
+        coroutine = null;
     }
 
     public void ResetBallPosition()
