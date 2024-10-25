@@ -18,11 +18,13 @@ public class Collisions : MonoBehaviour
     public bool canInteract { get; set; }
 
     public TextMeshProUGUI cooldownText;
-
+    public TextMeshProUGUI goalText;
     private PlayerController playerController;
     private SoccerBall ball;
     private float shootCooldown = 2f;
     private bool canShoot = true;
+
+    private SkinnedMeshRenderer[] renderers;
 
     void Start()
     {
@@ -33,6 +35,7 @@ public class Collisions : MonoBehaviour
 
         canInteract = true;
         cooldownText.enabled = false;
+        goalText.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
@@ -86,7 +89,6 @@ public class Collisions : MonoBehaviour
     void ApplyDamage()
     {
         Damage();
-        cooldownText.enabled = true;
     }
 
     public void Damage()
@@ -130,10 +132,11 @@ public class Collisions : MonoBehaviour
 
     IEnumerator Cooldown()
     {
-        StartCoroutine(DieAnimation());
         canInteract = false;
+        cooldownText.enabled = true;
+
         //StartCoroutine(BlinkCooldownText());
-        cooldownText.DOFade(0, 0.5f).SetLoops(-1, LoopType.Yoyo);
+        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
 
         yield return new WaitForSeconds(2f);
         cooldownText.enabled = false;
@@ -144,8 +147,7 @@ public class Collisions : MonoBehaviour
         isDmg = false;
     }
 
-    private SkinnedMeshRenderer[] renderers;
-    private void BlinkPlayer()
+    public void BlinkPlayer()
     {
         renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
 
@@ -156,7 +158,6 @@ public class Collisions : MonoBehaviour
                 material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
                 {
                     material.DOFade(1, 0.1f);
-                    Debug.LogError("dofade");
                 });
             }
         }
@@ -172,19 +173,6 @@ public class Collisions : MonoBehaviour
     {
         StartCoroutine(Shake());
     }
-    IEnumerator DieAnimation()
-    {
-        yield return new WaitForSeconds(3);
-    }
-
-    IEnumerator BlinkCooldownText()
-    {
-        while (!canInteract)
-        {
-            cooldownText.enabled = !cooldownText.enabled;
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
 
     IEnumerator Shake()
     {
@@ -196,7 +184,4 @@ public class Collisions : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
-
-
-
 }

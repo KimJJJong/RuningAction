@@ -89,6 +89,14 @@ public class CollectCoin : MonoBehaviour
         CheckHighScoreColor();
     }
 
+    public void AddCoin(int coinValue)
+    {
+        AddScore(coinValue);
+        coin += coinValue;
+        coinText.text = coin.ToString();
+        CheckHighScoreColor();
+    }
+
     void CheckHighScoreColor()
     {
         if (score > highScore)

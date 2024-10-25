@@ -36,14 +36,14 @@ public class SoccerBall : MonoBehaviour
 
     public void Goal()
     {
-        shotOnGoal.GoalEvent();
+        shotOnGoal.PlayGoalEvent();
 
         isShooting = false;
     }
 
     public void Blocked()
     {
-        shotOnGoal.BlockEvent();
+        shotOnGoal.PlayBlockEvent();
 
         isShooting = false;
     }
