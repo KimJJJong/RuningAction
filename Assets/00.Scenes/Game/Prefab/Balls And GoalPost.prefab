@@ -706,9 +706,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7005400689319179099}
-  - {fileID: 7809985570729737158}
   - {fileID: 7714123410927694660}
+  - {fileID: 7809985570729737158}
+  - {fileID: 7005400689319179099}
   m_Father: {fileID: 3071415555535405361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8473743899832483422
@@ -987,9 +987,9 @@ MonoBehaviour:
   - {fileID: 7432652346373973808}
   - {fileID: 7319560698174916054}
   ballsPosition:
-  - {fileID: 7005400689319179099}
-  - {fileID: 7809985570729737158}
   - {fileID: 7714123410927694660}
+  - {fileID: 7809985570729737158}
+  - {fileID: 7005400689319179099}
   goalKeeper: {fileID: 9101279040563875480}
 --- !u!1 &8868170378281811695
 GameObject:

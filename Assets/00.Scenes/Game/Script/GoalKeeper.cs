@@ -17,10 +17,12 @@ public class GoalKeeper : MonoBehaviour
 
     private void Start()
     {
-        shotOnGoal = FindAnyObjectByType<ShotOnGoal>();
+        shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
+        SetKeeperLane();
     }
 
-    private void OnEnable()
+
+    public void SetKeeperLane()
     {
         currentLane = Random.Range(0, 3);
         transform.position = GetLanePosition(currentLane);

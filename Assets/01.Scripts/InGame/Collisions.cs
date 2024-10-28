@@ -42,6 +42,11 @@ public class Collisions : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
+            if (playerController.autoDodge)
+            {
+                playerController.DodgeOnPosition();
+                return;
+            }
             ObstacleCollision(other);
         }
         else if (other.CompareTag("SoccerBall"))
@@ -56,6 +61,11 @@ public class Collisions : MonoBehaviour
 
     void ObstacleCollision(Collider obstacle)
     {
+        if (playerController.autoDodge)
+        {
+            return;
+        }
+
         isDmgIteam = Random.value <= chance;
 
         bool isSliding = animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
@@ -96,7 +106,7 @@ public class Collisions : MonoBehaviour
         if (canInteract)
         {
             isDmg = true;
-            animator.Play("Stumble");
+            //animator.Play("Stumble");
             hpController.collsionObstacle();
 
             if (hpController.getValue() <= 0)
@@ -109,7 +119,8 @@ public class Collisions : MonoBehaviour
                 GameManager.Instance.postEffectController.GetDamage();
 
             }
-            StartCoroutine(Cooldown());
+            //StartCoroutine(Cooldown());
+            Cooldown();
         }
     }
 
@@ -130,22 +141,28 @@ public class Collisions : MonoBehaviour
         canShoot = true;
     }
 
+    private void Cooldown()
+    {
+        cooldownText.enabled = true;
+
+        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
+
+        BlinkPlayer();
+    }
+
+    /*
     IEnumerator Cooldown()
     {
         canInteract = false;
         cooldownText.enabled = true;
 
-        //StartCoroutine(BlinkCooldownText());
         cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
 
         yield return new WaitForSeconds(2f);
-        cooldownText.enabled = false;
-        canInteract = true;
 
         BlinkPlayer();
-        yield return new WaitForSeconds(2f);
-        isDmg = false;
     }
+    */
 
     public void BlinkPlayer()
     {
@@ -158,6 +175,9 @@ public class Collisions : MonoBehaviour
                 material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
                 {
                     material.DOFade(1, 0.1f);
+                    cooldownText.enabled = false;
+                    canInteract = true;
+                    isDmg = false;
                 });
             }
         }

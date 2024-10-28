@@ -12,14 +12,6 @@ public class ShotOnGoal : MonoBehaviour
 
     public GoalKeeper goalKeeper;
     private Coroutine coroutine;
-    private GameManager gameManager;
-
-    private Coroutine eventCoroutine;
-
-    private void Start()
-    {
-        gameManager = GameManager.Instance;
-    }
 
     public void ShootEvent(int playerLane)
     {
@@ -28,7 +20,7 @@ public class ShotOnGoal : MonoBehaviour
 
     public void PlayGoalEvent()
     {
-        PlayGoalText();
+        GameUIManager.instance.PlayGoalText();
 
         //이벤트 실행
         int eventCount = System.Enum.GetValues(typeof(GoalEvent)).Length;
@@ -37,10 +29,12 @@ public class ShotOnGoal : MonoBehaviour
         switch (goalEvent)
         {
             case GoalEvent.EventAddScore:
-                gameManager.score.AddScore(1000);
+                //gameManager.score.AddScore(1000);
+                Debug.LogError("Score Event");
                 break;
             case GoalEvent.EventAddCoin:
-                gameManager.score.AddCoin(300);
+                //gameManager.score.AddCoin(300);
+                Debug.LogError("Coin Event");
                 break;
             case GoalEvent.EventAddHp:
                 GameManager.Instance.HpController.Heal(10);
@@ -62,39 +56,22 @@ public class ShotOnGoal : MonoBehaviour
     public void SetGoalObj()
     {
         if (coroutine != null)
-            coroutine = null;
+        {
+            StopCoroutine(coroutine); 
+        }
 
         coroutine = StartCoroutine(SetGoalObjCor());
     }
 
-    private void PlayGoalText()
-    {
-        if (eventCoroutine != null)
-            eventCoroutine = null;
-
-        eventCoroutine = StartCoroutine(GoalTextCor());
-    }
-
-    private IEnumerator GoalTextCor()
-    {
-        TextMeshProUGUI goalText = gameManager.collisions.goalText;
-        goalText.enabled = true;
-        goalText.GetComponent<DOTweenAnimation>().DOPlay();
-
-        yield return new WaitForSeconds(2f);
-        goalText.enabled = false;
-
-        eventCoroutine = null;
-    }
-
     private IEnumerator SetGoalObjCor()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
 
         foreach (GameObject obj in goalObjects)
         {
             obj.SetActive(false);
         }
+        ResetPosition();
 
         yield return new WaitForSeconds(2f);
 
@@ -103,17 +80,18 @@ public class ShotOnGoal : MonoBehaviour
             obj.SetActive(true);
         }
 
-        ResetBallPosition();
-
         coroutine = null;
     }
 
-    public void ResetBallPosition()
+    public void ResetPosition()
     {
         for(int num = 0; num < balls.Length; num++)
         {
             balls[num].position = ballsPosition[num].position;
+            balls[num].rotation = Quaternion.identity;
         }
+
+        goalKeeper.SetKeeperLane();
     }
 }
 

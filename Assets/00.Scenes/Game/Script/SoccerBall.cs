@@ -14,7 +14,7 @@ public class SoccerBall : MonoBehaviour
     private ShotOnGoal shotOnGoal;
     private void Start()
     {
-        shotOnGoal = FindAnyObjectByType<ShotOnGoal>();
+        shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
     }
 
     void Update()
@@ -34,29 +34,17 @@ public class SoccerBall : MonoBehaviour
         shotOnGoal.ShootEvent(playerLane);
     }
 
-    public void Goal()
-    {
-        shotOnGoal.PlayGoalEvent();
-
-        isShooting = false;
-    }
-
-    public void Blocked()
-    {
-        shotOnGoal.PlayBlockEvent();
-
-        isShooting = false;
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("GoalKeeper"))
         {
-            Blocked();
+            isShooting = false;
+            shotOnGoal.PlayBlockEvent();
         }
         else if (other.CompareTag("GoalPost"))
         {
-            Goal();
+            isShooting = false;
+            shotOnGoal.PlayGoalEvent();
         }
 
     }
