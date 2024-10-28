@@ -1,10 +1,10 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class Collisions : MonoBehaviour
 {
-    GameManager gameManager;
     HpController hpController;
     new Camera camera;
     //cam movement
@@ -18,44 +18,95 @@ public class Collisions : MonoBehaviour
     public bool canInteract { get; set; }
 
     public TextMeshProUGUI cooldownText;
+    public TextMeshProUGUI goalText;
+    private PlayerController playerController;
+    private SoccerBall ball;
+    private float shootCooldown = 2f;
+    private bool canShoot = true;
+
+    private SkinnedMeshRenderer[] renderers;
 
     void Start()
     {
-
         camera = FindAnyObjectByType<Camera>();
         hpController = FindAnyObjectByType<HpController>();
-        gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
+        playerController = GetComponent<PlayerController>();
 
         canInteract = true;
         cooldownText.enabled = false;
+        goalText.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
         {
-            isDmgIteam = UnityEngine.Random.value <= chance;
-            other.gameObject.GetComponent<Collider>().enabled = false;
-            if (!isDmg && !isDmgIteam)
+            if (playerController.autoDodge)
             {
-                Damage();
-                cooldownText.enabled = true;
+                playerController.DodgeOnPosition();
+                return;
+            }
+            ObstacleCollision(other);
+        }
+        else if (other.CompareTag("SoccerBall"))
+        {
+            if (ball == null && canShoot)
+            {
+                ball = other.GetComponent<SoccerBall>();
+                Shoot();
+            }
+        }
+    }
+
+    void ObstacleCollision(Collider obstacle)
+    {
+        if (playerController.autoDodge)
+        {
+            return;
+        }
+
+        isDmgIteam = Random.value <= chance;
+
+        bool isSliding = animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
+        bool shouldTakeDamage = !isDmg && !isDmgIteam;
+
+        if (isSliding)
+        {
+            if (obstacle.TryGetComponent(out IBonusObstacle bonusable))
+            {
+                bonusable.GetBonus();
+            }
+            else if (shouldTakeDamage)
+            {
+                ApplyDamage();
+            }
+        }
+        else
+        {
+            if (shouldTakeDamage)
+            {
+                ApplyDamage();
             }
             else
             {
                 GameManager.Instance.score.IncreasObsScore();
-                Debug.Log("뿌순건가?"); // Rush 파괴시 점수 추가는 여기에!!!
+                Debug.Log("뿌순건가?");
             }
-
         }
     }
 
-    void Damage()
+    void ApplyDamage()
+    {
+        Damage();
+    }
+
+    public void Damage()
     {
         if (canInteract)
         {
-            animator.Play("Stumble");
+            isDmg = true;
+            //animator.Play("Stumble");
             hpController.collsionObstacle();
 
             if (hpController.getValue() <= 0)
@@ -68,20 +119,68 @@ public class Collisions : MonoBehaviour
                 GameManager.Instance.postEffectController.GetDamage();
 
             }
-            StartCoroutine(Cooldown());
+            //StartCoroutine(Cooldown());
+            Cooldown();
         }
     }
+
+    void Shoot()
+    {
+        if (ball != null)
+        {
+            ball.Shoot(ball.ballLine);
+            ball = null;
+            StartCoroutine(ShootCooldown());
+        }
+    }
+
+    IEnumerator ShootCooldown()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(shootCooldown);
+        canShoot = true;
+    }
+
+    private void Cooldown()
+    {
+        cooldownText.enabled = true;
+
+        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
+
+        BlinkPlayer();
+    }
+
+    /*
     IEnumerator Cooldown()
     {
-        StartCoroutine(DieAnimation());
         canInteract = false;
-        StartCoroutine(BlinkCooldownText());
+        cooldownText.enabled = true;
 
+        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
 
         yield return new WaitForSeconds(2f);
-        cooldownText.enabled = false;
 
-        canInteract = true;
+        BlinkPlayer();
+    }
+    */
+
+    public void BlinkPlayer()
+    {
+        renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        foreach (var renderer in renderers)
+        {
+            foreach (var material in renderer.materials)
+            {
+                material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
+                {
+                    material.DOFade(1, 0.1f);
+                    cooldownText.enabled = false;
+                    canInteract = true;
+                    isDmg = false;
+                });
+            }
+        }
     }
 
     void Die()
@@ -94,19 +193,6 @@ public class Collisions : MonoBehaviour
     {
         StartCoroutine(Shake());
     }
-    IEnumerator DieAnimation()
-    {
-        yield return new WaitForSeconds(3);
-    }
-
-    IEnumerator BlinkCooldownText()
-    {
-        while (!canInteract)
-        {
-            cooldownText.enabled = !cooldownText.enabled;
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
 
     IEnumerator Shake()
     {
@@ -118,7 +204,4 @@ public class Collisions : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
-
-
-
 }

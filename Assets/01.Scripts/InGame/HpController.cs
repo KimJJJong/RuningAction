@@ -14,12 +14,12 @@ public class HpController : MonoBehaviour
         StartCoroutine(decressHp());
     }
 
-
     public void setHp(float maxHp)
     {
         HpBar.maxValue += maxHp;
         HpBar.value = HpBar.maxValue;
     }
+
     public void Heal(float heal)
     {
         if (HpBar.value + heal >= HpBar.maxValue)

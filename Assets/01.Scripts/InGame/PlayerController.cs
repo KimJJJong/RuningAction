@@ -27,30 +27,21 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 3;
 
     [Space(10f)]
-    [Header("#ĳ���� ")]
-    public ECharacter eCh;      // = { ĳ���� }; ���� �ʿ�
-    public ERank eChRank;       // ĳ���� Lv
-                                //public int chStar;        //���� ����??
+    [Header("Character")]
+    public ECharacter eCh;
+    public ERank eChRank;
 
     [Space(10f)]
-    [Header("#���� ���� ( Bat / Glove ) ")]
-    [Space(5f)]
-    public ERank eBatRank;   // Glove���
-    //public int batStar     //Bat���� ����
-
-    [Space(5f)]
-    public ERank eGloveRank;   // Glove���
-    //public int gloveStar     //Glove���� ����
-
+    [Header("Bat/Glove Ranks")]
+    public ERank eBatRank;
+    public ERank eGloveRank;
 
     bool smash;
     bool slide;
-    float targetPosition;
-    float curPosition;
     bool isJumping = false;
     bool _isRush;
     bool _isMagnetic;
-    int curPos = 1;   // 0 = left, 1 = center, 2 = right;
+    [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
     Collisions collisions;
     CapsuleCollider capsuleCollider;
@@ -65,6 +56,8 @@ public class PlayerController : MonoBehaviour
         set => _isMagnetic = value;
     }
 
+    public bool autoDodge = false;
+    public float dodgeDuration = 3f;
 
     void Start()
     {
@@ -73,9 +66,9 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
-        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
+        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
     }
 
     void Update()
@@ -86,29 +79,14 @@ public class PlayerController : MonoBehaviour
             StateUpdate();
         }
 
-    }
-    /*
-         private void FixedUpdate()
+        if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
         {
-            RaycastHit hit;
+            //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
 
-            Vector3 rayOrigin = transform.position + new Vector3(0,0.1f,0);
-            Vector3 rayDirection = Vector3.forward;
-
-
-            if (Physics.Raycast(rayOrigin, rayDirection, out hit, 0.2f))
-            {
-                if (hit.collider.CompareTag("Ramp"))
-                {
-                    Vector3 newPos = hit.point;
-                    transform.position = newPos;
-
-                    Debug.Log("hit");
-                }
-            }
+            autoDodge = !autoDodge;
+            GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
         }
-     */
-
+    }
 
     void Running()
     {
@@ -125,45 +103,43 @@ public class PlayerController : MonoBehaviour
         {
             runningSpeed = maxSpeed;
         }
-
-        float xPosition = transform.position.x;
-
     }
+
     private void MoveHorizontal()
     {
-        if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
+        if (!autoDodge)
         {
-            SetState(EState.Left);
-            curPos = 0;
+            if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
+            {
+                SetState(EState.Left);
+                curPos = 0;
 
-        }
-        else if (curPos == 1 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
-        {
-            SetState(EState.Right);
-            curPos = 2;
+            }
+            else if (curPos == 1 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
+            {
+                SetState(EState.Right);
+                curPos = 2;
 
-        }
-        else if (curPos == 0 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
-        {
-            SetState(EState.Right);
-            curPos = 1;
+            }
+            else if (curPos == 0 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
+            {
+                SetState(EState.Right);
+                curPos = 1;
 
-        }
-        else if (curPos == 2 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
-        {
-            SetState(EState.Left);
-            curPos = 1;
+            }
+            else if (curPos == 2 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
+            {
+                SetState(EState.Left);
+                curPos = 1;
 
+            }
         }
+
         MoveToCenter();
     }
 
-
-
-
     void StateUpdate()
     {
-        // if (!isJumping)       // ������ ��, �� �̵� ����
         MoveHorizontal();
 
 
@@ -174,7 +150,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             SetState(EState.Down);
-            
+
         }
         if (Input.GetKeyDown(KeyCode.K) && !smash)
         {
@@ -189,29 +165,16 @@ public class PlayerController : MonoBehaviour
 
     private void MoveToCenter()
     {
-        if (curPos == 1)
+        Vector3 targetPos = transform.position;
+
+        if (curPos == 1) targetPos = new Vector3(centerPos.position.x, transform.position.y, transform.position.z);
+        else if (curPos == 0) targetPos = new Vector3(leftPos.position.x, transform.position.y, transform.position.z);
+        else if (curPos == 2) targetPos = new Vector3(rightPos.position.x, transform.position.y, transform.position.z);
+
+        if (Vector3.Distance(transform.position, targetPos) > 0.1f)
         {
-            if (Vector3.Distance(transform.position, new Vector3(centerPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(centerPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
-        }
-        else if (curPos == 0)
-        {
-            if (Vector3.Distance(transform.position, new Vector3(leftPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(leftPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
-        }
-        else if (curPos == 2)
-        {
-            if (Vector3.Distance(transform.position, new Vector3(rightPos.position.x, transform.position.y, transform.position.z)) >= 0.1f)
-            {
-                Vector3 dir = new Vector3(rightPos.position.x, transform.position.y, transform.position.z) - transform.position;
-                transform.Translate(dir.normalized * sideSpeed * Time.deltaTime, Space.World);
-            }
+            Vector3 dir = (targetPos - transform.position).normalized;
+            transform.Translate(dir * sideSpeed * Time.deltaTime, Space.World);
         }
     }
 
@@ -223,13 +186,11 @@ public class PlayerController : MonoBehaviour
             case EState.Left:
                 {
                     animator.Play("MoveLeft");
-
                 }
                 break;
             case EState.Right:
                 {
                     animator.Play("MoveRight");
-
                 }
                 break;
             case EState.Up:
@@ -237,16 +198,15 @@ public class PlayerController : MonoBehaviour
                     isJumping = true;
                     rb.AddForce(Vector3.up * jumpForce);
                     animator.Play("Jumping");
-                    MasterAudio.PlaySound3DAtTransform("jump 2",transform);
-
+                    MasterAudio.PlaySound3DAtTransform("jump 2", transform);
                 }
                 break;
             case EState.Down:
                 {
                     if (!slide)
                     {
-                    animator.Play("Slide");
-                      slide = true;
+                        animator.Play("Slide");
+                        slide = true;
                         if (isJumping)
                         {
                             rb.AddForce(Vector3.down * downForce);
@@ -254,9 +214,7 @@ public class PlayerController : MonoBehaviour
                         MasterAudio.PlaySound3DAtTransform("side_move", transform);
 
                         StartCoroutine(MoveDownAndUp());
-
                     }
-
                 }
                 break;
             case EState.Batting:
@@ -289,25 +247,23 @@ public class PlayerController : MonoBehaviour
         if (!_isRush)
         {
             GameManager.Instance.postEffectController.RushPostEffect(0.125f, 0.25f, true);
-            if (!isIteam)   // Ư��ȿ�� ����Ҷ� Rush
+            if (!isIteam)
                 StartCoroutine(InvincibilityWeaponTimer());
-            else if (isIteam)    // ������ �Ծ Rush
+            else if (isIteam)
                 StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
-
         }
     }
+
     public void BeMagnetic()    //Iteam Magnetic
     {
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
 
-
-
     IEnumerator appearHitBox(ERank chRank, ECharacter ch)
     {
         smash = true;
         weapon.Triger(eCh, chRank, ch);
-        yield return new WaitForSeconds(1f);    // ���� coolTime
+        yield return new WaitForSeconds(1f);
         smash = false;
     }
     IEnumerator MoveDownAndUp()
@@ -331,7 +287,7 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
         while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
         {
-            GameManager.Instance.weapon.DecreaseGage(10f);   // Weapon��� ���� �ð� ����
+            GameManager.Instance.weapon.DecreaseGage(10f);
             yield return new WaitForSeconds(1);
         }
         GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
@@ -361,6 +317,65 @@ public class PlayerController : MonoBehaviour
         IsMagnetic = true;
         yield return new WaitForSeconds(time);
         IsMagnetic = false;
+    }
 
+
+    private IEnumerator AutoDodgeRoutine(float duration)
+    {
+        autoDodge = true;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, false);
+        //autoDodge = false;
+    }
+
+    public void DodgeOnPosition()
+    {
+        if (curPos == 0 || curPos == 2)
+        {
+            MoveToLane(1);
+        }
+        else if (curPos == 1)
+        {
+            if (!IsObstacleLane(0)) { MoveToLane(0); }
+            else if (!IsObstacleLane(2)) { MoveToLane(2); }
+        }
+    }
+
+    private bool IsObstacleLane(int lane)
+    {
+        Vector3 lanePosition = lane == 0 ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z) : (lane == 1 ? new Vector3(centerPos.position.x, transform.position.y, transform.position.z) : new Vector3(rightPos.position.x, transform.position.y, transform.position.z));
+
+        Vector3 boxHalfExtents = new Vector3(0.1f, 0.1f, 0.5f / 2);
+
+        
+        return Physics.BoxCast(transform.position + new Vector3(0, 0.5f, 0), boxHalfExtents, (lanePosition - transform.position).normalized, Quaternion.identity, 0.5f);
+
+        return Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), (lanePosition - transform.position).normalized, 0.5f);
+    }
+
+    private void MoveToLane(int lane)
+    {
+        if (lane == 0)
+        {
+            SetState(EState.Left);
+            curPos = 0;
+        }
+        else if (lane == 1)
+        {
+            SetState(EState.Right);
+            curPos = 1;
+        }
+        else if (lane == 2)
+        {
+            SetState(EState.Right);
+            curPos = 2;
+        }
     }
 }

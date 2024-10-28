@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AmazingAssets.CurvedWorld;
 
 public class ChunckSpawner : MonoBehaviour
 {
@@ -22,6 +23,16 @@ public class ChunckSpawner : MonoBehaviour
     private List<Queue<GameObject>> _chunksQueueList02 = new List<Queue<GameObject>>();
     private Vector3 _spawnPos = new Vector3(0f, -38f, 0f);
 
+    #region curved world argument
+    private CurvedWorldController curvedController;
+    [Header("Curved World")]
+    [SerializeField] private float curvedZMaxValue = 10;
+    [SerializeField] private float curvedZMinValue = -10;
+    private float currentCurvedValue;
+    private float currentTime = 0f;
+    private float curveTime = 10f;
+    #endregion
+
     private void Awake()
     {
         _spawnPos = new Vector3(-0.4f, -39.25718f, 170);
@@ -30,20 +41,38 @@ public class ChunckSpawner : MonoBehaviour
     {
         PoolChunks(_chunksQueueList01,_chunks01);
         PoolChunks(_chunksQueueList02, _chunks02);
+
+        curvedController = GameObject.Find("Curved World Controller").GetComponent<CurvedWorldController>();
+        currentCurvedValue = curvedController.bendHorizontalSize;
     }
+
     private void Update()
     {
+        currentTime += Time.deltaTime;
+
         if (Vector3.Distance(_playerTransform.position, _spawnPos) < _spawnDistance)
         {
-          if(_spawnPos.z > 600f)
+            if (_spawnPos.z > 600f)
             {
-            Debug.Log(_spawnPos);
+                Debug.Log(_spawnPos);
                 SpawnRandomChunk(_chunksQueueList02);
             }
-           else
-           SpawnRandomChunk(_chunksQueueList01);
+            else
+                SpawnRandomChunk(_chunksQueueList01);
+        }
+
+        if(currentTime > curveTime)
+        {
+            currentTime = 0;
+
+            if (currentCurvedValue < 0)
+                StartCoroutine(SetCurvedWorld(currentCurvedValue, curvedZMaxValue, 2));
+            else
+                StartCoroutine(SetCurvedWorld(currentCurvedValue, curvedZMinValue, 2));
+
         }
     }
+
     private void PoolChunks(List<Queue<GameObject>> chuncksQueueList, GameObject[] chuncks)
     {
         for (int i = 0; i < chuncks.Length; i++)
@@ -65,20 +94,38 @@ public class ChunckSpawner : MonoBehaviour
     {
         if (Random.Range(0, 100) <= 5 + goldStageProbability)
         {
-            GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count-1].Dequeue();
+            GameObject newChunk = _chunksQueueList01[chuncksQueueList.Count - 1].Dequeue();
             newChunk.transform.position = _spawnPos;
             _spawnPos.z += _chunkLenght;
             newChunk.gameObject.SetActive(true);
-            _chunksQueueList01[chuncksQueueList.Count-1].Enqueue(newChunk);
+            _chunksQueueList01[chuncksQueueList.Count - 1].Enqueue(newChunk);
         }
         else
         {
             int randValue = Random.Range(0, chuncksQueueList.Count - 1);
-        GameObject newChunk = chuncksQueueList[randValue].Dequeue();
-        newChunk.transform.position = _spawnPos;
-        _spawnPos.z += _chunkLenght;
-        newChunk.gameObject.SetActive(true);
+            GameObject newChunk = chuncksQueueList[randValue].Dequeue();
+            newChunk.transform.position = _spawnPos;
+            _spawnPos.z += _chunkLenght;
+            newChunk.gameObject.SetActive(true);
             chuncksQueueList[randValue].Enqueue(newChunk);
         }
+    }
+
+    private IEnumerator SetCurvedWorld(float startValue, float endValue, float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            currentCurvedValue = Mathf.Lerp(startValue, endValue, t);
+            curvedController.SetBendHorizontalSize(currentCurvedValue);
+
+            yield return null;
+        }
+
+        currentCurvedValue = endValue;
     }
 }

@@ -13,42 +13,22 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeItem(IItemData item)
     {
-        if (item.GetStarRate() >= 5)
-        {
+        if (!CanUpgrade(item))
             return;
-        }
-
-        if (!checkGold(item.GetReinforceGold()))
-        {
-            return;
-        }
-
-        if (!checkItemCount(item, item.GetReinforceMat()))
-        {
-            return;
-        }
 
         Upgrade(item, item.GetReinforceGold(), item.GetReinforceMat());
     }
 
     public bool CheckUpgradable(IItemData item)
     {
-        if (item.GetStarRate() >= 5)
-        {
-            return false;
-        }
+        return CanUpgrade(item);
+    }
 
-        if (!checkGold(item.GetReinforceGold()))
-        {
-            return false;
-        }
-
-        if (!checkItemCount(item, item.GetReinforceMat()))
-        {
-            return false;
-        }
-
-        return true;
+    private bool CanUpgrade(IItemData item)
+    {
+        return item.GetStarRate() < 5 &&
+               checkGold(item.GetReinforceGold()) &&
+               checkItemCount(item, item.GetReinforceMat());
     }
 
 
@@ -63,46 +43,33 @@ public class UpgradeManager : MonoBehaviour
 
     private bool checkItemCount(IItemData selectItem, int wantValue)
     {
-        int sameCount = 0;
-
         if (selectItem is CharacterData)
         {
-            foreach (var character in userData.characters)
-            {
-                if (character != selectItem && character.GetID() == selectItem.GetID())
-                {
-                    sameCount++;
-                }
-            }
+            return checkItemCount(selectItem, wantValue, userData.characters);
         }
         else if (selectItem is WeaponData)
         {
-            foreach (var weapon in userData.bets)
-            {
-                if (weapon != selectItem && weapon.GetID() == selectItem.GetID())
-                {
-                    sameCount++;
-                }
-            }
-            foreach (var weapon in userData.gloves)
-            {
-                if (weapon != selectItem && weapon.GetID() == selectItem.GetID())
-                {
-                    sameCount++;
-                }
-            }
+            return checkItemCount(selectItem, wantValue, userData.bets) ||
+                   checkItemCount(selectItem, wantValue, userData.gloves);
         }
         else if (selectItem is WeaponEXData)
         {
-            foreach (var weaponEX in userData.weaponExes)
-            {
-                if (weaponEX != selectItem && weaponEX.GetID() == selectItem.GetID())
-                {
-                    sameCount++;
-                }
-            }
+            return checkItemCount(selectItem, wantValue, userData.weaponExes);
         }
 
+        return false;
+    }
+
+    private bool checkItemCount<T>(IItemData selectItem, int wantValue, List<T> itemList) where T : IItemData
+    {
+        int sameCount = 0;
+        foreach (var item in itemList)
+        {
+            if (!item.Equals(selectItem) && item.GetID() == selectItem.GetID())
+            {
+                sameCount++;
+            }
+        }
         return sameCount >= wantValue;
     }
 
@@ -113,50 +80,31 @@ public class UpgradeManager : MonoBehaviour
 
     private void RemoveItem(IItemData selectItem, int wantValue)
     {
-        int removeCount = 0;
-
         if (selectItem is CharacterData)
         {
-            for (int i = userData.characters.Count - 1; i >= 0 && removeCount < wantValue; i--)
-            {
-                if (userData.characters[i] != selectItem && userData.characters[i].GetID() == selectItem.GetID())
-                {
-                    userData.characters.RemoveAt(i);
-                    removeCount++;
-                }
-            }
+            RemoveItem(selectItem, wantValue, userData.characters);
         }
         else if (selectItem is WeaponData)
         {
-            for (int i = userData.bets.Count - 1; i >= 0 && removeCount < wantValue; i--)
-            {
-                if (userData.bets[i] != selectItem && userData.bets[i].GetID() == selectItem.GetID())
-                {
-                    userData.bets.RemoveAt(i);
-                    removeCount++;
-                }
-            }
-
-            for (int i = userData.gloves.Count - 1; i >= 0 && removeCount < wantValue; i--)
-            {
-                if (userData.gloves[i] != selectItem && userData.gloves[i].GetID() == selectItem.GetID())
-                {
-                    userData.gloves.RemoveAt(i);
-                    removeCount++;
-                }
-            }
+            RemoveItem(selectItem, wantValue, userData.bets);
+            RemoveItem(selectItem, wantValue, userData.gloves);
         }
         else if (selectItem is WeaponEXData)
         {
-            for (int i = userData.weaponExes.Count - 1; i >= 0 && removeCount < wantValue; i--)
+            RemoveItem(selectItem, wantValue, userData.weaponExes);
+        }
+    }
+
+    private void RemoveItem<T>(IItemData selectItem, int wantValue, List<T> itemList) where T : IItemData
+    {
+        int removeCount = 0;
+        for (int i = itemList.Count - 1; i >= 0 && removeCount < wantValue; i--)
+        {
+            if (itemList[i].GetID() == selectItem.GetID())
             {
-                if (userData.weaponExes[i] != selectItem && userData.weaponExes[i].GetID() == selectItem.GetID())
-                {
-                    userData.weaponExes.RemoveAt(i);
-                    removeCount++;
-                }
+                itemList.RemoveAt(i);
+                removeCount++;
             }
         }
-
     }
 }
