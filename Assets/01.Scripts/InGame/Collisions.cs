@@ -40,11 +40,22 @@ public class Collisions : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
+        if (other.tag.Contains("Obstacle"))
         {
             if (playerController.autoDodge)
             {
-                playerController.DodgeOnPosition();
+                if (other.CompareTag("ObstacleSlide"))
+                {
+                    playerController.DodgeOnSlide();
+                }
+                else if (other.CompareTag("ObstacleJump"))
+                {
+                    playerController.DodgeOnJump();
+                }
+                else
+                {
+                    playerController.DodgeOnPosition();
+                }
                 return;
             }
             ObstacleCollision(other);

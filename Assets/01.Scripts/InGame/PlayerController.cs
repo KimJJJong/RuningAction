@@ -348,16 +348,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void DodgeOnSlide()
+    {
+        if (!slide)
+        {
+            animator.Play("Slide");
+            slide = true;
+            if (isJumping)
+            {
+                rb.AddForce(Vector3.down * downForce);
+            }
+            MasterAudio.PlaySound3DAtTransform("side_move", transform);
+
+            StartCoroutine(MoveDownAndUp());
+        }
+    }
+
+    public void DodgeOnJump()
+    {
+        if (!isJumping)
+        {
+            isJumping = true;
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            animator.Play("Jumping");
+            MasterAudio.PlaySound3DAtTransform("jump 2", transform);
+        }
+    }
+
     private bool IsObstacleLane(int lane)
     {
         Vector3 lanePosition = lane == 0 ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z) : (lane == 1 ? new Vector3(centerPos.position.x, transform.position.y, transform.position.z) : new Vector3(rightPos.position.x, transform.position.y, transform.position.z));
 
         Vector3 boxHalfExtents = new Vector3(0.1f, 0.1f, 0.5f / 2);
-
         
         return Physics.BoxCast(transform.position + new Vector3(0, 0.5f, 0), boxHalfExtents, (lanePosition - transform.position).normalized, Quaternion.identity, 0.5f);
-
-        return Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), (lanePosition - transform.position).normalized, 0.5f);
     }
 
     private void MoveToLane(int lane)
