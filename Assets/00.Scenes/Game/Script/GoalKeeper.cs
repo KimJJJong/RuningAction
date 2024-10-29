@@ -72,8 +72,8 @@ public class GoalKeeper : MonoBehaviour
         dangerIcon1.SetActive(true);
         dangerIcon2.SetActive(true);
 
-        dangerIcon1.transform.position = GetLanePosition(currentLane) + Vector3.up * 2f;
-        dangerIcon2.transform.position = GetLanePosition(adjacentLane) + Vector3.up * 2f;
+        dangerIcon1.transform.position = GetLanePosition(currentLane) + Vector3.up * 3f;
+        dangerIcon2.transform.position = GetLanePosition(adjacentLane) + Vector3.up * 3f;
     }
 
     private void HideDangerIcon()

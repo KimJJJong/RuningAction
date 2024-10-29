@@ -12,7 +12,7 @@ public class PostEffectController : MonoBehaviour
     private SpeedLines _speedLines;
     private Danger _danger;
     private Blur _blur;
-    // Start is called before the first frame update
+
     void Start()
     {
         _volume = GetComponent<Volume>();
@@ -22,13 +22,6 @@ public class PostEffectController : MonoBehaviour
         _volume.profile.TryGet(out _danger);
         _volume.profile.TryGet(out _blur);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // radialBlur.amount.value = 
-    }
-
 
     public void RushPostEffect(float radiaBlur, float speedLines, bool isRush)
     {
@@ -42,6 +35,7 @@ public class PostEffectController : MonoBehaviour
             StartCoroutine(DecraseRushEffect());
         }
     }
+
     public void GetDamage()
     {
         StartCoroutine(DecreaseDamage());

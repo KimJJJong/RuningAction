@@ -17,7 +17,6 @@ public class Collisions : MonoBehaviour
     private Animator animator;
     public bool canInteract { get; set; }
 
-    public TextMeshProUGUI cooldownText;
     public TextMeshProUGUI goalText;
     private PlayerController playerController;
     private SoccerBall ball;
@@ -34,7 +33,6 @@ public class Collisions : MonoBehaviour
         playerController = GetComponent<PlayerController>();
 
         canInteract = true;
-        cooldownText.enabled = false;
         goalText.enabled = false;
     }
 
@@ -99,11 +97,6 @@ public class Collisions : MonoBehaviour
             {
                 ApplyDamage();
             }
-            else
-            {
-                GameManager.Instance.score.IncreasObsScore();
-                Debug.Log("»Ñ¼ø°Ç°¡?");
-            }
         }
     }
 
@@ -130,8 +123,8 @@ public class Collisions : MonoBehaviour
                 GameManager.Instance.postEffectController.GetDamage();
 
             }
-            //StartCoroutine(Cooldown());
-            Cooldown();
+
+            BlinkPlayer();
         }
     }
 
@@ -152,29 +145,6 @@ public class Collisions : MonoBehaviour
         canShoot = true;
     }
 
-    private void Cooldown()
-    {
-        cooldownText.enabled = true;
-
-        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
-
-        BlinkPlayer();
-    }
-
-    /*
-    IEnumerator Cooldown()
-    {
-        canInteract = false;
-        cooldownText.enabled = true;
-
-        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
-
-        yield return new WaitForSeconds(2f);
-
-        BlinkPlayer();
-    }
-    */
-
     public void BlinkPlayer()
     {
         renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -186,7 +156,6 @@ public class Collisions : MonoBehaviour
                 material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
                 {
                     material.DOFade(1, 0.1f);
-                    cooldownText.enabled = false;
                     canInteract = true;
                     isDmg = false;
                 });

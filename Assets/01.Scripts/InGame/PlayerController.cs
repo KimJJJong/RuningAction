@@ -67,24 +67,25 @@ public class PlayerController : MonoBehaviour
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
     }
 
     void Update()
     {
-        if (collisions.canInteract)
+        if (GameManager.Instance.gameState == GameState.Playing)
         {
-            Running();
-            StateUpdate();
-        }
+            if (collisions.canInteract)
+            {
+                Running();
+                StateUpdate();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
-        {
-            //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
+            if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
+            {
+                //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
 
-            autoDodge = !autoDodge;
-            GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+                autoDodge = !autoDodge;
+                GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+            }
         }
     }
 
