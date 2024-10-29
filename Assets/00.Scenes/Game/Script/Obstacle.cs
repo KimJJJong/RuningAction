@@ -11,3 +11,8 @@ public interface IBonusObstacle
 {
     void GetBonus();
 }
+
+public interface IDamageable
+{
+    void Damage();
+}
