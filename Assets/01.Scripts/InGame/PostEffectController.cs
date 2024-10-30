@@ -7,6 +7,10 @@ using UnityEngine.Rendering;
 
 public class PostEffectController : MonoBehaviour
 {
+    new Camera camera;
+
+    [SerializeField] float shakeDuration = 1f;
+    [SerializeField] float shakeMagnitude = 0.5f;
     [SerializeField] private Volume _volume;
     private RadialBlur _radialBlur;
     private SpeedLines _speedLines;
@@ -15,6 +19,8 @@ public class PostEffectController : MonoBehaviour
 
     void Start()
     {
+        camera = GetComponent<Camera>();
+
         _volume = GetComponent<Volume>();
 
         _volume.profile.TryGet(out _radialBlur);
@@ -39,6 +45,18 @@ public class PostEffectController : MonoBehaviour
     public void GetDamage()
     {
         StartCoroutine(DecreaseDamage());
+        StartCoroutine(Shake());
+    }
+
+    IEnumerator Shake()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < shakeDuration)
+        {
+            camera.transform.position += (Vector3)Random.insideUnitCircle * shakeMagnitude;
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     IEnumerator DecraseRushEffect()
@@ -56,12 +74,10 @@ public class PostEffectController : MonoBehaviour
     IEnumerator DecreaseDamage()
     {
         _danger.intensity.value = 0.7f;
-        _blur.amount.value = 1.4f;
 
         while (_danger.intensity.value > 0)
         {
             _danger.intensity.value -= 0.1f;
-            _blur.amount.value -= 0.2f;
             yield return new WaitForSeconds(0.08f);
         }
 

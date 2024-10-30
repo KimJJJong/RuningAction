@@ -65,6 +65,10 @@ PrefabInstance:
       value: SM_table_market_02
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 63a661e38ae453e4e8bc850795223ec6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 63a661e38ae453e4e8bc850795223ec6, type: 3}
       propertyPath: m_TagString
       value: ObstacleSlide
       objectReference: {fileID: 0}
@@ -126,4 +130,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.74, y: 0.680994, z: 1.150633}
-  m_Center: {x: 0.0000054240227, y: 1.1813779, z: 0}
+  m_Center: {x: 0.0000054240227, y: 1.01, z: 0}

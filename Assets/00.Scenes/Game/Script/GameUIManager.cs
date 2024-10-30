@@ -26,8 +26,10 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private Color highScoreColor;
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private Slider expSlider;
-    [SerializeField] private float expFillSpeed = 1f;
+    [SerializeField] private float expFillSpeedMin = 200f;
+    [SerializeField] private float expFillSpeedMax = 1000f;
     private Color defaultScoreColor;
 
     private WaitForSecondsRealtime textEffectTime = new WaitForSecondsRealtime(0.5f);
@@ -140,7 +142,8 @@ public class GameUIManager : MonoBehaviour
         ShowTextWithEffect(highScoreText);
         yield return textEffectTime;
 
-
+        UpdateExpSlide(600);
+        AddExp(1000);
     }
 
     public void ShowTextWithEffect(TextMeshProUGUI textTMP)
@@ -158,6 +161,7 @@ public class GameUIManager : MonoBehaviour
 
     public void AddExp(int gainedExp)
     {
+        expText.text = $"+{gainedExp}";
         StartCoroutine(FillExpSlider(gainedExp));
     }
 
@@ -165,28 +169,27 @@ public class GameUIManager : MonoBehaviour
     {
         while (exp > 0)
         {
-            if (expSlider.value < expSlider.maxValue)
+            float expToFill = Mathf.Min(expSlider.maxValue - expSlider.value, exp);
+            float fillSpeed = Mathf.Lerp(expFillSpeedMin, expFillSpeedMax, exp / expSlider.maxValue);
+
+            while (expToFill > 0)
             {
-                expSlider.value += expFillSpeed * Time.deltaTime;
-                exp -= (int)(expFillSpeed * Time.deltaTime);
+                expSlider.value += fillSpeed * Time.unscaledDeltaTime;
+                expToFill -= fillSpeed * Time.unscaledDeltaTime;
+                exp -= (int)(fillSpeed * Time.unscaledDeltaTime);
 
                 if (expSlider.value >= expSlider.maxValue)
                 {
                     int level = int.Parse(levelText.text);
                     level++;
                     levelText.text = level.ToString();
-
                     expSlider.value = 0;
 
-                    //남은 경험치
-                    if (exp > 0)
-                    {
-                        expSlider.value += exp;
-                        exp = Mathf.Max(0, exp - (int)expSlider.maxValue);
-                    }
+                    expToFill = Mathf.Min(expSlider.maxValue, exp);
                 }
+
+                yield return null;
             }
-            yield return null;
         }
     }
 
@@ -203,7 +206,7 @@ public class GameUIManager : MonoBehaviour
 
     public void UpdateRunningTimeText(float time)
     {
-        float roundedTime = Mathf.Round(time * 100f) / 100f;
+        float roundedTime = Mathf.Round(time * 10f) / 10f;
         runningTimeText.text = $"{roundedTime}s";
     }
 
@@ -220,6 +223,12 @@ public class GameUIManager : MonoBehaviour
     public void UpdateHighScoreText(int highScore)
     {
         highScoreText.text = $"{highScore}";
+    }
+
+    public void UpdateExpSlide(float max)
+    {
+        expSlider.value = 0;
+        expSlider.maxValue = max;
     }
     #endregion
 }

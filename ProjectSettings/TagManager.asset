@@ -19,6 +19,8 @@ TagManager:
   - GoalPost
   - ObstacleSlide
   - ObstacleJump
+  - Ramp
+  - ObstacleWall
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - UI
   - Ground
   - Particle
-  - 
+  - Obstacle
   - 
   - 
   - 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GoalKeeper : MonoBehaviour
 {
@@ -50,7 +51,8 @@ public class GoalKeeper : MonoBehaviour
         if (playerLane == currentLane || playerLane == adjacentLane)
         {
             Vector3 targetPosition = GetLanePosition(playerLane);
-            transform.position = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
+            //transform.position = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
+            transform.DOMoveX(targetPosition.x, 0.5f).SetEase(Ease.InOutQuad);
 
             HideDangerIcon();
         }

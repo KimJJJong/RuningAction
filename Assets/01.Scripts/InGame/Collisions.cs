@@ -6,10 +6,6 @@ using DG.Tweening;
 public class Collisions : MonoBehaviour
 {
     HpController hpController;
-    new Camera camera;
-    //cam movement
-    [SerializeField] float shakeDuration = 1f;
-    [SerializeField] float shakeMagnitude = 0.5f;
 
     public bool isDmg;
     public bool isDmgIteam;
@@ -27,7 +23,6 @@ public class Collisions : MonoBehaviour
 
     void Start()
     {
-        camera = FindAnyObjectByType<Camera>();
         hpController = FindAnyObjectByType<HpController>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
@@ -57,6 +52,11 @@ public class Collisions : MonoBehaviour
                 return;
             }
             ObstacleCollision(other);
+
+            if(other.CompareTag("ObstacleWall"))
+            {
+                playerController.MoveToEmptyLane();
+            }
         }
         else if (other.CompareTag("SoccerBall"))
         {
@@ -119,9 +119,7 @@ public class Collisions : MonoBehaviour
             }
             else
             {
-                CamShake();
                 GameManager.Instance.postEffectController.GetDamage();
-
             }
 
             BlinkPlayer();
@@ -153,12 +151,18 @@ public class Collisions : MonoBehaviour
         {
             foreach (var material in renderer.materials)
             {
-                material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
-                {
-                    material.DOFade(1, 0.1f);
-                    canInteract = true;
-                    isDmg = false;
-                });
+                // Alpha Clip(Cutout) 적용을 위한 임계값 조정
+                float originalCutoff = material.GetFloat("_Cutoff");
+                float blinkCutoff = 0.8f;  // 높은 값일수록 투명해짐
+
+                material.DOFloat(blinkCutoff, "_Cutoff", 0.1f)
+                        .SetLoops(10, LoopType.Yoyo)
+                        .OnComplete(() =>
+                        {
+                            material.SetFloat("_Cutoff", originalCutoff);
+                            canInteract = true;
+                            isDmg = false;
+                        });
             }
         }
     }
@@ -167,21 +171,5 @@ public class Collisions : MonoBehaviour
     {
         animator.Play("Stumble");
         GameManager.Instance.GameOver();
-    }
-
-    public void CamShake()
-    {
-        StartCoroutine(Shake());
-    }
-
-    IEnumerator Shake()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < shakeDuration)
-        {
-            camera.transform.position += (Vector3)Random.insideUnitCircle * shakeMagnitude;
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
     }
 }
