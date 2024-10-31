@@ -49,8 +49,7 @@ public class GameManager : MonoBehaviour
         hpController = GameObject.Find("Player").GetComponent<HpController>();
         weapon = GameObject.Find("Player").GetComponent<Weapon>();
         postEffectController = GameObject.Find("Main Camera").GetComponent<PostEffectController>();
-
-        cameraFollowPlayer = GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
+        cameraFollowPlayer = GameObject.Find("Main Camera").GetComponent<CameraFollowPlayer>();
     }
 
     private void Start()

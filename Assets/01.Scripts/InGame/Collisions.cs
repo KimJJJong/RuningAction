@@ -131,7 +131,7 @@ public class Collisions : MonoBehaviour
     {
         if (ball != null)
         {
-            playerController.SetState(PlayerController.EState.Kick);
+            playerController.SetState(EState.Kick);
             ball.Shoot(ball.ballLine);
             ball = null;
             StartCoroutine(ShootCooldown());
@@ -153,12 +153,17 @@ public class Collisions : MonoBehaviour
         {
             foreach (var material in renderer.materials)
             {
-                material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
-                {
-                    material.DOFade(1, 0.1f);
-                    canInteract = true;
-                    isDmg = false;
-                });
+                Color originalColor = material.color;
+                Color targetColor = new Color(145, 0, 0, 255f);
+
+                material.DOColor(targetColor, 0.2f)
+                    .SetLoops(10, LoopType.Yoyo)
+                    .OnComplete(() =>
+                    {
+                        material.color = originalColor;
+                        canInteract = true;
+                        isDmg = false;
+                    });
             }
         }
     }

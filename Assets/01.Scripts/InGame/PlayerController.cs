@@ -4,18 +4,6 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum EState
-    {
-        Runing,
-        Left,
-        Right,
-        Up,
-        Down,
-        Kick,
-        Smash,
-        Throw,
-        Batting,
-    }
     [SerializeField] Transform centerPos;
     [SerializeField] Transform leftPos;
     [SerializeField] Transform rightPos;
@@ -454,4 +442,17 @@ public class PlayerController : MonoBehaviour
             curPos = 2;
         }
     }
+}
+
+public enum EState
+{
+    Runing,
+    Left,
+    Right,
+    Up,
+    Down,
+    Kick,
+    Smash,
+    Throw,
+    Batting,
 }
