@@ -74,7 +74,7 @@ AnimatorStateMachine:
     m_Position: {x: 540, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2175294330541223176}
-    m_Position: {x: 690, y: 210, z: 0}
+    m_Position: {x: 680, y: 200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -120,7 +120,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Stumble
-  m_Speed: 2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1595903837435706520}
@@ -133,7 +133,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 38394c46d9d535c4091a593fd5de88b2, type: 2}
+  m_Motion: {fileID: 7400000, guid: f8b085cf00c6ab442b385b245e6706e4, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

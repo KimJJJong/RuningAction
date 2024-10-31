@@ -78,6 +78,12 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     private void FadeOut()
     {
         animator.Play("Stumble");
+
+        float horizontalDirection = Random.Range(0, 2) == 0 ? -1 : 1;
+        Vector3 jumpTarget = ball.transform.position + new Vector3(2f * horizontalDirection, 2f, 2f);
+        ball.transform.DOJump(jumpTarget, 2f, 1, 0.5f).SetEase(Ease.OutQuad);
+        ball.transform.DOLocalRotate(new Vector3(360, 0, 0), 0.5f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad);
     }
 
     private void StartDribblingBall()
