@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GoalKeeper : MonoBehaviour
 {
@@ -14,10 +15,12 @@ public class GoalKeeper : MonoBehaviour
     public int currentLane;
     public int adjacentLane;
     private ShotOnGoal shotOnGoal;
+    private Animator animator;
 
     private void Start()
     {
         shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
+        animator = GetComponent<Animator>();
         SetKeeperLane();
     }
 
@@ -50,7 +53,23 @@ public class GoalKeeper : MonoBehaviour
         if (playerLane == currentLane || playerLane == adjacentLane)
         {
             Vector3 targetPosition = GetLanePosition(playerLane);
-            transform.position = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
+            float targetX = targetPosition.x;
+            float currentX = transform.position.x;
+
+            if (targetX < currentX)
+            {
+                animator.Play("MoveLeft");
+            }
+            else if (targetX > currentX)
+            {
+                animator.Play("MoveRight");
+            }
+            else
+            {
+                animator.Play("Catch");
+            }
+
+            transform.DOMoveX(targetX, 0.5f).SetEase(Ease.InOutQuad);
 
             HideDangerIcon();
         }
@@ -60,10 +79,12 @@ public class GoalKeeper : MonoBehaviour
     {
         switch (lane)
         {
-            case 0: return leftPos.position;
-            case 1: return centerPos.position;
-            case 2: return rightPos.position;
-            default: return centerPos.position;
+            case 0:
+                return leftPos.position;
+            case 2:
+                return rightPos.position;
+            default:
+                return centerPos.position;
         }
     }
 
@@ -72,8 +93,8 @@ public class GoalKeeper : MonoBehaviour
         dangerIcon1.SetActive(true);
         dangerIcon2.SetActive(true);
 
-        dangerIcon1.transform.position = GetLanePosition(currentLane) + Vector3.up * 2f;
-        dangerIcon2.transform.position = GetLanePosition(adjacentLane) + Vector3.up * 2f;
+        dangerIcon1.transform.position = GetLanePosition(currentLane) + Vector3.up * 3f;
+        dangerIcon2.transform.position = GetLanePosition(adjacentLane) + Vector3.up * 3f;
     }
 
     private void HideDangerIcon()

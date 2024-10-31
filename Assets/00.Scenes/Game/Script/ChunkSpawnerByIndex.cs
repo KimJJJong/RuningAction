@@ -39,6 +39,8 @@ public class ChunkSpawnerByIndex : MonoBehaviour
         
         curvedController = GameObject.Find("Curved World Controller").GetComponent<CurvedWorldController>();
         currentCurvedValue = curvedController.bendHorizontalSize;
+
+        curvedController.SetBendVerticalSize(-3);
     }
 
     private void Update()
@@ -51,6 +53,7 @@ public class ChunkSpawnerByIndex : MonoBehaviour
             SpawnChunkBySequence();
         }
 
+        /*
         currentTime += Time.deltaTime;
         if (currentTime > curveTime)
         {
@@ -61,6 +64,7 @@ public class ChunkSpawnerByIndex : MonoBehaviour
             else
                 StartCoroutine(SetCurvedWorld(currentCurvedValue, curvedZMinValue, 2));
         }
+        */
     }
 
     private void PoolChunks()
@@ -104,23 +108,6 @@ public class ChunkSpawnerByIndex : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error");
-        }
-        else
-        {
-            string jsonResponse = request.downloadHandler.text;
-            chunkArray = JsonUtility.FromJson<int[]>(jsonResponse);
-        }
-    }
-
-    private IEnumerator GetChunkFromGoogleDrive(string fileId)
-    {
-        string googleDriveUrl = $"https://drive.google.com/uc?export=download&id={fileId}";
-        UnityWebRequest request = UnityWebRequest.Get(googleDriveUrl);
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.LogError("Error fetching data from Google Drive");
         }
         else
         {

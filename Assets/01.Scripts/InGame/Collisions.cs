@@ -2,14 +2,11 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class Collisions : MonoBehaviour
 {
     HpController hpController;
-    new Camera camera;
-    //cam movement
-    [SerializeField] float shakeDuration = 1f;
-    [SerializeField] float shakeMagnitude = 0.5f;
 
     public bool isDmg;
     public bool isDmgIteam;
@@ -17,7 +14,6 @@ public class Collisions : MonoBehaviour
     private Animator animator;
     public bool canInteract { get; set; }
 
-    public TextMeshProUGUI cooldownText;
     public TextMeshProUGUI goalText;
     private PlayerController playerController;
     private SoccerBall ball;
@@ -28,13 +24,11 @@ public class Collisions : MonoBehaviour
 
     void Start()
     {
-        camera = FindAnyObjectByType<Camera>();
         hpController = FindAnyObjectByType<HpController>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
 
         canInteract = true;
-        cooldownText.enabled = false;
         goalText.enabled = false;
     }
 
@@ -59,6 +53,11 @@ public class Collisions : MonoBehaviour
                 return;
             }
             ObstacleCollision(other);
+
+            if(other.CompareTag("ObstacleWall"))
+            {
+                playerController.MoveToEmptyLane();
+            }
         }
         else if (other.CompareTag("SoccerBall"))
         {
@@ -99,11 +98,6 @@ public class Collisions : MonoBehaviour
             {
                 ApplyDamage();
             }
-            else
-            {
-                GameManager.Instance.score.IncreasObsScore();
-                Debug.Log("»Ñ¼ø°Ç°¡?");
-            }
         }
     }
 
@@ -118,20 +112,18 @@ public class Collisions : MonoBehaviour
         {
             isDmg = true;
             //animator.Play("Stumble");
-            hpController.collsionObstacle();
+            hpController.CollsionObstacle();
 
-            if (hpController.getValue() <= 0)
+            if (hpController.GetValue() <= 0)
             {
                 Die();
             }
             else
             {
-                CamShake();
                 GameManager.Instance.postEffectController.GetDamage();
-
             }
-            //StartCoroutine(Cooldown());
-            Cooldown();
+
+            BlinkPlayer();
         }
     }
 
@@ -139,6 +131,7 @@ public class Collisions : MonoBehaviour
     {
         if (ball != null)
         {
+            playerController.SetState(PlayerController.EState.Kick);
             ball.Shoot(ball.ballLine);
             ball = null;
             StartCoroutine(ShootCooldown());
@@ -152,29 +145,6 @@ public class Collisions : MonoBehaviour
         canShoot = true;
     }
 
-    private void Cooldown()
-    {
-        cooldownText.enabled = true;
-
-        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
-
-        BlinkPlayer();
-    }
-
-    /*
-    IEnumerator Cooldown()
-    {
-        canInteract = false;
-        cooldownText.enabled = true;
-
-        cooldownText.GetComponent<DOTweenAnimation>().DOPlay();
-
-        yield return new WaitForSeconds(2f);
-
-        BlinkPlayer();
-    }
-    */
-
     public void BlinkPlayer()
     {
         renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -186,7 +156,6 @@ public class Collisions : MonoBehaviour
                 material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
                 {
                     material.DOFade(1, 0.1f);
-                    cooldownText.enabled = false;
                     canInteract = true;
                     isDmg = false;
                 });
@@ -198,21 +167,5 @@ public class Collisions : MonoBehaviour
     {
         animator.Play("Stumble");
         GameManager.Instance.GameOver();
-    }
-
-    public void CamShake()
-    {
-        StartCoroutine(Shake());
-    }
-
-    IEnumerator Shake()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < shakeDuration)
-        {
-            camera.transform.position += (Vector3)Random.insideUnitCircle * shakeMagnitude;
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
     }
 }

@@ -9,7 +9,6 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private GameObject ball;
     private bool isMoving = false;
-    private bool hasCollided = false;
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
@@ -32,7 +31,7 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
     {
         float playerDistance = Vector3.Distance(transform.position, player.position);
 
-        if (!isMoving && playerDistance < detectRange && !hasCollided)
+        if (!isMoving && playerDistance < detectRange)
         {
             isMoving = true;
             targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
@@ -42,7 +41,7 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         {
             MoveTowardsTarget(targetPosition);
 
-            if (playerDistance > detectRange || hasCollided)
+            if (playerDistance > detectRange)
             {
                 StopMoving();
             }
@@ -73,13 +72,11 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         StopMoving();
         FadeOut();
 
-        hasCollided = true;
         GameManager.Instance.score.IncreasObsScore();
     }
 
     private void FadeOut()
     {
-        Debug.LogError("FadeObstacle");
         animator.Play("Stumble");
     }
 

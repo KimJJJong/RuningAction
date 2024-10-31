@@ -6,35 +6,29 @@ using DarkTonic.MasterAudio;
 
 public class CollectCoin : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI EndScoreText;
-    public TMP_Text coinText;
-    public TextMeshProUGUI highScoreText;
-    public Color highScoreColor;
+    private GameUIManager gameUiManager;
 
-    int score;
-    int coin = 0;
-    int highScore;
+    private int score;
+    private int coin = 0;
+    private int highScore;
 
     private int _increaseRate = 1;
     private int _increaseCoin = 30;
     private int _increaseObs = 50;
 
-    Color defaultScoreColor;
-
     private void Start()
     {
+        gameUiManager = GameUIManager.instance;
+
         InitializeScore();
-        StartCoroutine(UpdateScore());
     }
 
     private void InitializeScore()
     {
         PlayerPrefs.DeleteAll();
-        scoreText.text = $"Score : {score}";
+        gameUiManager.UpdateScoreText(score);
         highScore = DataManager.instance.userData.userScore;
-        highScoreText.text = highScore.ToString();
-        defaultScoreColor = scoreText.color;
+        gameUiManager.UpdateHighScoreText(highScore);
     }
 
     public void SetIncreasRate(int increasRate) 
@@ -75,7 +69,7 @@ public class CollectCoin : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "Heal":
-                GameManager.Instance.HpController.Heal(10);
+                GameManager.Instance.hpController.Heal(10);
                 Destroy(other.gameObject);
                 break;
         }
@@ -85,33 +79,28 @@ public class CollectCoin : MonoBehaviour
     {
         AddScore(_increaseCoin);
         coin += _increaseCoin;
-        coinText.text = coin.ToString();
-        CheckHighScoreColor();
+        gameUiManager.UpdateCoinText(coin);
+        gameUiManager.UpdateEndCoinText(coin);
+        gameUiManager.CheckHighScoreColor(score, highScore);
     }
 
     public void AddCoin(int coinValue)
     {
         AddScore(coinValue);
         coin += coinValue;
-        coinText.text = coin.ToString();
-        CheckHighScoreColor();
+        gameUiManager.UpdateCoinText(coin); 
+        gameUiManager.UpdateEndCoinText(coin);
+        gameUiManager.CheckHighScoreColor(score,highScore);
     }
 
-    void CheckHighScoreColor()
+    public void StartUpdateScore()
     {
-        if (score > highScore)
-        {
-            scoreText.color = highScoreColor;
-        }
-        else
-        {
-            scoreText.color = defaultScoreColor;
-        }
+        StartCoroutine(UpdateScore());
     }
 
     private IEnumerator UpdateScore()
     {
-        while (true)
+        while (GameManager.Instance.gameState == GameState.Playing)
         {
             AddScore(_increaseRate);
             yield return new WaitForSeconds(0.1f);
@@ -121,8 +110,9 @@ public class CollectCoin : MonoBehaviour
     public void AddScore(int _score)
     {
         score += _score;
-        scoreText.text = $"Score : {score}";
-        EndScoreText.text = score.ToString();
+
+        gameUiManager.UpdateScoreText(score);
+        gameUiManager.UpdateEndScoreText(score);
         if (score > highScore)
         {
             UpdateHighScore();
@@ -132,7 +122,7 @@ public class CollectCoin : MonoBehaviour
     private void UpdateHighScore()
     {
         highScore = score;
-        highScoreText.text = highScore.ToString();
+        gameUiManager.UpdateHighScoreText(highScore);
         DataManager.instance.userData.userScore = highScore;
     }
 

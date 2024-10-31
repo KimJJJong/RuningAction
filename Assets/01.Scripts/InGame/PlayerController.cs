@@ -4,13 +4,14 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
-    enum EState
+    public enum EState
     {
         Runing,
         Left,
         Right,
         Up,
         Down,
+        Kick,
         Smash,
         Throw,
         Batting,
@@ -43,11 +44,11 @@ public class PlayerController : MonoBehaviour
     bool _isMagnetic;
     [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
-    Collisions collisions;
-    CapsuleCollider capsuleCollider;
-    Rigidbody rb;
-    Animator animator;
-    Weapon weapon;
+    private Collisions collisions;
+    private CapsuleCollider capsuleCollider;
+    private Rigidbody rb;
+    private Animator animator;
+    private Weapon weapon;
 
     public bool IsRush => _isRush;
     public bool IsMagnetic
@@ -64,31 +65,42 @@ public class PlayerController : MonoBehaviour
         collisions = FindAnyObjectByType<Collisions>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
+        weapon = GetComponent<Weapon>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        GameObject.Find("Main Camera").AddComponent<CameraFollowPlayer>();
     }
 
     void Update()
     {
-        if (collisions.canInteract)
+        if (GameManager.Instance.gameState == GameState.Playing)
         {
-            Running();
-            StateUpdate();
-        }
+            if (collisions.canInteract)
+            {
+                Running();
+                StateUpdate();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
-        {
-            //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
+            if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
+            {
+                //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
 
-            autoDodge = !autoDodge;
-            GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+                autoDodge = !autoDodge;
+                if(autoDodge)
+                    capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y, capsuleCollider.center.z + 0.5f);
+                else
+                    capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y, capsuleCollider.center.z - 0.5f);
+
+                GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+            }
         }
     }
 
-    void Running()
+    public void SetRunningAnimation(bool isRun)
+    {
+        animator.SetBool("Run", isRun);
+    }
+
+    private void Running()
     {
         if (rb.velocity.y < 0)
         {
@@ -109,33 +121,48 @@ public class PlayerController : MonoBehaviour
     {
         if (!autoDodge)
         {
-            if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
+            if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !IsObstacleLane(0))
             {
                 SetState(EState.Left);
                 curPos = 0;
-
             }
-            else if (curPos == 1 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
+            else if (curPos == 1 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !IsObstacleLane(2))
             {
                 SetState(EState.Right);
                 curPos = 2;
-
             }
-            else if (curPos == 0 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)))
+            else if (curPos == 0 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !IsObstacleLane(1))
             {
                 SetState(EState.Right);
                 curPos = 1;
-
             }
-            else if (curPos == 2 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)))
+            else if (curPos == 2 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !IsObstacleLane(1))
             {
                 SetState(EState.Left);
                 curPos = 1;
-
             }
         }
 
         MoveToCenter();
+    }
+
+    public void MoveToEmptyLane()
+    {
+        if (curPos != 0 && !IsObstacleLane(0))
+        {
+            SetState(EState.Left);
+            curPos = 0;
+        }
+        else if (curPos != 1 && !IsObstacleLane(1))
+        {
+            SetState(EState.Right);
+            curPos = 1;
+        }
+        else if (curPos != 2 && !IsObstacleLane(2))
+        {
+            SetState(EState.Right);
+            curPos = 2;
+        }
     }
 
     void StateUpdate()
@@ -179,7 +206,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void SetState(EState state)
+    public void SetState(EState state)
     {
         switch (state)
         {
@@ -215,6 +242,11 @@ public class PlayerController : MonoBehaviour
 
                         StartCoroutine(MoveDownAndUp());
                     }
+                }
+                break;
+            case EState.Kick:
+                { 
+                    animator.Play("Kick");
                 }
                 break;
             case EState.Batting:
@@ -377,11 +409,31 @@ public class PlayerController : MonoBehaviour
 
     private bool IsObstacleLane(int lane)
     {
-        Vector3 lanePosition = lane == 0 ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z) : (lane == 1 ? new Vector3(centerPos.position.x, transform.position.y, transform.position.z) : new Vector3(rightPos.position.x, transform.position.y, transform.position.z));
+        Vector3 lanePosition = lane == 0
+            ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z)
+            : (lane == 1
+                ? new Vector3(centerPos.position.x, transform.position.y, transform.position.z)
+                : new Vector3(rightPos.position.x, transform.position.y, transform.position.z));
 
-        Vector3 boxHalfExtents = new Vector3(0.1f, 0.1f, 0.5f / 2);
-        
-        return Physics.BoxCast(transform.position + new Vector3(0, 0.5f, 0), boxHalfExtents, (lanePosition - transform.position).normalized, Quaternion.identity, 0.5f);
+        Vector3 boxHalfExtents = new Vector3(0.5f, 1f, 0.5f);
+        RaycastHit hit;
+
+        bool hasObstacle = Physics.BoxCast(
+            transform.position + new Vector3(0, 1f, 0),
+            boxHalfExtents,
+            (lanePosition - transform.position).normalized,
+            out hit,
+            Quaternion.identity,
+            0.5f,
+            LayerMask.GetMask("Obstacle")
+        );
+
+        if (hasObstacle && hit.collider.CompareTag("ObstacleWall"))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void MoveToLane(int lane)
