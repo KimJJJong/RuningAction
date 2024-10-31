@@ -131,7 +131,7 @@ public class Collisions : MonoBehaviour
     {
         if (ball != null)
         {
-            playerController.SetState(PlayerController.EState.Kick);
+            playerController.SetState(EState.Kick);
             ball.Shoot(ball.ballLine);
             ball = null;
             StartCoroutine(ShootCooldown());

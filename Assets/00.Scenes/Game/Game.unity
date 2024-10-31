@@ -3505,6 +3505,7 @@ GameObject:
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
   - component: {fileID: 963194232}
+  - component: {fileID: 963194233}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3803,6 +3804,22 @@ MonoBehaviour:
   shakeDuration: 0.5
   shakeMagnitude: 0.15
   _volume: {fileID: 0}
+--- !u!114 &963194233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a45b9656a8897e544a546e4680bc53e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTarget: {fileID: 0}
+  sSpeed: 0
+  distance: {x: 0, y: 0, z: 0}
+  isMove: 0
 --- !u!1 &980610809
 GameObject:
   m_ObjectHideFlags: 0
@@ -5312,11 +5329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3861104141164848357, guid: d8927107c0c2ae34483f675118bcb6ba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: 0.7397214
       objectReference: {fileID: 0}
     - target: {fileID: 3861104141164848357, guid: d8927107c0c2ae34483f675118bcb6ba, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.5497
+      value: -2.63345
       objectReference: {fileID: 0}
     - target: {fileID: 3861104141164848357, guid: d8927107c0c2ae34483f675118bcb6ba, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9626,8 +9643,8 @@ SceneRoots:
   - {fileID: 1379954251}
   - {fileID: 1165790952}
   - {fileID: 994633487}
-  - {fileID: 1138863458}
   - {fileID: 246177196}
   - {fileID: 1998967655}
+  - {fileID: 1138863458}
   - {fileID: 2133478422}
   - {fileID: 433256600}
