@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Collisions collisions;
     [HideInInspector] public StrengthenSubstance substance;
     [HideInInspector] public PlayerController playerController;
-    [HideInInspector] public HpController HpController;
+    [HideInInspector] public HpController hpController;
     [HideInInspector] public Weapon weapon;
     [HideInInspector] public PostEffectController postEffectController;
     [HideInInspector] public CameraFollowPlayer cameraFollowPlayer;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
-        HpController = GameObject.Find("Player").GetComponent<HpController>();
+        hpController = GameObject.Find("Player").GetComponent<HpController>();
         weapon = GameObject.Find("Player").GetComponent<Weapon>();
         postEffectController = GameObject.Find("Main Camera").GetComponent<PostEffectController>();
 
@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
     public void GamePlay()
     {
         gameState = GameState.Playing;
+        playerController.SetRunningAnimation(true);
+        hpController.StartHpControll();
         score.StartUpdateScore();
         cameraFollowPlayer.StartCameraMove();
     }
@@ -74,6 +76,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameState = GameState.GameOver;
+        playerController.SetRunningAnimation(false);
         gameOver = true;
         gameUiManager.SetGameOverPanel();
         Time.timeScale = 0f;

@@ -7,14 +7,14 @@ public class HpController : MonoBehaviour
     public Slider HpBar;
     Collisions playerCollision;
 
-    void Start()
+    public void StartHpControll()
     {
         playerCollision = GetComponent<Collisions>();
-        setHp(100.0f);
-        StartCoroutine(decressHp());
+        SetHp(100.0f);
+        StartCoroutine(DecressHp());
     }
 
-    public void setHp(float maxHp)
+    public void SetHp(float maxHp)
     {
         HpBar.maxValue += maxHp;
         HpBar.value = HpBar.maxValue;
@@ -27,14 +27,15 @@ public class HpController : MonoBehaviour
         else
             HpBar.value += heal;
     }
-    public void collsionObstacle()
+
+    public void CollsionObstacle()
     {
         if (HpBar.value <= 0)
             HpBar.value = 0;
         HpBar.value -= 10f;
     }
 
-    IEnumerator decressHp()
+    IEnumerator DecressHp()
     {
         while (true)
         {
@@ -45,7 +46,8 @@ public class HpController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    public float getValue()
+
+    public float GetValue()
     {
         return HpBar.value;
     }

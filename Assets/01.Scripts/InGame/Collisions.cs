@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class Collisions : MonoBehaviour
 {
@@ -111,9 +112,9 @@ public class Collisions : MonoBehaviour
         {
             isDmg = true;
             //animator.Play("Stumble");
-            hpController.collsionObstacle();
+            hpController.CollsionObstacle();
 
-            if (hpController.getValue() <= 0)
+            if (hpController.GetValue() <= 0)
             {
                 Die();
             }
@@ -130,6 +131,7 @@ public class Collisions : MonoBehaviour
     {
         if (ball != null)
         {
+            playerController.SetState(PlayerController.EState.Kick);
             ball.Shoot(ball.ballLine);
             ball = null;
             StartCoroutine(ShootCooldown());
@@ -151,18 +153,12 @@ public class Collisions : MonoBehaviour
         {
             foreach (var material in renderer.materials)
             {
-                // Alpha Clip(Cutout) 적용을 위한 임계값 조정
-                float originalCutoff = material.GetFloat("_Cutoff");
-                float blinkCutoff = 0.8f;  // 높은 값일수록 투명해짐
-
-                material.DOFloat(blinkCutoff, "_Cutoff", 0.1f)
-                        .SetLoops(10, LoopType.Yoyo)
-                        .OnComplete(() =>
-                        {
-                            material.SetFloat("_Cutoff", originalCutoff);
-                            canInteract = true;
-                            isDmg = false;
-                        });
+                material.DOFade(0, 0.2f).SetLoops(10, LoopType.Yoyo).OnComplete(() =>
+                {
+                    material.DOFade(1, 0.1f);
+                    canInteract = true;
+                    isDmg = false;
+                });
             }
         }
     }

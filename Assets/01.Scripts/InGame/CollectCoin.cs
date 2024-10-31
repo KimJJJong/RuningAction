@@ -69,7 +69,7 @@ public class CollectCoin : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "Heal":
-                GameManager.Instance.HpController.Heal(10);
+                GameManager.Instance.hpController.Heal(10);
                 Destroy(other.gameObject);
                 break;
         }

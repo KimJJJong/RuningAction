@@ -15,10 +15,12 @@ public class GoalKeeper : MonoBehaviour
     public int currentLane;
     public int adjacentLane;
     private ShotOnGoal shotOnGoal;
+    private Animator animator;
 
     private void Start()
     {
         shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
+        animator = GetComponent<Animator>();
         SetKeeperLane();
     }
 
@@ -51,8 +53,23 @@ public class GoalKeeper : MonoBehaviour
         if (playerLane == currentLane || playerLane == adjacentLane)
         {
             Vector3 targetPosition = GetLanePosition(playerLane);
-            //transform.position = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
-            transform.DOMoveX(targetPosition.x, 0.5f).SetEase(Ease.InOutQuad);
+            float targetX = targetPosition.x;
+            float currentX = transform.position.x;
+
+            if (targetX < currentX)
+            {
+                animator.Play("MoveLeft");
+            }
+            else if (targetX > currentX)
+            {
+                animator.Play("MoveRight");
+            }
+            else
+            {
+                animator.Play("Catch");
+            }
+
+            transform.DOMoveX(targetX, 0.5f).SetEase(Ease.InOutQuad);
 
             HideDangerIcon();
         }
@@ -62,10 +79,12 @@ public class GoalKeeper : MonoBehaviour
     {
         switch (lane)
         {
-            case 0: return leftPos.position;
-            case 1: return centerPos.position;
-            case 2: return rightPos.position;
-            default: return centerPos.position;
+            case 0:
+                return leftPos.position;
+            case 2:
+                return rightPos.position;
+            default:
+                return centerPos.position;
         }
     }
 

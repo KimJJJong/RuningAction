@@ -4,13 +4,14 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
-    enum EState
+    public enum EState
     {
         Runing,
         Left,
         Right,
         Up,
         Down,
+        Kick,
         Smash,
         Throw,
         Batting,
@@ -43,11 +44,11 @@ public class PlayerController : MonoBehaviour
     bool _isMagnetic;
     [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
-    Collisions collisions;
-    CapsuleCollider capsuleCollider;
-    Rigidbody rb;
-    Animator animator;
-    Weapon weapon;
+    private Collisions collisions;
+    private CapsuleCollider capsuleCollider;
+    private Rigidbody rb;
+    private Animator animator;
+    private Weapon weapon;
 
     public bool IsRush => _isRush;
     public bool IsMagnetic
@@ -64,8 +65,8 @@ public class PlayerController : MonoBehaviour
         collisions = FindAnyObjectByType<Collisions>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
+        weapon = GetComponent<Weapon>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
@@ -94,7 +95,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Running()
+    public void SetRunningAnimation(bool isRun)
+    {
+        animator.SetBool("Run", isRun);
+    }
+
+    private void Running()
     {
         if (rb.velocity.y < 0)
         {
@@ -200,7 +206,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void SetState(EState state)
+    public void SetState(EState state)
     {
         switch (state)
         {
@@ -236,6 +242,11 @@ public class PlayerController : MonoBehaviour
 
                         StartCoroutine(MoveDownAndUp());
                     }
+                }
+                break;
+            case EState.Kick:
+                { 
+                    animator.Play("Kick");
                 }
                 break;
             case EState.Batting:

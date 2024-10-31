@@ -37,7 +37,7 @@ public class ShotOnGoal : MonoBehaviour
                 Debug.LogError("Coin Event");
                 break;
             case GoalEvent.EventAddHp:
-                GameManager.Instance.HpController.Heal(10);
+                GameManager.Instance.hpController.Heal(10);
                 break;
             default:
                 Debug.LogError("Goal");
