@@ -14,6 +14,7 @@ public class GameUIManager : MonoBehaviour
     [Header("InGame UI")]
     [SerializeField] private GameObject gameUiPanel;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private TextMeshProUGUI goalText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI coinText;
 
@@ -106,7 +107,6 @@ public class GameUIManager : MonoBehaviour
 
     private IEnumerator GoalTextCor()
     {
-        TextMeshProUGUI goalText = gameManager.collisions.goalText;
         goalText.enabled = true;
         goalText.GetComponent<DOTweenAnimation>().DOPlay();
 

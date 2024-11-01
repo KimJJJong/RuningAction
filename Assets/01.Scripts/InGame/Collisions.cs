@@ -14,7 +14,6 @@ public class Collisions : MonoBehaviour
     private Animator animator;
     public bool canInteract { get; set; }
 
-    public TextMeshProUGUI goalText;
     private PlayerController playerController;
     private SoccerBall ball;
     private float shootCooldown = 2f;
@@ -29,7 +28,6 @@ public class Collisions : MonoBehaviour
         playerController = GetComponent<PlayerController>();
 
         canInteract = true;
-        goalText.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
