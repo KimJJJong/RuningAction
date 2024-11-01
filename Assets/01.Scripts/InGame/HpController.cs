@@ -5,11 +5,9 @@ using UnityEngine.UI;
 public class HpController : MonoBehaviour
 {
     public Slider HpBar;
-    Collisions playerCollision;
 
     public void StartHpControll()
     {
-        playerCollision = GetComponent<Collisions>();
         SetHp(100.0f);
         StartCoroutine(DecressHp());
     }

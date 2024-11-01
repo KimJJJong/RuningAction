@@ -80,6 +80,5 @@ public class PostEffectController : MonoBehaviour
             _danger.intensity.value -= 0.1f;
             yield return new WaitForSeconds(0.08f);
         }
-
     }
 }

@@ -8,11 +8,11 @@ public class Collisions : MonoBehaviour
 {
     HpController hpController;
 
+    public bool canInteract;
     public bool isDmg;
     public bool isDmgIteam;
     public float chance;
     private Animator animator;
-    public bool canInteract { get; set; }
 
     private PlayerController playerController;
     private SoccerBall ball;
@@ -77,7 +77,7 @@ public class Collisions : MonoBehaviour
 
         isDmgIteam = Random.value <= chance;
 
-        bool isSliding = animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
+        bool isSliding = playerController.animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
         bool shouldTakeDamage = !isDmg && !isDmgIteam;
 
         if (isSliding)
@@ -107,23 +107,21 @@ public class Collisions : MonoBehaviour
 
     public void Damage()
     {
-        if (canInteract)
+        isDmg = true;
+
+        hpController.CollsionObstacle();
+
+        if (hpController.GetValue() <= 0)
         {
-            isDmg = true;
-            //animator.Play("Stumble");
-            hpController.CollsionObstacle();
-
-            if (hpController.GetValue() <= 0)
-            {
+            if(GameManager.Instance.gameState != GameState.GameOver)
                 Die();
-            }
-            else
-            {
-                GameManager.Instance.postEffectController.GetDamage();
-            }
-
-            BlinkPlayer();
         }
+        else
+        {
+            GameManager.Instance.postEffectController.GetDamage();
+        }
+
+        BlinkPlayer();
     }
 
     void Shoot()
@@ -160,7 +158,7 @@ public class Collisions : MonoBehaviour
                     .OnComplete(() =>
                     {
                         material.color = originalColor;
-                        canInteract = true;
+                        //canInteract = true;
                         isDmg = false;
                     });
             }

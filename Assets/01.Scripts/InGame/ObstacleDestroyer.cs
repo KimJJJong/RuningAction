@@ -8,9 +8,10 @@ public class ObstacleDestroyer : MonoBehaviour
     int gloveRank;
     private void Start()
     {
-        batRank = (int)GameManager.Instance.playerController.eBatRank;
-        gloveRank = (int)GameManager.Instance.playerController.eGloveRank;
+        //batRank = (int)GameManager.Instance.playerController.eBatRank;
+        //gloveRank = (int)GameManager.Instance.playerController.eGloveRank;
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(colliObj))

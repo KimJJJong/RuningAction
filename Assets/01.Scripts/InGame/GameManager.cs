@@ -23,17 +23,23 @@ public class GameManager : MonoBehaviour
 
     public GameState gameState = GameState.NotPlaying;
 
-    [HideInInspector] public GameUIManager gameUiManager;
-    [HideInInspector] public GameObject player;
-    [HideInInspector] public CollectCoin score;
-    [HideInInspector] public Collisions collisions;
-    [HideInInspector] public StrengthenSubstance substance;
-    [HideInInspector] public PlayerController playerController;
-    [HideInInspector] public PlayController playController;
-    [HideInInspector] public HpController hpController;
-    [HideInInspector] public Weapon weapon;
-    [HideInInspector] public PostEffectController postEffectController;
-    [HideInInspector] public CameraFollowPlayer cameraFollowPlayer;
+    public GameUIManager gameUiManager;
+
+    [Header("Play Controller")]
+    public PlayController playController;
+    public CollectCoin score;
+    public HpController hpController;
+
+    [Header("Character")]
+    public GameObject player;
+    public PlayerController playerController;
+    public Collisions collisions;
+    public StrengthenSubstance substance;
+    public Weapon weapon;
+
+    [Header("Camera Controller")]
+    public PostEffectController postEffectController;
+    public CameraFollowPlayer cameraFollowPlayer;
 
     private float currentPlayTime;
 
@@ -41,17 +47,13 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         _instance = GetComponent<GameManager>();
-        gameUiManager = GameObject.Find("GameUIManager").GetComponent<GameUIManager>();
-        score = GameObject.Find("Player").GetComponent<CollectCoin>();
-        collisions = GameObject.Find("Player").GetComponent<Collisions>();
-        player = GameObject.Find("Player");
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        playController = GameObject.Find("PlayController").GetComponent<PlayController>();
-        substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
-        hpController = GameObject.Find("Player").GetComponent<HpController>();
-        weapon = GameObject.Find("Player").GetComponent<Weapon>();
-        postEffectController = GameObject.Find("Main Camera").GetComponent<PostEffectController>();
-        cameraFollowPlayer = GameObject.Find("Main Camera").GetComponent<CameraFollowPlayer>();
+
+        playerController = playController.GetCurrentController();
+        collisions = playerController.collisions;
+
+        player = playController.GetCurrentPlayer();
+        substance = player.GetComponent<StrengthenSubstance>();
+        weapon = player.GetComponent<Weapon>();
     }
 
     private void Start()
@@ -65,12 +67,23 @@ public class GameManager : MonoBehaviour
             currentPlayTime += Time.deltaTime;
     }
 
+    public void SetPlayer(PlayerController pc)
+    {
+        playerController = pc;
+        collisions = pc.collisions;
+
+        player = playController.GetCurrentPlayer();
+        substance = player.GetComponent<StrengthenSubstance>();
+        weapon = player.GetComponent<Weapon>();
+    }
+
     public void GamePlay()
     {
         gameState = GameState.Playing;
         playController.SetRunningAnimation(true);
         hpController.StartHpControll();
         score.StartUpdateScore();
+
         cameraFollowPlayer.StartCameraMove(playController.GetCurrentPlayer().transform);
     }
 
@@ -80,6 +93,7 @@ public class GameManager : MonoBehaviour
         playerController.SetRunningAnimation(false);
         gameOver = true;
         gameUiManager.SetGameOverPanel();
+        postEffectController.StopAllCoroutines();
         Time.timeScale = 0f;
     }
 

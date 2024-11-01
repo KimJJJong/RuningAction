@@ -13,8 +13,8 @@ public class ObstacleBall : MonoBehaviour
 
     private void Start()
     {
-        target = GameManager.Instance.player.GetComponent<Transform>();
-      //  playerSpeed = GameManager.Instance.playerController.runningSpeed;
+        target = GameManager.Instance.playController.GetComponent<Transform>();
+        //playerSpeed = GameManager.Instance.playerController.runningSpeed;
     }
     private void Update()
     {

@@ -95,7 +95,7 @@ public class CollectCoin : MonoBehaviour
 
     public void StartUpdateScore()
     {
-        StartCoroutine(UpdateScore());
+        //StartCoroutine(UpdateScore());
     }
 
     private IEnumerator UpdateScore()

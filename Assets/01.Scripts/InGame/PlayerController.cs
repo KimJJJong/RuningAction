@@ -4,10 +4,14 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    public Animator animator;
+    public Transform ballPos;
+
     [SerializeField] private Transform centerPos;
     [SerializeField] private Transform leftPos;
     [SerializeField] private Transform rightPos;
+
+    [Header("Move Stat")]
     public float sideSpeed;
     public float runningSpeed;
     public float maxSpeed = 22f;
@@ -33,7 +37,7 @@ public class PlayerController : MonoBehaviour
     bool _isMagnetic;
     [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
-    [HideInInspector] public CapsuleCollider collider;
+    [HideInInspector] public CapsuleCollider col;
     [HideInInspector] public Collisions collisions;
     private Rigidbody rb;
     private Weapon weapon;
@@ -50,8 +54,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        collisions = FindAnyObjectByType<Collisions>();
-        collider = GetComponent<CapsuleCollider>();
+        collisions = GetComponent<Collisions>();
+        col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         weapon = GetComponent<Weapon>();
@@ -65,19 +69,19 @@ public class PlayerController : MonoBehaviour
             {
                 //Running();
                 //StateUpdate();
-            }
 
-            if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
-            {
-                //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
+                if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
+                {
+                    //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
 
-                autoDodge = !autoDodge;
-                if(autoDodge)
-                    collider.center = new Vector3(collider.center.x, collider.center.y, collider.center.z + 0.5f);
-                else
-                    collider.center = new Vector3(collider.center.x, collider.center.y, collider.center.z - 0.5f);
+                    autoDodge = !autoDodge;
+                    if (autoDodge)
+                        col.center = new Vector3(col.center.x, col.center.y, col.center.z + 0.5f);
+                    else
+                        col.center = new Vector3(col.center.x, col.center.y, col.center.z - 0.5f);
 
-                GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+                    GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
+                }
             }
         }
     }
@@ -86,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("Run", isRun);
     }
-
+    /*
     private void Running()
     {
         if (rb.velocity.y < 0)
@@ -133,25 +137,6 @@ public class PlayerController : MonoBehaviour
         MoveToCenter();
     }
 
-    public void MoveToEmptyLane()
-    {
-        if (curPos != 0 && !IsObstacleLane(0))
-        {
-            SetState(EState.Left);
-            curPos = 0;
-        }
-        else if (curPos != 1 && !IsObstacleLane(1))
-        {
-            SetState(EState.Right);
-            curPos = 1;
-        }
-        else if (curPos != 2 && !IsObstacleLane(2))
-        {
-            SetState(EState.Right);
-            curPos = 2;
-        }
-    }
-
     void StateUpdate()
     {
         MoveHorizontal();
@@ -192,7 +177,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    */
     public void SetState(EState state)
     {
         switch (state)
@@ -209,24 +194,29 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Up:
                 {
-                    isJumping = true;
-                    rb.AddForce(Vector3.up * jumpForce);
-                    animator.Play("Jumping");
-                    MasterAudio.PlaySound3DAtTransform("jump 2", transform);
+                    if (!isJumping)
+                    {
+                        isJumping = true;
+                        rb.AddForce(Vector3.up * jumpForce);
+                        animator.Play("Jumping");
+                        MasterAudio.PlaySound3DAtTransform("jump 2", transform);
+                    }
                 }
                 break;
             case EState.Down:
                 {
                     if (!slide)
                     {
-                        animator.Play("Slide");
-                        slide = true;
                         if (isJumping)
                         {
-                            rb.AddForce(Vector3.down * downForce);
+                            rb.velocity = Vector3.zero;
+                            rb.AddForce(Vector3.down * downForce * 2f);
                         }
-                        MasterAudio.PlaySound3DAtTransform("side_move", transform);
 
+                        animator.Play("Slide");
+                        slide = true;
+
+                        MasterAudio.PlaySound3DAtTransform("side_move", transform);
                         StartCoroutine(MoveDownAndUp());
                     }
                 }
@@ -261,6 +251,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region Special
     public void Invincibility(bool isIteam)
     {
         if (!_isRush)
@@ -287,14 +278,14 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator MoveDownAndUp()
     {
-        collider.height /= 2;
-        collider.center /= 2;
+        col.height /= 2;
+        col.center /= 2;
 
         yield return new WaitForSeconds(1f);
 
         slide = false;
-        collider.height *= 2;
-        collider.center *= 2;
+        col.height *= 2;
+        col.center *= 2;
     }
 
     IEnumerator InvincibilityWeaponTimer()
@@ -337,8 +328,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(time);
         IsMagnetic = false;
     }
+    #endregion
 
-
+    #region Dodge
     private IEnumerator AutoDodgeRoutine(float duration)
     {
         autoDodge = true;
@@ -436,6 +428,26 @@ public class PlayerController : MonoBehaviour
             curPos = 1;
         }
         else if (lane == 2)
+        {
+            SetState(EState.Right);
+            curPos = 2;
+        }
+    }
+    #endregion
+
+    public void MoveToEmptyLane()
+    {
+        if (curPos != 0 && !IsObstacleLane(0))
+        {
+            SetState(EState.Left);
+            curPos = 0;
+        }
+        else if (curPos != 1 && !IsObstacleLane(1))
+        {
+            SetState(EState.Right);
+            curPos = 1;
+        }
+        else if (curPos != 2 && !IsObstacleLane(2))
         {
             SetState(EState.Right);
             curPos = 2;
