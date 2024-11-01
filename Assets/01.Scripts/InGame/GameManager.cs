@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Collisions collisions;
     [HideInInspector] public StrengthenSubstance substance;
     [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public PlayController playController;
     [HideInInspector] public HpController hpController;
     [HideInInspector] public Weapon weapon;
     [HideInInspector] public PostEffectController postEffectController;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         collisions = GameObject.Find("Player").GetComponent<Collisions>();
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        playController = GameObject.Find("PlayController").GetComponent<PlayController>();
         substance = GameObject.Find("Player").GetComponent<StrengthenSubstance>();
         hpController = GameObject.Find("Player").GetComponent<HpController>();
         weapon = GameObject.Find("Player").GetComponent<Weapon>();
@@ -66,10 +68,10 @@ public class GameManager : MonoBehaviour
     public void GamePlay()
     {
         gameState = GameState.Playing;
-        playerController.SetRunningAnimation(true);
+        playController.SetRunningAnimation(true);
         hpController.StartHpControll();
         score.StartUpdateScore();
-        cameraFollowPlayer.StartCameraMove();
+        cameraFollowPlayer.StartCameraMove(playController.GetCurrentPlayer().transform);
     }
 
     public void GameOver()

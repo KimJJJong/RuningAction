@@ -9,12 +9,11 @@ public class CameraFollowPlayer : MonoBehaviour
     public Vector3 distance;
     public bool isMove = false;
 
-    public void StartCameraMove()
+    public void StartCameraMove(Transform target)
     {
-        cameraTarget = GameObject.Find("Player").GetComponent<Transform>();
+        cameraTarget = target;
         distance = new Vector3(0, 3, 1f);
         sSpeed = 4;
-
 
         isMove = true;
     }

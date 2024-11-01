@@ -28,43 +28,45 @@ public class Collisions : MonoBehaviour
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
 
-        canInteract = true;
         goalText.enabled = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Contains("Obstacle"))
+        if (canInteract)
         {
-            if (playerController.autoDodge)
+            if (other.tag.Contains("Obstacle"))
             {
-                if (other.CompareTag("ObstacleSlide"))
+                if (playerController.autoDodge)
                 {
-                    playerController.DodgeOnSlide();
+                    if (other.CompareTag("ObstacleSlide"))
+                    {
+                        playerController.DodgeOnSlide();
+                    }
+                    else if (other.CompareTag("ObstacleJump"))
+                    {
+                        playerController.DodgeOnJump();
+                    }
+                    else
+                    {
+                        playerController.DodgeOnPosition();
+                    }
+                    return;
                 }
-                else if (other.CompareTag("ObstacleJump"))
-                {
-                    playerController.DodgeOnJump();
-                }
-                else
-                {
-                    playerController.DodgeOnPosition();
-                }
-                return;
-            }
-            ObstacleCollision(other);
+                ObstacleCollision(other);
 
-            if(other.CompareTag("ObstacleWall"))
-            {
-                playerController.MoveToEmptyLane();
+                if (other.CompareTag("ObstacleWall"))
+                {
+                    playerController.MoveToEmptyLane();
+                }
             }
-        }
-        else if (other.CompareTag("SoccerBall"))
-        {
-            if (ball == null && canShoot)
+            else if (other.CompareTag("SoccerBall"))
             {
-                ball = other.GetComponent<SoccerBall>();
-                Shoot();
+                if (ball == null && canShoot)
+                {
+                    ball = other.GetComponent<SoccerBall>();
+                    Shoot();
+                }
             }
         }
     }

@@ -4,62 +4,76 @@ using UnityEngine;
 
 public class PlayController : MonoBehaviour
 {
-    [SerializeField] Transform centerPos;
-    [SerializeField] Transform leftPos;
-    [SerializeField] Transform rightPos;
-    [SerializeField] GameObject centerPlayer;
-    [SerializeField] GameObject leftPlayer;
-    [SerializeField] GameObject rightPlayer;
+    [SerializeField] private Transform centerPos;
+    [SerializeField] private Transform leftPos;
+    [SerializeField] private Transform rightPos;
+    [SerializeField] private GameObject centerPlayer;
+    [SerializeField] private GameObject leftPlayer;
+    [SerializeField] private GameObject rightPlayer;
 
-    public float sideSpeed;
     public float runningSpeed;
     public float maxSpeed = 22f;
     public float accelerationRate;
-    public float jumpForce;
-    public float downForce = 400;
-    public float fallMultiplier = 3;
 
-    private Animator centerAnimator, leftAnimator, rightAnimator;
-    private int currentPlayer = 1; // 0 = ¿ÞÂÊ, 1 = Áß¾Ó, 2 = ¿À¸¥ÂÊ
-    private bool isJumping = false;
-    private bool slide = false;
+    private PlayerController centerController, leftController, rightController;
+    private int currentPlayer = 1; //0 = ¿ÞÂÊ, 1 = Áß¾Ó, 2 = ¿À¸¥ÂÊ
+    private CameraFollowPlayer cameraFollowPlayer;
+
 
     void Start()
     {
-        centerAnimator = centerPlayer.GetComponent<Animator>();
-        leftAnimator = leftPlayer.GetComponent<Animator>();
-        rightAnimator = rightPlayer.GetComponent<Animator>();
+        cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
 
-        SetInitialPositions();
+        centerController = centerPlayer.GetComponent<PlayerController>();
+        leftController = leftPlayer.GetComponent<PlayerController>();
+        rightController = rightPlayer.GetComponent<PlayerController>();
+
+        Init();
     }
 
     void Update()
     {
-        Running();
+        if (GameManager.Instance.gameState == GameState.Playing)
+        {
+            Running();
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Slide();
-        }
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            SwitchPlayer(-1);
-        }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            SwitchPlayer(1);
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Jump();
+            }
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Slide();
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SwitchPlayer(-1);
+            }
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SwitchPlayer(1);
+            }
         }
     }
 
-    private void SetInitialPositions()
+    private void Init()
     {
         leftPlayer.transform.position = new Vector3(leftPos.position.x, transform.position.y, transform.position.z);
         centerPlayer.transform.position = new Vector3(centerPos.position.x, transform.position.y, transform.position.z + 1);
         rightPlayer.transform.position = new Vector3(rightPos.position.x, transform.position.y, transform.position.z);
+
+        leftController.collisions.canInteract = false;
+        centerController.collisions.canInteract = false;
+        rightController.collisions.canInteract = false;
+    }
+
+    public void SetRunningAnimation(bool isRun)
+    {
+        centerController.SetRunningAnimation(isRun);
+        leftController.SetRunningAnimation(isRun);
+        rightController.SetRunningAnimation(isRun);
+
+        GetCurrentController().collisions.canInteract = true;
     }
 
     private void Running()
@@ -73,23 +87,12 @@ public class PlayController : MonoBehaviour
 
     private void Jump()
     {
-        if (!isJumping)
-        {
-            isJumping = true;
-            GetCurrentAnimator().Play("Jumping");
-            Rigidbody rb = GetCurrentPlayer().GetComponent<Rigidbody>();
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
+        GetCurrentController().SetState(EState.Up);
     }
 
     private void Slide()
     {
-        if (!slide)
-        {
-            slide = true;
-            GetCurrentAnimator().Play("Slide");
-            StartCoroutine(ResetSlide());
-        }
+        GetCurrentController().SetState(EState.Down);
     }
 
     private void SwitchPlayer(int direction)
@@ -100,32 +103,23 @@ public class PlayController : MonoBehaviour
         Transform newPos = (newPlayer == 0) ? leftPos : (newPlayer == 1) ? centerPos : rightPos;
         Transform currentPos = (currentPlayer == 0) ? leftPos : (currentPlayer == 1) ? centerPos : rightPos;
 
+        GetCurrentController().collisions.canInteract = false;
         GetCurrentPlayer().transform.position = new Vector3(currentPos.position.x, transform.position.y, transform.position.z);
+
         currentPlayer = newPlayer;
-        GetCurrentPlayer().transform.position = new Vector3(newPos.position.x, transform.position.y, transform.position.z + 1); 
+        GetCurrentController().collisions.canInteract = true;
+        GetCurrentPlayer().transform.position = new Vector3(newPos.position.x, transform.position.y, transform.position.z + 1);
+
+        cameraFollowPlayer.StartCameraMove(GetCurrentPlayer().transform);
     }
 
-    private GameObject GetCurrentPlayer()
+    public GameObject GetCurrentPlayer()
     {
         return (currentPlayer == 0) ? leftPlayer : (currentPlayer == 1) ? centerPlayer : rightPlayer;
     }
 
-    private Animator GetCurrentAnimator()
+    private PlayerController GetCurrentController()
     {
-        return (currentPlayer == 0) ? leftAnimator : (currentPlayer == 1) ? centerAnimator : rightAnimator;
-    }
-
-    private IEnumerator ResetSlide()
-    {
-        yield return new WaitForSeconds(1f);
-        slide = false;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isJumping = false;
-        }
+        return (currentPlayer == 0) ? leftController : (currentPlayer == 1) ? centerController : rightController;
     }
 }

@@ -4,9 +4,10 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Transform centerPos;
-    [SerializeField] Transform leftPos;
-    [SerializeField] Transform rightPos;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Transform centerPos;
+    [SerializeField] private Transform leftPos;
+    [SerializeField] private Transform rightPos;
     public float sideSpeed;
     public float runningSpeed;
     public float maxSpeed = 22f;
@@ -32,10 +33,9 @@ public class PlayerController : MonoBehaviour
     bool _isMagnetic;
     [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
-    private Collisions collisions;
-    private CapsuleCollider capsuleCollider;
+    [HideInInspector] public CapsuleCollider collider;
+    [HideInInspector] public Collisions collisions;
     private Rigidbody rb;
-    private Animator animator;
     private Weapon weapon;
 
     public bool IsRush => _isRush;
@@ -48,14 +48,13 @@ public class PlayerController : MonoBehaviour
     public bool autoDodge = false;
     public float dodgeDuration = 3f;
 
-    void Start()
+    void Awake()
     {
         collisions = FindAnyObjectByType<Collisions>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
+        collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-        weapon = GetComponent<Weapon>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        weapon = GetComponent<Weapon>();
     }
 
     void Update()
@@ -64,8 +63,8 @@ public class PlayerController : MonoBehaviour
         {
             if (collisions.canInteract)
             {
-                Running();
-                StateUpdate();
+                //Running();
+                //StateUpdate();
             }
 
             if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
@@ -74,9 +73,9 @@ public class PlayerController : MonoBehaviour
 
                 autoDodge = !autoDodge;
                 if(autoDodge)
-                    capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y, capsuleCollider.center.z + 0.5f);
+                    collider.center = new Vector3(collider.center.x, collider.center.y, collider.center.z + 0.5f);
                 else
-                    capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y, capsuleCollider.center.z - 0.5f);
+                    collider.center = new Vector3(collider.center.x, collider.center.y, collider.center.z - 0.5f);
 
                 GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
             }
@@ -288,14 +287,14 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator MoveDownAndUp()
     {
-        capsuleCollider.height /= 2;
-        capsuleCollider.center /= 2;
+        collider.height /= 2;
+        collider.center /= 2;
 
         yield return new WaitForSeconds(1f);
 
         slide = false;
-        capsuleCollider.height *= 2;
-        capsuleCollider.center *= 2;
+        collider.height *= 2;
+        collider.center *= 2;
     }
 
     IEnumerator InvincibilityWeaponTimer()
