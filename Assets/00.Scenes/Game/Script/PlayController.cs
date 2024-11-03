@@ -6,9 +6,9 @@ using DG.Tweening;
 public class PlayController : MonoBehaviour
 {
     [Header("Start Pos")]
-    [SerializeField] private Transform centerPos;
-    [SerializeField] private Transform leftPos;
-    [SerializeField] private Transform rightPos;
+    [SerializeField] private Transform[] centerPos;
+    [SerializeField] private Transform[] leftPos;
+    [SerializeField] private Transform[] rightPos;
 
     [Header("Character")]
     [SerializeField] private GameObject centerPlayer;
@@ -35,7 +35,8 @@ public class PlayController : MonoBehaviour
 
     public float moveSpeed = 5f; // 이동 속도
     private Transform targetTrans; // 목표 위치
-
+    private Transform newPos; // 캐릭터의 목표 위치
+    private bool isSwitching = false; // 현재 전환 중인지 여부 확인
     public void Start()
     {
         cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
@@ -66,7 +67,7 @@ public class PlayController : MonoBehaviour
                 SwitchPlayer(1);
             }
 
-            if (targetTrans != null)
+            if (targetTrans != null && !isSwitching)
             {
                 soccerBall.transform.position = Vector3.Lerp(soccerBall.transform.position, targetTrans.position, moveSpeed * Time.deltaTime);
             }
@@ -75,9 +76,9 @@ public class PlayController : MonoBehaviour
 
     private void Init()
     {
-        leftPlayer.transform.position = new Vector3(leftPos.position.x, transform.position.y, transform.position.z);
-        centerPlayer.transform.position = new Vector3(centerPos.position.x, transform.position.y, transform.position.z + 0.5f);
-        rightPlayer.transform.position = new Vector3(rightPos.position.x, transform.position.y, transform.position.z);
+        leftPlayer.transform.position = leftPos[0].position;
+        centerPlayer.transform.position = centerPos[1].position;
+        rightPlayer.transform.position = rightPos[0].position;
 
         leftController.collisions.canInteract = false;
         centerController.collisions.canInteract = false;
@@ -119,24 +120,82 @@ public class PlayController : MonoBehaviour
         GetCurrentController().SetState(EState.Down);
     }
 
+
     private void SwitchPlayer(int direction)
     {
+        if (isSwitching) return;
+
         int newPlayer = currentPlayer + direction;
         if (newPlayer < 0 || newPlayer > 2) return;
 
-        Transform newPos = (newPlayer == 0) ? leftPos : (newPlayer == 1) ? centerPos : rightPos;
-        Transform currentPos = (currentPlayer == 0) ? leftPos : (currentPlayer == 1) ? centerPos : rightPos;
+        StartCoroutine(SmoothSwitchPlayer(newPlayer));
+    }
 
+    private IEnumerator SmoothSwitchPlayer(int newPlayerNum)
+    {
+        isSwitching = true;
+
+        int oldPlayerNum = currentPlayer;
+        GameObject oldPlayer = GetCurrentPlayer();
+        Vector3 startPos;
+        Vector3 endPos;
+        if (oldPlayerNum == 0)
+        {
+            startPos = leftPos[1].transform.position;
+            endPos = leftPos[0].transform.position;
+        }
+        else if (oldPlayerNum == 1)
+        {
+            startPos = centerPos[1].transform.position;
+            endPos = centerPos[0].transform.position;
+        }
+        else
+        {
+            startPos = rightPos[1].transform.position;
+            endPos = rightPos[0].transform.position;
+        }
         GetCurrentController().collisions.canInteract = false;
-        GetCurrentPlayer().transform.position = new Vector3(currentPos.position.x, transform.position.y, transform.position.z - 0.5f);
 
-        currentPlayer = newPlayer;
+        currentPlayer = newPlayerNum;
+        Vector3 newStartPos;
+        Vector3 newEndPos;
+        GameObject newPlayer = GetCurrentPlayer();
+        
+        if (currentPlayer == 0)
+        {
+            newStartPos = leftPos[0].transform.position;
+            newEndPos = leftPos[1].transform.position;
+        }
+        else if (currentPlayer == 1)
+        {
+            newStartPos = centerPos[0].transform.position;
+            newEndPos = centerPos[1].transform.position;
+        }
+        else
+        {
+            newStartPos = rightPos[0].transform.position;
+            newEndPos = rightPos[1].transform.position;
+        }
         GetCurrentController().collisions.canInteract = true;
-        GetCurrentPlayer().transform.position = new Vector3(newPos.position.x, transform.position.y, transform.position.z + 0.5f);
 
-        cameraFollowPlayer.StartCameraMove(GetCurrentPlayer().transform);
+        cameraFollowPlayer.StartCameraMove(newPlayer.transform);
+
+        float elapsedTime = 0f;
+        float duration = 0.3f;
+
+        while (elapsedTime < duration)
+        {
+            oldPlayer.transform.position = Vector3.Lerp(startPos, endPos, elapsedTime / duration);
+            newPlayer.transform.position = Vector3.Lerp(newStartPos, newEndPos, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        oldPlayer.transform.position = endPos;
+        newPlayer.transform.position = newEndPos;
+        isSwitching = false;
+
         GameManager.Instance.SetPlayer(GetCurrentController());
-
         PositionSoccerBall(GetCurrentController().ballPos);
     }
 
