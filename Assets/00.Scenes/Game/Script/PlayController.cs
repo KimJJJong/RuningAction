@@ -19,6 +19,8 @@ public class PlayController : MonoBehaviour
     [SerializeField] private PlayerController centerController;
     [SerializeField] private PlayerController leftController;
     [SerializeField] private PlayerController rightController;
+    public bool isDmg;
+    public bool isDmgItem;
 
     [Header("Ball")]
     [SerializeField] private GameObject soccerBall;

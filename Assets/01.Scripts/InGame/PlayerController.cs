@@ -294,13 +294,13 @@ public class PlayerController : MonoBehaviour
 
         float tmpSpd = runningSpeed;
         runningSpeed = 30;
-        GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
+        GameManager.Instance.playController.isDmg = true;
         while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
         {
             GameManager.Instance.weapon.DecreaseGage(10f);
             yield return new WaitForSeconds(1);
         }
-        GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
+        GameManager.Instance.playController.isDmg = false;
         GameManager.Instance.postEffectController.RushPostEffect(0.15f, 0.2f, false);
 
         runningSpeed = tmpSpd;
@@ -312,12 +312,12 @@ public class PlayerController : MonoBehaviour
         _isRush = true;
         float tmpSpd = runningSpeed;
         runningSpeed = 30;
-        GameManager.Instance.player.GetComponent<Collisions>().isDmg = true;
+        GameManager.Instance.playController.isDmg = true;
 
         yield return new WaitForSeconds(time);
         GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, false);
 
-        GameManager.Instance.player.GetComponent<Collisions>().isDmg = false;
+        GameManager.Instance.playController.isDmg = false;
         runningSpeed = tmpSpd;
         _isRush = false;
     }

@@ -9,11 +9,12 @@ public class Collisions : MonoBehaviour
     HpController hpController;
 
     public bool canInteract;
-    public bool isDmg;
-    public bool isDmgIteam;
+    //public bool isDmg;
+    //public bool isDmgItem;
     public float chance;
     private Animator animator;
 
+    private PlayController playController;
     private PlayerController playerController;
     private SoccerBall ball;
     private float shootCooldown = 2f;
@@ -26,6 +27,7 @@ public class Collisions : MonoBehaviour
         hpController = FindAnyObjectByType<HpController>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+        playController = FindAnyObjectByType<PlayController>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -75,10 +77,10 @@ public class Collisions : MonoBehaviour
             return;
         }
 
-        isDmgIteam = Random.value <= chance;
+        playController.isDmgItem = Random.value <= chance;
 
         bool isSliding = playerController.animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
-        bool shouldTakeDamage = !isDmg && !isDmgIteam;
+        bool shouldTakeDamage = !playController.isDmg && !playController.isDmgItem;
 
         if (isSliding)
         {
@@ -88,33 +90,30 @@ public class Collisions : MonoBehaviour
             }
             else if (shouldTakeDamage)
             {
-                ApplyDamage();
+                Damage();
             }
         }
         else
         {
             if (shouldTakeDamage)
             {
-                ApplyDamage();
+                Damage();
             }
         }
     }
 
-    void ApplyDamage()
-    {
-        Damage();
-    }
-
     public void Damage()
     {
-        isDmg = true;
+        playController.isDmg = true;
 
         hpController.CollsionObstacle();
 
         if (hpController.GetValue() <= 0)
         {
-            if(GameManager.Instance.gameState != GameState.GameOver)
+            if (GameManager.Instance.gameState != GameState.GameOver)
+            {
                 Die();
+            }
         }
         else
         {
@@ -158,8 +157,7 @@ public class Collisions : MonoBehaviour
                     .OnComplete(() =>
                     {
                         material.color = originalColor;
-                        //canInteract = true;
-                        isDmg = false;
+                        playController.isDmg = false;
                     });
             }
         }
