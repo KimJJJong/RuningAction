@@ -26,6 +26,16 @@ public class PlayController : MonoBehaviour
     [SerializeField] private GameObject soccerBall;
     [SerializeField] private float ballMoveSpeed = 5f;
     private Transform targetTrans;
+    [SerializeField] private PathArray[] leftToCenterPaht;
+    [SerializeField] private PathArray[] centerToRightPaht;
+    [SerializeField] private PathArray[] rightToCenterPaht;
+    [SerializeField] private PathArray[] centerToLeftPaht;
+    [SerializeField] private Transform[] path1Waypoints;
+    [SerializeField] private Transform[] path2Waypoints;
+    [SerializeField] private Transform[] path3Waypoints;
+
+    private Transform[] selectedPath;
+    private int currentWaypointIndex = 0;
 
     [Header("Speed")]
     [SerializeField] private float maxSpeed = 22f;
@@ -42,6 +52,28 @@ public class PlayController : MonoBehaviour
         cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
 
         Init();
+    }
+
+    private void Init()
+    {
+        leftPlayer.transform.position = leftPos[0].position;
+        centerPlayer.transform.position = centerPos[1].position;
+        rightPlayer.transform.position = rightPos[0].position;
+
+        leftController.collisions.canInteract = false;
+        centerController.collisions.canInteract = false;
+        rightController.collisions.canInteract = false;
+
+        PositionSoccerBall(GetCurrentController().ballPos);
+    }
+
+    public void SetRunningAnimation(bool isRun)
+    {
+        centerController.SetRunningAnimation(isRun);
+        leftController.SetRunningAnimation(isRun);
+        rightController.SetRunningAnimation(isRun);
+
+        GetCurrentController().collisions.canInteract = true;
     }
 
     void Update()
@@ -66,34 +98,37 @@ public class PlayController : MonoBehaviour
             {
                 SwitchPlayer(1);
             }
-
+            /*
             if (targetTrans != null)
             {
                 soccerBall.transform.position = Vector3.Lerp(soccerBall.transform.position, targetTrans.position, ballMoveSpeed * Time.deltaTime);
             }
+            */
+            if (targetTrans != null && selectedPath != null && selectedPath.Length > 0)
+            {
+                MoveBallAlongPath();
+            }
         }
     }
 
-    private void Init()
+    private void MoveBallAlongPath()
     {
-        leftPlayer.transform.position = leftPos[0].position;
-        centerPlayer.transform.position = centerPos[1].position;
-        rightPlayer.transform.position = rightPos[0].position;
+        if (currentWaypointIndex < selectedPath.Length)
+        {
+            Transform waypoint = selectedPath[currentWaypointIndex];
+            soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, waypoint.position, ballMoveSpeed * Time.deltaTime);
 
-        leftController.collisions.canInteract = false;
-        centerController.collisions.canInteract = false;
-        rightController.collisions.canInteract = false;
-
-        PositionSoccerBall(GetCurrentController().ballPos);
-    }
-
-    public void SetRunningAnimation(bool isRun)
-    {
-        centerController.SetRunningAnimation(isRun);
-        leftController.SetRunningAnimation(isRun);
-        rightController.SetRunningAnimation(isRun);
-
-        GetCurrentController().collisions.canInteract = true;
+            // waypoint에 도달했을 때 다음 위치로 이동
+            if (Vector3.Distance(soccerBall.transform.position, waypoint.position) < 0.1f)
+            {
+                currentWaypointIndex++;
+            }
+        }
+        else
+        {
+            // 궤적을 모두 따라갔으면 최종 목표(targetTrans)로 바로 이동
+            soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, targetTrans.position, ballMoveSpeed * Time.deltaTime);
+        }
     }
 
     private void Running()
@@ -120,7 +155,6 @@ public class PlayController : MonoBehaviour
         GetCurrentController().SetState(EState.Down);
     }
 
-
     private void SwitchPlayer(int direction)
     {
         int newPlayer = currentPlayer + direction;
@@ -146,6 +180,29 @@ public class PlayController : MonoBehaviour
         cameraFollowPlayer.StartCameraMove(cameraTrans);//GetCurrentPlayer().transform);
 
         GameManager.Instance.SetPlayer(GetCurrentController());
+
+        int random = Random.Range(0, 3);
+        switch (oldPlayerNum)
+        {
+            case 0:
+                selectedPath = leftToCenterPaht[random].path;
+                break;
+            case 1:
+                selectedPath = currentPlayer switch
+                {
+                    0 => centerToLeftPaht[random].path,
+                    2 => centerToRightPaht[random].path,
+                    _ => null
+                };
+                break;
+            case 2:
+                selectedPath = rightToCenterPaht[random].path;
+                break;
+            default:
+                Debug.LogError("Wrong Path");
+                break;
+        }
+        currentWaypointIndex = 0;
 
         float elapsedTime = 0f;
         const float duration = 0.3f;
@@ -210,9 +267,16 @@ public class PlayController : MonoBehaviour
     {
         return (currentPlayer == 0) ? leftController : (currentPlayer == 1) ? centerController : rightController;
     }
-    
+
     public float GetSpeed()
     {
         return runningSpeed;
     }
 }
+
+[System.Serializable]
+public class PathArray
+{
+    public Transform[] path;
+}
+
