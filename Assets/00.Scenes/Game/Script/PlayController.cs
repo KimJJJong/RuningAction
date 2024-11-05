@@ -123,6 +123,7 @@ public class PlayController : MonoBehaviour
         {
             Transform waypoint = selectedPath[currentWaypointIndex];
             soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, waypoint.position, ballMoveSpeed * Time.deltaTime);
+            RotateTowardsTarget(waypoint.position);
 
             if (Vector3.Distance(soccerBall.transform.position, waypoint.position) < 0.1f)
             {
@@ -132,8 +133,16 @@ public class PlayController : MonoBehaviour
         else
         {
             PositionSoccerBall(GetCurrentController().ballPos);
-            soccerBall.transform.position = Vector3.Lerp(soccerBall.transform.position, targetTrans.position, ballMoveSpeed * Time.deltaTime);
+            soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, targetTrans.position, ballMoveSpeed * Time.deltaTime);
+            soccerBall.transform.rotation = Quaternion.identity;
         }
+    }
+    private void RotateTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = targetPosition - soccerBall.transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        soccerBall.transform.rotation = Quaternion.RotateTowards(soccerBall.transform.rotation, targetRotation, 360 * Time.deltaTime);
     }
 
     private void Running()
@@ -186,7 +195,7 @@ public class PlayController : MonoBehaviour
 
         GameManager.Instance.SetPlayer(GetCurrentController());
 
-        int random = Random.Range(0, 3);
+        int random = 0;//Random.Range(0, 3);
         switch (oldPlayerNum)
         {
             case 0:
