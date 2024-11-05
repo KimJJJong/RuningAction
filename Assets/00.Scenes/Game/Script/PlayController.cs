@@ -44,8 +44,10 @@ public class PlayController : MonoBehaviour
     [SerializeField] private float speedIncreaseInterval = 0.5f;
     [SerializeField] private float timeSinceLastIncrease = 0f;
 
-    private int currentPlayer = 1; //0 = ¿ÞÂÊ, 1 = Áß¾Ó, 2 = ¿À¸¥ÂÊ
+    private int currentPlayer = 1; //0 = ï¿½ï¿½ï¿½ï¿½, 1 = ï¿½ß¾ï¿½, 2 = ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private CameraFollowPlayer cameraFollowPlayer;
+
+    float ballTime = 0f;
 
     public void Start()
     {
@@ -78,6 +80,16 @@ public class PlayController : MonoBehaviour
 
     void Update()
     {
+        if (ballTime > 0f)
+        {
+            ballTime -= Time.deltaTime;
+            soccerBall.GetComponent<TrailRenderer>().enabled = true;
+        }
+        else
+        {
+            soccerBall.GetComponent<TrailRenderer>().enabled = false;
+        }
+
         if (GameManager.Instance.gameState == GameState.Playing)
         {
             Running();
@@ -93,10 +105,12 @@ public class PlayController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 SwitchPlayer(-1);
+                ballTime = 1f;
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 SwitchPlayer(1);
+                ballTime = 1f;
             }
             /*
             if (targetTrans != null)
@@ -272,6 +286,7 @@ public class PlayController : MonoBehaviour
     {
         return runningSpeed;
     }
+
 }
 
 [System.Serializable]
