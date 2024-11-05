@@ -126,6 +126,8 @@ public class GameUIManager : MonoBehaviour
 
     private IEnumerator ShowGameOverText()
     {
+        UpdateExpText(600,1000);
+
         runningTimeText.enabled = true;
         ShowTextWithEffect(runningTimeText);
         yield return textEffectTime;
@@ -141,9 +143,8 @@ public class GameUIManager : MonoBehaviour
         highScoreText.enabled = true;
         ShowTextWithEffect(highScoreText);
         yield return textEffectTime;
-
-        UpdateExpSlide(600);
-        AddExp(1000);
+        
+        UpdateExpSlide(1000);
     }
 
     public void ShowTextWithEffect(TextMeshProUGUI textTMP)
@@ -159,9 +160,8 @@ public class GameUIManager : MonoBehaviour
                      .Append(textTMP.transform.DOShakeScale(0.3f, 0.2f, 10, 90f));
     }
 
-    public void AddExp(int gainedExp)
+    public void UpdateExpSlide(int gainedExp)
     {
-        expText.text = $"+{gainedExp}";
         StartCoroutine(FillExpSlider(gainedExp));
     }
 
@@ -225,10 +225,12 @@ public class GameUIManager : MonoBehaviour
         highScoreText.text = $"{highScore}";
     }
 
-    public void UpdateExpSlide(float max)
+    public void UpdateExpText(int maxExp, int gainedExp)
     {
         expSlider.value = 0;
-        expSlider.maxValue = max;
+        expSlider.maxValue = maxExp;
+
+        expText.text = $"+{gainedExp}";
     }
     #endregion
 }
