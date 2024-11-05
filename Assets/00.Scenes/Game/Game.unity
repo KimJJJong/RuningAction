@@ -1950,18 +1950,6 @@ PrefabInstance:
       value: Soccer Ball
       objectReference: {fileID: 0}
     - target: {fileID: 4935240531098310, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4935240531098310, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4935240531098310, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4935240531098310, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -5259,6 +5247,8 @@ MonoBehaviour:
   centerController: {fileID: 335473964}
   leftController: {fileID: 1908591455}
   rightController: {fileID: 184326411}
+  isDmg: 0
+  isDmgItem: 0
   soccerBall: {fileID: 2107833584}
   ballMoveSpeed: 5
   maxSpeed: 30
