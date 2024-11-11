@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44778514, g: 0.4977671, b: 0.5754271, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2429,7 +2429,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bc44650dd5520cd46ba8b66d2971f53c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91222f1e88f89fe4c9207efab8c31948, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7345,7 +7345,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -7390,7 +7390,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 1.5e-44, z: 2.4247e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -7403,13 +7403,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: -0.024939105, y: -0.40694574, z: 0.8997876, w: 0.15542032}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 46.434, y: -374.398, z: -205.803}
 --- !u!114 &705507996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9155,7 +9155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -139.5}
+  m_AnchoredPosition: {x: 0, y: -159.6}
   m_SizeDelta: {x: 270.08, y: 111.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &934112545
@@ -10625,23 +10625,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 170.53468
+      value: 209.72356
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 170.53468
+      value: 209.72356
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 170.53468
+      value: 209.72356
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -39.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -36.9
+      value: -81.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5ff9e6e498fa9fb49b5eee68350203b2, type: 3}
       propertyPath: m_LocalPosition.z
