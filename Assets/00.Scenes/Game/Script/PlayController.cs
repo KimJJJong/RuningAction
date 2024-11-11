@@ -20,7 +20,7 @@ public class PlayController : MonoBehaviour
     [SerializeField] private PlayerController centerController;
     [SerializeField] private PlayerController rightController;
     private CameraFollowPlayer cameraFollowPlayer;
-    private int currentPlayer = 1; //0 = ¿ÞÂÊ, 1 = Áß¾Ó, 2 = ¿À¸¥ÂÊ
+    private int currentPlayer = 1; //0 = ï¿½ï¿½ï¿½ï¿½, 1 = ï¿½ß¾ï¿½, 2 = ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public bool isDmg;
     public bool isDmgItem;
 
@@ -35,11 +35,16 @@ public class PlayController : MonoBehaviour
     [SerializeField] private GameObject soccerBall;
     [SerializeField] private float ballMoveSpeed = 5f;
     private Transform targetTrans;
+
+    [SerializeField] private DOTweenPath rightPath;
+    [SerializeField] private DOTweenPath leftPath;
+
     [SerializeField] private PathArray[] leftToCenterPath;
     [SerializeField] private PathArray[] centerToLeftPath;
     [SerializeField] private PathArray[] centerToRightPath;
     [SerializeField] private PathArray[] rightToCenterPath;
     private Transform[] selectedPath;
+    private DOTweenPath selectedTweenPath;
     private int currentWaypointIndex = 0;
     private float ballTime = 0f;
 
@@ -108,17 +113,20 @@ public class PlayController : MonoBehaviour
                 SwitchPlayer(1);
                 ballTime = 1f;
             }
-            
+
+
             if (targetTrans != null && selectedPath != null && selectedPath.Length > 0)
             {
                 MoveBallAlongPath();
             }
-           
+
+
         }
     }
 
     private void MoveBallAlongPath()
     {
+
         if (currentWaypointIndex < selectedPath.Length)
         {
             Transform waypoint = selectedPath[currentWaypointIndex];
