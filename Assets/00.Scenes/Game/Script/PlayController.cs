@@ -19,8 +19,9 @@ public class PlayController : MonoBehaviour
     [SerializeField] private PlayerController leftController;
     [SerializeField] private PlayerController centerController;
     [SerializeField] private PlayerController rightController;
+    [SerializeField] private int currentPlayer = 1;
     private CameraFollowPlayer cameraFollowPlayer;
-    private int currentPlayer = 1; //0 = ����, 1 = �߾�, 2 = ������
+
     public bool isDmg;
     public bool isDmgItem;
 
@@ -36,8 +37,10 @@ public class PlayController : MonoBehaviour
     [SerializeField] private float ballMoveSpeed = 5f;
     private Transform targetTrans;
 
-    [SerializeField] private DOTweenPath rightPath;
-    [SerializeField] private DOTweenPath leftPath;
+    [SerializeField] private DOTweenPath CToRPath;
+    [SerializeField] private DOTweenPath CToLPath;
+    [SerializeField] private DOTweenPath LtoCPath;
+    [SerializeField] private DOTweenPath RtoCPath;
 
     [SerializeField] private PathArray[] leftToCenterPath;
     [SerializeField] private PathArray[] centerToLeftPath;
@@ -105,19 +108,38 @@ public class PlayController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
+                if (currentPlayer == 2)
+                {
+                    CToRPath.DOPlayBackwards();
+                }
+                else if (currentPlayer == 1)
+                {
+                    CToLPath.DORestart();
+                }
                 SwitchPlayer(-1);
                 ballTime = 1f;
+
+
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
+                if (currentPlayer == 0)
+                {
+                    CToLPath.DOPlayBackwards();
+                }
+                else if (currentPlayer == 1)
+                {
+                    CToRPath.DORestart();
+                }
                 SwitchPlayer(1);
                 ballTime = 1f;
+
             }
 
 
             if (targetTrans != null && selectedPath != null && selectedPath.Length > 0)
             {
-                MoveBallAlongPath();
+                //MoveBallAlongPath();
             }
 
 
