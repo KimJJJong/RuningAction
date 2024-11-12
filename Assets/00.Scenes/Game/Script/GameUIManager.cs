@@ -34,9 +34,10 @@ public class GameUIManager : MonoBehaviour
     private Color defaultScoreColor;
 
     private WaitForSecondsRealtime textEffectTime = new WaitForSecondsRealtime(0.5f);
+
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
             instance = this;
     }
 
@@ -79,7 +80,7 @@ public class GameUIManager : MonoBehaviour
                          {
                              countdownText.gameObject.SetActive(false);
                              GameManager.Instance.GamePlay();
-                             });
+                         });
     }
 
     private void UpdateCountdownText(string text)
@@ -126,7 +127,7 @@ public class GameUIManager : MonoBehaviour
 
     private IEnumerator ShowGameOverText()
     {
-        UpdateExpText(600,1000);
+        UpdateExpText(600, 1000);
 
         runningTimeText.enabled = true;
         ShowTextWithEffect(runningTimeText);
@@ -143,7 +144,7 @@ public class GameUIManager : MonoBehaviour
         highScoreText.enabled = true;
         ShowTextWithEffect(highScoreText);
         yield return textEffectTime;
-        
+
         UpdateExpSlide(1000);
     }
 

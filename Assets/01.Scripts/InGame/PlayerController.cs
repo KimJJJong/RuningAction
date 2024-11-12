@@ -4,6 +4,8 @@ using DarkTonic.MasterAudio;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameUIManager gameUiManager;
+
     public Animator animator;
     public Transform ballPos;
 
@@ -59,6 +61,11 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         weapon = GetComponent<Weapon>();
+    }
+
+    private void Start()
+    {
+        gameUiManager = GameUIManager.instance;
     }
 
     void Update()
@@ -222,7 +229,7 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case EState.Kick:
-                { 
+                {
                     animator.Play("Kick");
                 }
                 break;
@@ -238,6 +245,14 @@ public class PlayerController : MonoBehaviour
                     animator.Play("Pitch");
                 }
                 break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Score"))
+        {
+            gameUiManager.UpdateScoreText(500);
         }
     }
 
