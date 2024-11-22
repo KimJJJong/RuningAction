@@ -1,7 +1,9 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+
+public class GameStateChangeEvent : UnityEngine.Events.UnityEvent<GameState> { }
 
 public class GameManager : MonoBehaviour
 {
@@ -21,14 +23,16 @@ public class GameManager : MonoBehaviour
     }
     public static bool gameOver = false;
 
+    public static GameStateChangeEvent OnGameStateChange = new GameStateChangeEvent();
     public GameState gameState = GameState.NotPlaying;
 
     public GameUIManager gameUiManager;
 
-    [Header("Play Controller")]
+    [HideInInspector]
     public PlayController playController;
+
+    [HideInInspector]
     public CollectCoin score;
-    public HpController hpController;
 
     [Header("Character")]
     public GameObject player;
@@ -44,26 +48,34 @@ public class GameManager : MonoBehaviour
     private float currentPlayTime;
 
     public float CurrentPlayTime => currentPlayTime;
+
     void Awake()
     {
         _instance = GetComponent<GameManager>();
 
-        playerController = playController.GetCurrentController();
-        collisions = playerController.collisions;
+        //playerController = playController.GetCurrentController();
+        //collisions = playerController.collisions;
 
-        player = playController.GetCurrentPlayer();
-        substance = player.GetComponent<StrengthenSubstance>();
-        weapon = player.GetComponent<Weapon>();
+        //player = playController.GetCurrentPlayer();
+        //substance = player.GetComponent<StrengthenSubstance>();
+        //weapon = player.GetComponent<Weapon>();
     }
 
     private void Start()
     {
         gameUiManager.SetGamePlayPanel();
+
+        PlayController.OnPass.AddListener(
+            (from, to) =>
+            {
+                SetPlayer(to);
+            }
+        );
     }
 
     private void Update()
     {
-        if(gameState == GameState.Playing)
+        if (gameState == GameState.Playing)
             currentPlayTime += Time.deltaTime;
     }
 
@@ -75,14 +87,14 @@ public class GameManager : MonoBehaviour
         player = playController.GetCurrentPlayer();
         substance = player.GetComponent<StrengthenSubstance>();
         weapon = player.GetComponent<Weapon>();
+
+        score = playerController.GetComponent<CollectCoin>();
     }
 
     public void GamePlay()
     {
         gameState = GameState.Playing;
-        playController.SetRunningAnimation(true);
-        hpController.StartHpControll();
-        score.StartUpdateScore();
+        OnGameStateChange.Invoke(gameState);
 
         cameraFollowPlayer.StartCameraMove(playController.GetCurrentPlayer().transform);
     }
@@ -90,7 +102,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameState = GameState.GameOver;
-        playerController.SetRunningAnimation(false);
+        OnGameStateChange.Invoke(gameState);
+
         gameOver = true;
         gameUiManager.SetGameOverPanel();
         postEffectController.StopAllCoroutines();
@@ -100,6 +113,8 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         gameState = GameState.NotPlaying;
+        OnGameStateChange.Invoke(gameState);
+
         gameOver = false;
         gameUiManager.SetGamePlayPanel();
         Time.timeScale = 1f;
@@ -122,5 +137,5 @@ public enum GameState
 {
     NotPlaying = 0,
     Playing,
-    GameOver
+    GameOver,
 }

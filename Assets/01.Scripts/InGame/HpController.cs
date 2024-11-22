@@ -2,9 +2,32 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class HealEvent : UnityEngine.Events.UnityEvent<float> { }
+
 public class HpController : MonoBehaviour
 {
+    public static HealEvent OnHeal = new HealEvent();
     public Slider HpBar;
+
+    public void Start()
+    {
+        GameManager.OnGameStateChange.AddListener(
+            (state) =>
+            {
+                if (state == GameState.Playing)
+                {
+                    StartHpControll();
+                }
+            }
+        );
+
+        OnHeal.AddListener(
+            (heal) =>
+            {
+                Heal(heal);
+            }
+        );
+    }
 
     public void StartHpControll()
     {

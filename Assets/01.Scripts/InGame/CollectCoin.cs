@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using DarkTonic.MasterAudio;
+using TMPro;
+using UnityEngine;
+
+public class AddScoreEvent : UnityEngine.Events.UnityEvent<int> { }
 
 public class CollectCoin : MonoBehaviour
 {
@@ -21,6 +23,16 @@ public class CollectCoin : MonoBehaviour
         gameUiManager = GameUIManager.instance;
 
         InitializeScore();
+
+        GameManager.OnGameStateChange.AddListener(
+            (state) =>
+            {
+                if (state == GameState.Playing)
+                {
+                    StartUpdateScore();
+                }
+            }
+        );
     }
 
     private void InitializeScore()
@@ -31,7 +43,7 @@ public class CollectCoin : MonoBehaviour
         gameUiManager.UpdateHighScoreText(highScore);
     }
 
-    public void SetIncreasRate(int increasRate) 
+    public void SetIncreasRate(int increasRate)
     {
         _increaseRate += increasRate;
     }
@@ -69,7 +81,8 @@ public class CollectCoin : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "Heal":
-                GameManager.Instance.hpController.Heal(10);
+                HpController.OnHeal?.Invoke(10);
+                //GameManager.Instance.hpController.Heal(10);
                 Destroy(other.gameObject);
                 break;
         }
@@ -88,9 +101,9 @@ public class CollectCoin : MonoBehaviour
     {
         AddScore(coinValue);
         coin += coinValue;
-        gameUiManager.UpdateCoinText(coin); 
+        gameUiManager.UpdateCoinText(coin);
         gameUiManager.UpdateEndCoinText(coin);
-        gameUiManager.CheckHighScoreColor(score,highScore);
+        gameUiManager.CheckHighScoreColor(score, highScore);
     }
 
     public void StartUpdateScore()
@@ -125,5 +138,4 @@ public class CollectCoin : MonoBehaviour
         gameUiManager.UpdateHighScoreText(highScore);
         DataManager.instance.userData.userScore = highScore;
     }
-
 }
