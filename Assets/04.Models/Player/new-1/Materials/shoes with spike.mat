@@ -21,23 +21,25 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: shoes with spike
-  m_Shader: {fileID: 4800000, guid: 733fefdcde0d35f4b822d2935d5a22f4, type: 3}
+  m_Shader: {fileID: 4800000, guid: e9ef6a2e182f596438c0505d00d4a2f1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
+  m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
   - _MK_ALBEDO_MAP
   - _MK_ARTISTIC_ANIMATION_STUTTER
   - _MK_ENVIRONMENT_REFLECTIONS_AMBIENT
   - _MK_RECEIVE_SHADOWS
   - _MK_SPECULAR_ISOTROPIC
   - _MK_WRAPPED_DIFFUSE
-  m_InvalidKeywords:
   - _RECEIVESHADOWS_ON
   - _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap:
     IGNOREPROJECTOR: False
     RenderType: Opaque
@@ -229,6 +231,7 @@ Material:
     - _BlendDst: 0
     - _BlendDstAlpha: 0
     - _BlendModePreserveSpecular: 1
+    - _BlendOp: 0
     - _BlendSrc: 1
     - _BlendSrcAlpha: 1
     - _Brightness: 1
@@ -309,6 +312,7 @@ Material:
     - _RimSmoothness: 0.5
     - _RimThresholdOffset: 0.25
     - _Roughness: 0.5
+    - _SampleGI: 0
     - _Saturation: 1
     - _SketchMapScale: 1
     - _Smoothness: 0.5
@@ -344,6 +348,7 @@ Material:
     - _AlbedoColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

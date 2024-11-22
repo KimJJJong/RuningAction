@@ -52,7 +52,7 @@ public class PlayController : MonoBehaviour
     private float maxSpeed = 22f;
 
     [SerializeField]
-    private float runningSpeed;
+    public float runningSpeed;
 
     [SerializeField]
     private float accelerationRate;

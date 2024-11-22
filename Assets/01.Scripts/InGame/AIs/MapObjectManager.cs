@@ -13,7 +13,7 @@ public class MapObjectManager : MonoBehaviour
     private void Start()
     {
         RegisterMapObjects(map);
-        act_dist = character.GetComponent<PlayerController>().runningSpeed * Time.deltaTime * 2;
+        //act_dist = character.GetComponent<PlayController>().runningSpeed * Time.deltaTime * 2;
     }
 
     void Update()
@@ -27,7 +27,7 @@ public class MapObjectManager : MonoBehaviour
             if (dist <= act_dist)
             {
                 _object.SetActive(true);
-                objectsToRemove.Add(_object); 
+                objectsToRemove.Add(_object);
             }
             else
                 _object.SetActive(false);
@@ -35,16 +35,16 @@ public class MapObjectManager : MonoBehaviour
 
         foreach (GameObject _object in objectsToRemove)
             interactable_objects.Remove(_object);
-        
     }
 
     public void RegisterMapObjects(GameObject mapSection)
     {
-        GameObject[] interactables = mapSection.GetComponentsInChildren<Transform>(true)
-                                               .Where(t => t.CompareTag("InteractableMapObject"))
-                                               .Select(t => t.gameObject).ToArray();
+        GameObject[] interactables = mapSection
+            .GetComponentsInChildren<Transform>(true)
+            .Where(t => t.CompareTag("InteractableMapObject"))
+            .Select(t => t.gameObject)
+            .ToArray();
 
         interactable_objects.AddRange(interactables);
     }
-
 }
