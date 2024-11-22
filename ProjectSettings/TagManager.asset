@@ -21,6 +21,7 @@ TagManager:
   - ObstacleJump
   - Ramp
   - ObstacleWall
+  - InteractableMapObject
   layers:
   - Default
   - TransparentFX
