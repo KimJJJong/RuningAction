@@ -17,8 +17,8 @@ public class Runner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction.Normalize()
+        //direction.Normalize()
 
-        transform.Translate(direction * );
+        //transform.Translate(direction * );
     }
 }
