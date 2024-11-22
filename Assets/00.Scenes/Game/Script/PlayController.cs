@@ -105,7 +105,7 @@ public class PlayController : MonoBehaviour
 
     private bool ctlLock = true;
 
-    void Awake()
+    public void Start()
     {
         cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
 
@@ -114,10 +114,7 @@ public class PlayController : MonoBehaviour
         initTween();
 
         GameManager.Instance.SetPlayer(centerController);
-    }
 
-    public void Start()
-    {
         GameManager.OnGameStateChange.AddListener(
             (state) =>
             {
@@ -142,6 +139,10 @@ public class PlayController : MonoBehaviour
         leftPlayer.transform.position = leftPos[0].position;
         centerPlayer.transform.position = centerPos[1].position;
         rightPlayer.transform.position = rightPos[0].position;
+
+        leftController = leftPlayer.GetComponent<PlayerController>();
+        centerController = centerPlayer.GetComponent<PlayerController>();
+        rightController = rightPlayer.GetComponent<PlayerController>();
 
         leftController.collisions.canInteract = false;
         centerController.collisions.canInteract = false;

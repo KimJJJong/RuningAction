@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     public GameUIManager gameUiManager;
 
-    [HideInInspector]
     public PlayController playController;
 
     [HideInInspector]
