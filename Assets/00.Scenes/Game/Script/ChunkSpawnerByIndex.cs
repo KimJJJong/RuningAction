@@ -1,46 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AmazingAssets.CurvedWorld;
+using UnityEngine;
 using UnityEngine.Networking;
+
 public class ChunkSpawnerByIndex : MonoBehaviour
 {
-    [SerializeField] private GameObject[] chunks;
-    [SerializeField] private float chunkLength = 119f;
-    [SerializeField] private Transform playerTransform;
-    [SerializeField] private float spawnDistance = 299f;
-    [SerializeField] private int[] chunkArrayTest;
+    [SerializeField]
+    private GameObject[] chunks;
+
+    [SerializeField]
+    private float chunkLength = 119f;
+
+    [SerializeField]
+    private Transform playerTransform;
+
+    [SerializeField]
+    private float spawnDistance = 299f;
+
+    [SerializeField]
+    private int[] chunkArrayTest;
 
     [Header("Pool Config")]
-    [SerializeField] private int size;
+    [SerializeField]
+    private int size;
 
     private Queue<GameObject>[] chunksQueue;
-    private Vector3 spawnPos = new Vector3(0f, -38f, 0f);
+    private Vector3 spawnPos = new Vector3(0f, 0f, 0f);
     private int[] chunkArray;
     private int currentIndex = 0;
 
     #region curved world argument
     private CurvedWorldController curvedController;
+
     [Header("Curved World")]
-    [SerializeField] private float curvedZMaxValue = 10;
-    [SerializeField] private float curvedZMinValue = -10;
+    [SerializeField]
+    private float curvedZMaxValue = 10;
+
+    [SerializeField]
+    private float curvedZMinValue = -10;
     private float currentCurvedValue;
     private float currentTime = 0f;
     private float curveTime = 10f;
     #endregion
     private void Start()
     {
-        spawnPos = new Vector3(-0.4f, -39.25718f, 170);
+        spawnPos = new Vector3(-0, -0, 0);
 
-        //¼­¹ö¿¡¼­ Ã»Å© ¹Þ¾Æ¿À±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã»Å© ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
         //StartCoroutine(GetChunkFromServer());
         chunkArray = chunkArrayTest;
-        PoolChunks(); 
-        
-        curvedController = GameObject.Find("Curved World Controller").GetComponent<CurvedWorldController>();
+        PoolChunks();
+
+        curvedController = GameObject
+            .Find("Curved World Controller")
+            .GetComponent<CurvedWorldController>();
         currentCurvedValue = curvedController.bendHorizontalSize;
 
-        curvedController.SetBendVerticalSize(-3);
+        curvedController.SetBendVerticalSize(-10);
     }
 
     private void Update()
@@ -99,13 +116,16 @@ public class ChunkSpawnerByIndex : MonoBehaviour
         currentIndex++;
     }
 
-    //¼­¹ö¿¡¼­ Ã»Å© ½ÃÄö½º¸¦ ¹Þ¾Æ¿À´Â ÄÚ·çÆ¾
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã»Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾
     private IEnumerator GetChunkFromServer()
     {
         UnityWebRequest request = UnityWebRequest.Get("");
         yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        if (
+            request.result == UnityWebRequest.Result.ConnectionError
+            || request.result == UnityWebRequest.Result.ProtocolError
+        )
         {
             Debug.LogError("Error");
         }
