@@ -1,6 +1,6 @@
 using System.Collections;
-using UnityEngine;
 using DarkTonic.MasterAudio;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,9 +9,14 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public Transform ballPos;
 
-    [SerializeField] private Transform centerPos;
-    [SerializeField] private Transform leftPos;
-    [SerializeField] private Transform rightPos;
+    [SerializeField]
+    private Transform centerPos;
+
+    [SerializeField]
+    private Transform leftPos;
+
+    [SerializeField]
+    private Transform rightPos;
 
     [Header("Move Stat")]
     public float sideSpeed;
@@ -37,10 +42,15 @@ public class PlayerController : MonoBehaviour
     bool isJumping = false;
     bool _isRush;
     bool _isMagnetic;
-    [HideInInspector] public int curPos = 1;   // 0 = left, 1 = center, 2 = right;
 
-    [HideInInspector] public CapsuleCollider col;
-    [HideInInspector] public Collisions collisions;
+    [HideInInspector]
+    public int curPos = 1; // 0 = left, 1 = center, 2 = right;
+
+    [HideInInspector]
+    public CapsuleCollider col;
+
+    [HideInInspector]
+    public Collisions collisions;
     private Rigidbody rb;
     private Weapon weapon;
 
@@ -53,6 +63,14 @@ public class PlayerController : MonoBehaviour
 
     public bool autoDodge = false;
     public float dodgeDuration = 3f;
+
+    private EPlayerPosition _position;
+
+    public EPlayerPosition position
+    {
+        get => _position;
+        set => _position = value;
+    }
 
     void Awake()
     {
@@ -77,7 +95,7 @@ public class PlayerController : MonoBehaviour
                 //Running();
                 //StateUpdate();
 
-                if (Input.GetKeyDown(KeyCode.Space))// && !autoDodge)
+                if (Input.GetKeyDown(KeyCode.Space)) // && !autoDodge)
                 {
                     //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
 
@@ -97,6 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("Run", isRun);
     }
+
     /*
     private void Running()
     {
@@ -189,6 +208,11 @@ public class PlayerController : MonoBehaviour
     {
         switch (state)
         {
+            case EState.Runing:
+                {
+                    animator.Play("Run_Animation");
+                }
+                break;
             case EState.Left:
                 {
                     animator.Play("MoveLeft");
@@ -245,6 +269,11 @@ public class PlayerController : MonoBehaviour
                     animator.Play("Pitch");
                 }
                 break;
+            case EState.Pass:
+                {
+                    animator.Play("Kick");
+                }
+                break;
         }
     }
 
@@ -255,7 +284,6 @@ public class PlayerController : MonoBehaviour
             gameUiManager.UpdateScoreText(500);
         }
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -279,7 +307,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void BeMagnetic()    //Iteam Magnetic
+    public void BeMagnetic() //Iteam Magnetic
     {
         StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
     }
@@ -291,6 +319,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         smash = false;
     }
+
     IEnumerator MoveDownAndUp()
     {
         col.height /= 2;
@@ -320,8 +349,8 @@ public class PlayerController : MonoBehaviour
 
         runningSpeed = tmpSpd;
         _isRush = false;
-
     }
+
     IEnumerator InvincibilityIteamTimer(float time)
     {
         _isRush = true;
@@ -369,8 +398,14 @@ public class PlayerController : MonoBehaviour
         }
         else if (curPos == 1)
         {
-            if (!IsObstacleLane(0)) { MoveToLane(0); }
-            else if (!IsObstacleLane(2)) { MoveToLane(2); }
+            if (!IsObstacleLane(0))
+            {
+                MoveToLane(0);
+            }
+            else if (!IsObstacleLane(2))
+            {
+                MoveToLane(2);
+            }
         }
     }
 
@@ -403,11 +438,22 @@ public class PlayerController : MonoBehaviour
 
     private bool IsObstacleLane(int lane)
     {
-        Vector3 lanePosition = lane == 0
-            ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z)
-            : (lane == 1
-                ? new Vector3(centerPos.position.x, transform.position.y, transform.position.z)
-                : new Vector3(rightPos.position.x, transform.position.y, transform.position.z));
+        Vector3 lanePosition =
+            lane == 0
+                ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z)
+                : (
+                    lane == 1
+                        ? new Vector3(
+                            centerPos.position.x,
+                            transform.position.y,
+                            transform.position.z
+                        )
+                        : new Vector3(
+                            rightPos.position.x,
+                            transform.position.y,
+                            transform.position.z
+                        )
+                );
 
         Vector3 boxHalfExtents = new Vector3(0.5f, 1f, 0.5f);
         RaycastHit hit;
@@ -481,4 +527,12 @@ public enum EState
     Smash,
     Throw,
     Batting,
+    Pass,
+}
+
+public enum EPlayerPosition
+{
+    Left,
+    Center,
+    Right,
 }

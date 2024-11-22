@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class ObstacleDribble : MonoBehaviour, IBonusObstacle
 {
-    [SerializeField] private float detectRange = 30f;
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private GameObject ball;
+    [SerializeField]
+    private float detectRange = 30f;
+
+    [SerializeField]
+    private float moveSpeed = 10f;
+
+    [SerializeField]
+    private GameObject ball;
     private bool isMoving = false;
 
     private Vector3 startPosition;
@@ -34,7 +39,11 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         if (!isMoving && playerDistance < detectRange)
         {
             isMoving = true;
-            targetPosition = new Vector3(transform.position.x, transform.position.y, player.position.z);
+            targetPosition = new Vector3(
+                transform.position.x,
+                transform.position.y,
+                player.position.z
+            );
         }
 
         if (isMoving)
@@ -50,7 +59,11 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
 
     private void MoveTowardsTarget(Vector3 target)
     {
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, target.z), moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            new Vector3(transform.position.x, transform.position.y, target.z),
+            moveSpeed * Time.deltaTime
+        );
     }
 
     void StopMoving()
@@ -80,7 +93,8 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         animator.Play("Stumble");
 
         float horizontalDirection = Random.Range(0, 2) == 0 ? -1 : 1;
-        Vector3 jumpTarget = ball.transform.position + new Vector3(2f * horizontalDirection, 2f, 2f);
+        Vector3 jumpTarget =
+            ball.transform.position + new Vector3(2f * horizontalDirection, 2f, 2f);
 
         ball.transform.DOJump(jumpTarget, 2f, 1, 0.5f)
             .SetEase(Ease.OutQuad)
@@ -98,6 +112,7 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         ball.transform.DOLocalMoveZ(1f, 0.3f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutQuad);
 
         ball.transform.DOLocalRotate(new Vector3(0, 360, 0), 1f, RotateMode.FastBeyond360)
-            .SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+            .SetLoops(-1, LoopType.Restart)
+            .SetEase(Ease.Linear);
     }
 }

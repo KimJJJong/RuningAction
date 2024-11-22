@@ -1,61 +1,138 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class PlayController : MonoBehaviour
 {
     [Header("[Start Pos]")]
-    [SerializeField] private Transform[] leftPos;
-    [SerializeField] private Transform[] centerPos;
-    [SerializeField] private Transform[] rightPos;
+    [SerializeField]
+    private Transform[] leftPos;
+
+    [SerializeField]
+    private Transform[] centerPos;
+
+    [SerializeField]
+    private Transform[] rightPos;
 
     [Header("[Character]")]
-    [SerializeField] private GameObject leftPlayer;
-    [SerializeField] private GameObject centerPlayer;
-    [SerializeField] private GameObject rightPlayer;
+    [SerializeField]
+    private GameObject leftPlayer;
+
+    [SerializeField]
+    private GameObject centerPlayer;
+
+    [SerializeField]
+    private GameObject rightPlayer;
 
     [Header("[Controller]")]
-    [SerializeField] private PlayerController leftController;
-    [SerializeField] private PlayerController centerController;
-    [SerializeField] private PlayerController rightController;
-    [SerializeField] private int currentPlayer = 1;
+    [SerializeField]
+    private PlayerController leftController;
+
+    [SerializeField]
+    private PlayerController centerController;
+
+    [SerializeField]
+    private PlayerController rightController;
+
+    [SerializeField]
+    private int currentPlayer = 1;
     private CameraFollowPlayer cameraFollowPlayer;
+
+    public class PassEvent : UnityEngine.Events.UnityEvent<PlayerController, PlayerController> { }
+
+    public static PassEvent OnPass = new PassEvent();
 
     public bool isDmg;
     public bool isDmgItem;
 
     [Header("[Speed]")]
-    [SerializeField] private float maxSpeed = 22f;
-    [SerializeField] private float runningSpeed;
-    [SerializeField] private float accelerationRate;
-    [SerializeField] private float speedIncreaseInterval = 0.5f;
-    [SerializeField] private float timeSinceLastIncrease = 0f;
+    [SerializeField]
+    private float maxSpeed = 22f;
+
+    [SerializeField]
+    private float runningSpeed;
+
+    [SerializeField]
+    private float accelerationRate;
+
+    [SerializeField]
+    private float speedIncreaseInterval = 0.5f;
+
+    [SerializeField]
+    private float timeSinceLastIncrease = 0f;
 
     [Header("[Ball]")]
-    [SerializeField] private GameObject soccerBall;
-    [SerializeField] private float ballMoveSpeed = 5f;
+    [SerializeField]
+    private GameObject soccerBall;
+
+    [SerializeField]
+    private float ballMoveSpeed = 5f;
     private Transform targetTrans;
 
-    [SerializeField] private DOTweenPath CToRPath;
-    [SerializeField] private DOTweenPath CToLPath;
-    [SerializeField] private DOTweenPath LtoCPath;
-    [SerializeField] private DOTweenPath RtoCPath;
+    [SerializeField]
+    private DOTweenPath CToRPath;
 
-    [SerializeField] private PathArray[] leftToCenterPath;
-    [SerializeField] private PathArray[] centerToLeftPath;
-    [SerializeField] private PathArray[] centerToRightPath;
-    [SerializeField] private PathArray[] rightToCenterPath;
+    [SerializeField]
+    private DOTweenPath CToLPath;
+
+    [SerializeField]
+    private DOTweenPath LtoCPath;
+
+    [SerializeField]
+    private DOTweenPath RtoCPath;
+
+    [SerializeField]
+    private PathArray[] leftToCenterPath;
+
+    [SerializeField]
+    private PathArray[] centerToLeftPath;
+
+    [SerializeField]
+    private PathArray[] centerToRightPath;
+
+    [SerializeField]
+    private PathArray[] rightToCenterPath;
     private Transform[] selectedPath;
     private DOTweenPath selectedTweenPath;
     private int currentWaypointIndex = 0;
+
+    public float passSpeed = 0.5f;
     private float ballTime = 0f;
 
-    public void Start()
+    private bool isPass = false;
+
+    private bool ctlLock = true;
+
+    void Awake()
     {
         cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
 
         Init();
+
+        initTween();
+
+        GameManager.Instance.SetPlayer(centerController);
+    }
+
+    public void Start()
+    {
+        GameManager.OnGameStateChange.AddListener(
+            (state) =>
+            {
+                switch (state)
+                {
+                    case GameState.Playing:
+                        ctlLock = false;
+                        SetRunningAnimation(true);
+                        break;
+                    case GameState.GameOver:
+                        SetRunningAnimation(false);
+                        break;
+                }
+            }
+        );
     }
 
     private void Init()
@@ -70,7 +147,62 @@ public class PlayController : MonoBehaviour
         centerController.collisions.canInteract = false;
         rightController.collisions.canInteract = false;
 
+        leftController.position = EPlayerPosition.Left;
+        centerController.position = EPlayerPosition.Center;
+        rightController.position = EPlayerPosition.Right;
+
         PositionSoccerBall(GetCurrentController().ballPos);
+    }
+
+    private void initTween()
+    {
+        var tweenPaths = soccerBall.GetComponents<DOTweenPath>();
+        CToRPath = Array.Find(tweenPaths, x => x.id == "CtoR");
+        CToLPath = Array.Find(tweenPaths, x => x.id == "CtoL");
+        LtoCPath = Array.Find(tweenPaths, x => x.id == "LtoC");
+        RtoCPath = Array.Find(tweenPaths, x => x.id == "RtoC");
+        isPass = false;
+
+        CToRPath.onStart.AddListener(() =>
+        {
+            passStart();
+        });
+        CToRPath.onComplete.AddListener(() =>
+        {
+            passEnd();
+        });
+        CToRPath.onRewind.AddListener(() =>
+        {
+            passEnd();
+        });
+
+        CToLPath.onStart.AddListener(() =>
+        {
+            passStart();
+        });
+        CToLPath.onComplete.AddListener(() =>
+        {
+            passEnd();
+        });
+        CToLPath.onRewind.AddListener(() =>
+        {
+            passEnd();
+        });
+    }
+
+    public void passStart()
+    {
+        isPass = true;
+        ctlLock = true;
+        Debug.Log("passStart");
+    }
+
+    public void passEnd()
+    {
+        isPass = false;
+        ctlLock = false;
+        GetCurrentController().SetState(EState.Runing);
+        Debug.Log("passEnd");
     }
 
     public void SetRunningAnimation(bool isRun)
@@ -87,7 +219,7 @@ public class PlayController : MonoBehaviour
         if (ballTime > 0f)
         {
             ballTime -= Time.deltaTime;
-            soccerBall.GetComponent<TrailRenderer>().enabled = true;
+            //soccerBall.GetComponent<TrailRenderer>().enabled = true;
         }
         else
         {
@@ -96,63 +228,50 @@ public class PlayController : MonoBehaviour
 
         if (GameManager.Instance.gameState == GameState.Playing)
         {
-            Running();
-
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Jump();
-            }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Slide();
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (currentPlayer == 2)
-                {
-                    CToRPath.DOPlayBackwards();
-                }
-                else if (currentPlayer == 1)
-                {
-                    CToLPath.DORestart();
-                }
-                SwitchPlayer(-1);
-                ballTime = 1f;
-
-
-            }
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (currentPlayer == 0)
-                {
-                    CToLPath.DOPlayBackwards();
-                }
-                else if (currentPlayer == 1)
-                {
-                    CToRPath.DORestart();
-                }
-                SwitchPlayer(1);
-                ballTime = 1f;
-
-            }
-
+            Controll();
 
             if (targetTrans != null && selectedPath != null && selectedPath.Length > 0)
             {
                 //MoveBallAlongPath();
             }
+        }
+    }
 
+    private void Controll()
+    {
+        Running();
 
+        if (ctlLock)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Jump();
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Slide();
+        }
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Pass(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Pass(false);
         }
     }
 
     private void MoveBallAlongPath()
     {
-
         if (currentWaypointIndex < selectedPath.Length)
         {
             Transform waypoint = selectedPath[currentWaypointIndex];
-            soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, waypoint.position, ballMoveSpeed * Time.deltaTime);
+            soccerBall.transform.position = Vector3.MoveTowards(
+                soccerBall.transform.position,
+                waypoint.position,
+                ballMoveSpeed * Time.deltaTime
+            );
             RotateTowardsTarget(waypoint.position);
 
             if (Vector3.Distance(soccerBall.transform.position, waypoint.position) < 0.1f)
@@ -163,16 +282,25 @@ public class PlayController : MonoBehaviour
         else
         {
             PositionSoccerBall(GetCurrentController().ballPos);
-            soccerBall.transform.position = Vector3.MoveTowards(soccerBall.transform.position, targetTrans.position, ballMoveSpeed * Time.deltaTime);
+            soccerBall.transform.position = Vector3.MoveTowards(
+                soccerBall.transform.position,
+                targetTrans.position,
+                ballMoveSpeed * Time.deltaTime
+            );
             soccerBall.transform.rotation = Quaternion.identity;
         }
     }
+
     private void RotateTowardsTarget(Vector3 targetPosition)
     {
         Vector3 direction = targetPosition - soccerBall.transform.position;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        soccerBall.transform.rotation = Quaternion.RotateTowards(soccerBall.transform.rotation, targetRotation, 360 * Time.deltaTime);
+        soccerBall.transform.rotation = Quaternion.RotateTowards(
+            soccerBall.transform.rotation,
+            targetRotation,
+            360 * Time.deltaTime
+        );
     }
 
     private void Running()
@@ -199,10 +327,66 @@ public class PlayController : MonoBehaviour
         GetCurrentController().SetState(EState.Down);
     }
 
+    private void Pass(bool isLeft)
+    {
+        GetCurrentController().SetState(EState.Pass);
+
+        PlayerController from =
+            (currentPlayer == 0) ? leftController
+            : (currentPlayer == 1) ? centerController
+            : rightController;
+
+        PlayerController to = from;
+
+        if (isLeft)
+        {
+            to =
+                (currentPlayer == 1) ? leftController
+                : currentPlayer == 2 ? centerController
+                : from;
+
+            if (currentPlayer == 2)
+            {
+                DOTween.PlayBackwards("CtoR");
+                //CToRPath.DOPlayBackwards();
+            }
+            else if (currentPlayer == 1)
+            {
+                CToLPath.DORestart();
+            }
+            SwitchPlayer(-1);
+        }
+        else
+        {
+            to =
+                (currentPlayer == 0) ? centerController
+                : currentPlayer == 1 ? rightController
+                : from;
+            if (currentPlayer == 0)
+            {
+                CToLPath.DOPlayBackwards();
+            }
+            else if (currentPlayer == 1)
+            {
+                //CToRPath.DORestart();
+                DOTween.Restart("CtoR");
+            }
+            SwitchPlayer(1);
+        }
+
+        ballTime = passSpeed;
+
+        if (from == to)
+            return;
+        ctlLock = true;
+        OnPass.Invoke(from, to);
+    }
+
     private void SwitchPlayer(int direction)
     {
         int newPlayer = currentPlayer + direction;
-        if (newPlayer < 0 || newPlayer > 2) return;
+        if (newPlayer < 0 || newPlayer > 2)
+            return;
 
         StartCoroutine(SmoothSwitchPlayer(newPlayer));
     }
@@ -213,19 +397,24 @@ public class PlayController : MonoBehaviour
         GameObject oldPlayer = GetCurrentPlayer();
         GameObject newPlayer = GetPlayerByNumber(newPlayerNum);
 
-        Vector3 oldStartPos, oldEndPos;
-        Vector3 newStartPos, newEndPos;
+        Vector3 oldStartPos,
+            oldEndPos;
+        Vector3 newStartPos,
+            newEndPos;
 
         GetCurrentController().collisions.canInteract = false;
         currentPlayer = newPlayerNum;
         GetCurrentController().collisions.canInteract = true;
 
-        Transform cameraTrans = (currentPlayer == 0) ? leftPos[1] : (currentPlayer == 1) ? centerPos[1] : rightPos[1];
+        Transform cameraTrans =
+            (currentPlayer == 0) ? leftPos[1]
+            : (currentPlayer == 1) ? centerPos[1]
+            : rightPos[1];
         cameraFollowPlayer.StartCameraMove(cameraTrans);
 
         GameManager.Instance.SetPlayer(GetCurrentController());
 
-        int random = 0;//Random.Range(0, 3);
+        int random = 0; //Random.Range(0, 3);
         switch (oldPlayerNum)
         {
             case 0:
@@ -236,7 +425,7 @@ public class PlayController : MonoBehaviour
                 {
                     0 => centerToLeftPath[random].path,
                     2 => centerToRightPath[random].path,
-                    _ => null
+                    _ => null,
                 };
                 break;
             case 2:
@@ -249,15 +438,23 @@ public class PlayController : MonoBehaviour
         currentWaypointIndex = 0;
 
         float elapsedTime = 0f;
-        const float duration = 0.3f;
+        float duration = passSpeed;
 
         while (elapsedTime < duration)
         {
             SetSwitchPositions(oldPlayerNum, out oldStartPos, out oldEndPos, true);
             SetSwitchPositions(newPlayerNum, out newStartPos, out newEndPos, false);
 
-            oldPlayer.transform.position = Vector3.Lerp(oldStartPos, oldEndPos, elapsedTime / duration);
-            newPlayer.transform.position = Vector3.Lerp(newStartPos, newEndPos, elapsedTime / duration);
+            oldPlayer.transform.position = Vector3.Lerp(
+                oldStartPos,
+                oldEndPos,
+                elapsedTime / duration
+            );
+            newPlayer.transform.position = Vector3.Lerp(
+                newStartPos,
+                newEndPos,
+                elapsedTime / duration
+            );
             elapsedTime += Time.deltaTime;
 
             yield return null;
@@ -271,18 +468,23 @@ public class PlayController : MonoBehaviour
             0 => leftPlayer,
             1 => centerPlayer,
             2 => rightPlayer,
-            _ => null
+            _ => null,
         };
     }
 
-    private void SetSwitchPositions(int playerNum, out Vector3 startPos, out Vector3 endPos, bool isFront)
+    private void SetSwitchPositions(
+        int playerNum,
+        out Vector3 startPos,
+        out Vector3 endPos,
+        bool isFront
+    )
     {
         Transform[] positions = playerNum switch
         {
             0 => leftPos,
             1 => centerPos,
             2 => rightPos,
-            _ => null
+            _ => null,
         };
 
         if (positions != null)
@@ -303,19 +505,22 @@ public class PlayController : MonoBehaviour
 
     public GameObject GetCurrentPlayer()
     {
-        return (currentPlayer == 0) ? leftPlayer : (currentPlayer == 1) ? centerPlayer : rightPlayer;
+        return (currentPlayer == 0) ? leftPlayer
+            : (currentPlayer == 1) ? centerPlayer
+            : rightPlayer;
     }
 
     public PlayerController GetCurrentController()
     {
-        return (currentPlayer == 0) ? leftController : (currentPlayer == 1) ? centerController : rightController;
+        return (currentPlayer == 0) ? leftController
+            : (currentPlayer == 1) ? centerController
+            : rightController;
     }
 
     public float GetSpeed()
     {
         return runningSpeed;
     }
-
 }
 
 [System.Serializable]
@@ -323,4 +528,3 @@ public class PathArray
 {
     public Transform[] path;
 }
-
