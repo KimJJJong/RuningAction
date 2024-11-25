@@ -48,6 +48,17 @@ public class GameManager : MonoBehaviour
 
     public float CurrentPlayTime => currentPlayTime;
 
+    #region MapManager
+
+    [SerializeField]
+    private float map_speed = 5.0f;
+
+    public float GetMapSpeed() { return map_speed; }
+
+
+    #endregion
+
+
     void Awake()
     {
         _instance = GetComponent<GameManager>();
