@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9e145efbf4714542a66f8e60a4ebfc3, type: 3}
-  m_Name: '[SCPE] DangerRenderer'
+  m_Name: SCPE DangerRenderer
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bd7de23ae8245d4bb4b286ac8e88842, type: 3}
-  m_Name: '[SCPE] RadialBlurRenderer'
+  m_Name: SCPE RadialBlurRenderer
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
@@ -58,7 +58,7 @@ MonoBehaviour:
   - {fileID: -5860576263987067823}
   - {fileID: 5379870934857037395}
   - {fileID: 7230722888698423327}
-  m_RendererFeatureMap: c49bccd5d133bc685ee41a6a4c1a677c1fe8274228b05864
+  m_RendererFeatureMap: c49bccd5d133bc685ee41a6a4c1a677c1fe8274228b05864e404c42da530eb28
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00b1aa0fcc082a04480388013aa6535c, type: 3}
-  m_Name: '[SCPE] BlurRenderer'
+  m_Name: SCPE BlurRenderer
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f58c0e0fb1b4c7549b2b50948300b0e5, type: 3}
-  m_Name: '[SCPE] FogRenderer'
+  m_Name: SCPE FogRenderer
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
