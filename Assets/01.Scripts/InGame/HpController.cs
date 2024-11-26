@@ -31,7 +31,7 @@ public class HpController : MonoBehaviour
 
     public void StartHpControll()
     {
-        SetHp(100.0f);
+        SetHp(1000.0f);
         StartCoroutine(DecressHp());
     }
 

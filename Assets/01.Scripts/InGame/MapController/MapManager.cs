@@ -51,26 +51,25 @@ public class MapManager : MonoBehaviour
             curvedController.SetBendHorizontalSize(curvedSize.x);
             curvedController.SetBendVerticalSize(curvedSize.y);
         }
+
+        mapIndexManager.activateNextMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (is_sync_ready)
+        if (is_sync_ready && gameManager.gameState == GameState.Playing)
         {
-            if (mapIndexManager.cur_order == 0)
-                mapIndexManager.activateNextMap();
+            MapPrefab firstMap = mapIndexManager.activated_list.First().GetComponent<MapPrefab>();
+            if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
+            {
+                mapIndexManager.deactivateMap();
+            }
 
             MapPrefab lastMap = mapIndexManager.activated_list.Last().GetComponent<MapPrefab>();
             if (lastMap.transform.position.x > transform.position.x)
             {
                 mapIndexManager.activateNextMap();
-            }
-
-            MapPrefab firstMap = mapIndexManager.activated_list.First().GetComponent<MapPrefab>();
-            if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
-            {
-                mapIndexManager.deactivateMap();
             }
 
             //activatedlist�� �ִ� �� �����յ� �̵�
