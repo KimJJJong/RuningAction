@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class MapPrefab : MonoBehaviour
 {
-    int prefab_id;
-    float prefab_length;
-    GameObject prefab;
+    public int prefab_id;
+    public float prefab_length;
+    public Vector3 prefab_size;
+
+    private bool in_use = false;
+
+    private void Awake() {
+        prefab_size = calculatePrefabLength();
+    }
 
     private void Start()
     {
-        prefab = GetComponent<GameObject>();    
+        
     }
 
     public int getID()
@@ -23,11 +29,13 @@ public class MapPrefab : MonoBehaviour
         return prefab_length;
     }
 
-    void calculatePrefabLength(Vector3 orientation)
+    Vector3 calculatePrefabLength()
     { 
-        //orientation에 따라 prefab Length계산
+        Bounds bounds = new Bounds();
+        foreach(Renderer render in this.gameObject.transform.GetComponentsInChildren<Renderer>()){
+            if(render.gameObject.tag == "Ground")
+                bounds.Encapsulate(render.bounds);
+        }
+        return bounds.size;
     }
-
-    
-
 }

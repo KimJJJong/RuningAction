@@ -30,9 +30,9 @@ public class ChunkSpawnerByIndex : MonoBehaviour
     #endregion
     private void Start()
     {
-        spawnPos = new Vector3(-0.4f, -39.25718f, 170);
+        spawnPos = new Vector3(0, 0, 0);
 
-        //¼­¹ö¿¡¼­ Ã»Å© ¹Þ¾Æ¿À±â
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã»Å© ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
         //StartCoroutine(GetChunkFromServer());
         chunkArray = chunkArrayTest;
         PoolChunks(); 
@@ -99,7 +99,7 @@ public class ChunkSpawnerByIndex : MonoBehaviour
         currentIndex++;
     }
 
-    //¼­¹ö¿¡¼­ Ã»Å© ½ÃÄö½º¸¦ ¹Þ¾Æ¿À´Â ÄÚ·çÆ¾
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã»Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾
     private IEnumerator GetChunkFromServer()
     {
         UnityWebRequest request = UnityWebRequest.Get("");
