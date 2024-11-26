@@ -157,37 +157,47 @@ public class PlayController : MonoBehaviour
 
     private void initTween()
     {
-        var tweenPaths = soccerBall.GetComponents<DOTweenPath>();
+        //var tweenPaths = soccerBall.GetComponents<DOTweenPath>();
+        /* var tweenPaths = soccerBall.GetComponentsInChildren<DOTweenPath>();
+
         CToRPath = Array.Find(tweenPaths, x => x.id == "CtoR");
         CToLPath = Array.Find(tweenPaths, x => x.id == "CtoL");
         LtoCPath = Array.Find(tweenPaths, x => x.id == "LtoC");
-        RtoCPath = Array.Find(tweenPaths, x => x.id == "RtoC");
+        RtoCPath = Array.Find(tweenPaths, x => x.id == "RtoC"); */
         isPass = false;
 
-        CToRPath.onStart.AddListener(() =>
-        {
-            passStart();
-        });
-        CToRPath.onComplete.AddListener(() =>
-        {
-            passEnd();
-        });
-        CToRPath.onRewind.AddListener(() =>
-        {
-            passEnd();
-        });
+        //addTweenListner(CToRPath);
+        //addTweenListner(CToLPath);
+        //addTweenListner(RtoCPath);
 
-        CToLPath.onStart.AddListener(() =>
+        var ball = soccerBall.GetComponent<Ball>();
+        ball.onPassStart.AddListener(() =>
         {
             passStart();
         });
-        CToLPath.onComplete.AddListener(() =>
+        ball.OnPassComplete.AddListener(() =>
         {
             passEnd();
         });
-        CToLPath.onRewind.AddListener(() =>
+    }
+
+    public void addTweenListner(DOTweenPath path)
+    {
+        path.onStart.AddListener(() =>
+        {
+            passStart();
+        });
+        path.onComplete.AddListener(() =>
         {
             passEnd();
+        });
+        path.onRewind.AddListener(() =>
+        {
+            passEnd();
+        });
+        path.onUpdate.AddListener(() => {
+            //Debug.Log("path :" + path.transform.position);
+            //soccerBall.transform.position = path.transform.position;
         });
     }
 
@@ -224,7 +234,7 @@ public class PlayController : MonoBehaviour
         }
         else
         {
-            soccerBall.GetComponent<TrailRenderer>().enabled = false;
+            //soccerBall.GetComponent<TrailRenderer>().enabled = false;
         }
 
         if (GameManager.Instance.gameState == GameState.Playing)
@@ -339,6 +349,10 @@ public class PlayController : MonoBehaviour
 
         PlayerController to = from;
 
+        //CToRPath.GetTween().timeScale = CToRPath.duration / (passSpeed * Time.timeScale);
+        //CToLPath.GetTween().timeScale = CToLPath.duration / (passSpeed * Time.timeScale);
+        //RtoCPath.GetTween().timeScale = RtoCPath.duration / (passSpeed * Time.timeScale);
+
         if (isLeft)
         {
             to =
@@ -348,12 +362,15 @@ public class PlayController : MonoBehaviour
 
             if (currentPlayer == 2)
             {
-                DOTween.PlayBackwards("CtoR");
+                //RtoCPath.DORestart();
                 //CToRPath.DOPlayBackwards();
+                soccerBall.GetComponent<Ball>().Pass(PassType.RtoC);
+                //DOTween.PlayBackwards("CtoR");
             }
             else if (currentPlayer == 1)
             {
-                CToLPath.DORestart();
+                //CToLPath.DORestart();
+                soccerBall.GetComponent<Ball>().Pass(PassType.CtoL);
             }
             SwitchPlayer(-1);
         }
@@ -365,12 +382,14 @@ public class PlayController : MonoBehaviour
                 : from;
             if (currentPlayer == 0)
             {
-                CToLPath.DOPlayBackwards();
+                //CToLPath.DOPlayBackwards();
+                soccerBall.GetComponent<Ball>().Pass(PassType.LtoC);
             }
             else if (currentPlayer == 1)
             {
+                soccerBall.GetComponent<Ball>().Pass(PassType.CtoR);
                 //CToRPath.DORestart();
-                DOTween.Restart("CtoR");
+                //DOTween.Restart("CtoR");
             }
             SwitchPlayer(1);
         }
