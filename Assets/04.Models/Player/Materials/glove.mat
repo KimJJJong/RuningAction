@@ -25,7 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_NEGATIVE
   m_InvalidKeywords:
   - CURVEDWORLD_BEND_ID_1
   - _MK_ALBEDO_MAP
@@ -350,7 +350,7 @@ Material:
     - _AlbedoColor: {r: 0.8417141, g: 0.8661742, b: 0.9150943, a: 1}
     - _BaseColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
+    - _CurvedWorldBendSettings: {r: 1, g: 1, b: 0, a: 0}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

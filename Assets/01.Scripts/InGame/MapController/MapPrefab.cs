@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class MapPrefab : MonoBehaviour
 {
@@ -10,14 +11,15 @@ public class MapPrefab : MonoBehaviour
 
     private bool in_use = false;
 
-    private void Awake() {
+    [HideInInspector]
+    public IObjectPool<GameObject> pool { get; set; }
+
+    private void Awake()
+    {
         prefab_size = calculatePrefabLength();
     }
 
-    private void Start()
-    {
-        
-    }
+    private void Start() { }
 
     public int getID()
     {
@@ -30,12 +32,21 @@ public class MapPrefab : MonoBehaviour
     }
 
     Vector3 calculatePrefabLength()
-    { 
-        Bounds bounds = new Bounds();
-        foreach(Renderer render in this.gameObject.transform.GetComponentsInChildren<Renderer>()){
-            if(render.gameObject.tag == "Ground")
+    {
+        Bounds bounds = new Bounds(transform.position, Vector3.zero);
+
+        foreach (Renderer render in this.gameObject.transform.GetComponentsInChildren<Renderer>())
+        {
+            if (render.gameObject.tag == "Ground")
+            {
                 bounds.Encapsulate(render.bounds);
+            }
         }
         return bounds.size;
+    }
+
+    public void ReleaseObject()
+    {
+        pool.Release(gameObject);
     }
 }

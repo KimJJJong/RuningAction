@@ -240,7 +240,7 @@ public class PlayController : MonoBehaviour
 
     private void Controll()
     {
-        Running();
+        //Running();
 
         if (ctlLock)
             return;
@@ -306,7 +306,7 @@ public class PlayController : MonoBehaviour
 
     private void Running()
     {
-        Vector3 newPosition = transform.position + Vector3.forward * runningSpeed * Time.deltaTime;
+        Vector3 newPosition = transform.position + Vector3.left * runningSpeed * Time.deltaTime;
         transform.position = newPosition;
 
         timeSinceLastIncrease += Time.deltaTime;

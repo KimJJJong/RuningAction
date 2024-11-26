@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AmazingAssets.CurvedWorld;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -11,14 +12,14 @@ public class MapManager : MonoBehaviour
 
     [SerializeField]
     private Vector3 orientation;
-    
+
     MapIndexManager mapIndexManager;
     CurvedWorldController curvedController;
+
     [SerializeField]
     private Vector2 curvedSize;
-   
-    float mapGenLengthThreshold = 100f;
 
+    float mapGenLengthThreshold = 100f;
 
     #region gameManagerSync
 
@@ -32,7 +33,7 @@ public class MapManager : MonoBehaviour
     #endregion
 
     void Start()
-    {        
+    {
         //GameManager�� MapIndexManager�θ��� (2���� ���)
         StartCoroutine(SyncGameManager());
 
@@ -40,34 +41,42 @@ public class MapManager : MonoBehaviour
         if (!mapIndexManager)
             Debug.LogError("MapManager: Map Index Mangaer loading failed");
 
-
-        curvedController = GameObject.Find("Curved World Controller").GetComponent<CurvedWorldController>();
+        curvedController = GameObject
+            .Find("Curved World Controller")
+            .GetComponent<CurvedWorldController>();
         if (!curvedController)
             Debug.LogError("CurvedController: Curved World Controller loading failed");
-        else{
+        else
+        {
             curvedController.SetBendHorizontalSize(curvedSize.x);
             curvedController.SetBendVerticalSize(curvedSize.y);
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(is_sync_ready)
+        if (is_sync_ready)
         {
-            //if ���� �Ÿ��� ª����; MapPrefab Ŭ������ prefab length�� ���� ���� ���� �Ÿ��� mapGenLengthThreshold���� ���� ���
-            //mapIndexManager.activateNextMap();
+            if (mapIndexManager.cur_order == 0)
+                mapIndexManager.activateNextMap();
 
-            
+            MapPrefab lastMap = mapIndexManager.activated_list.Last().GetComponent<MapPrefab>();
+            if (lastMap.transform.position.x > transform.position.x)
+            {
+                mapIndexManager.activateNextMap();
+            }
 
-            //if ������ �� ������
-            //mapIndexManager.deactivateMap();
+            MapPrefab firstMap = mapIndexManager.activated_list.First().GetComponent<MapPrefab>();
+            if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
+            {
+                mapIndexManager.deactivateMap();
+            }
 
             //activatedlist�� �ִ� �� �����յ� �̵�
-            foreach (MapPrefab mp in mapIndexManager.activated_list)
+            foreach (GameObject obj in mapIndexManager.activated_list)
             {
-                mp.transform.Translate(orientation * map_speed * Time.deltaTime);
+                obj.transform.Translate(orientation.normalized * map_speed * Time.deltaTime);
             }
 
             //���̵� ���� ����
@@ -76,32 +85,30 @@ public class MapManager : MonoBehaviour
     }
 
     IEnumerator SyncGameManager()
-    {   
+    {
         sync_time_passed = 0;
 
-        
         while (!is_sync_ready)
         {
             gameManager = FindAnyObjectByType<GameManager>();
 
-            if(gameManager){      
+            if (gameManager)
+            {
                 is_sync_ready = true;
                 map_speed = gameManager.GetMapSpeed();
-            } 
-            else{
+            }
+            else
+            {
                 sync_time_passed += sync_tick;
 
-                if (sync_time_passed >= sync_threshold){
-
-                    Debug.LogError("MapManager: GameManager loading failed");   
-                    break;  
+                if (sync_time_passed >= sync_threshold)
+                {
+                    Debug.LogError("MapManager: GameManager loading failed");
+                    break;
                 }
             }
 
             yield return new WaitForSeconds(sync_tick);
         }
-        
     }
-
-
 }

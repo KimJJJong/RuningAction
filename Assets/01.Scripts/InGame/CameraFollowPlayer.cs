@@ -19,10 +19,18 @@ public class CameraFollowPlayer : MonoBehaviour
     {
         if (isMove && cameraTarget != null)
         {
-            Vector3 targetPosition = new Vector3(cameraTarget.position.x + distance.x, cameraTarget.position.y + distance.y, cameraTarget.position.z + distance.z);
+            Vector3 targetPosition = new Vector3(
+                cameraTarget.position.x + distance.x,
+                cameraTarget.position.y + distance.y,
+                cameraTarget.position.z + distance.z
+            );
 
-            float smoothX = Mathf.Lerp(transform.position.x, targetPosition.x, smoothSpeed * Time.deltaTime);
-            transform.position = new Vector3(smoothX, targetPosition.y, targetPosition.z);
+            float smoothZ = Mathf.Lerp(
+                transform.position.z,
+                targetPosition.z,
+                smoothSpeed * Time.deltaTime
+            );
+            transform.position = new Vector3(targetPosition.x, targetPosition.y, smoothZ);
         }
     }
 }
