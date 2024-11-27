@@ -244,7 +244,7 @@ public class PlayerController : MonoBehaviour
                     if (!isJumping)
                     {
                         isJumping = true;
-                        Vector3 originPlayerPos = transform.position;
+                        Vector3 PlayerPosOffset = transform.position;
 
                         bool ballFlag =
                             GameManager.Instance.playController.GetCurrentPlayer() == gameObject;
@@ -257,7 +257,8 @@ public class PlayerController : MonoBehaviour
                                     float jumpVal = 4 * t - 4 * t * t;
                                     Vector3 playerPos = transform.position;
                                     playerPos.y =
-                                        jumpVal * GameManager.Instance.playController.jumpHeight;
+                                        PlayerPosOffset.y
+                                        + jumpVal * GameManager.Instance.playController.jumpHeight;
                                     transform.position = playerPos;
 
                                     if (ballFlag)
@@ -266,7 +267,8 @@ public class PlayerController : MonoBehaviour
                                         ballPos.y =
                                             ball.ballOffset.y
                                             + jumpVal
-                                                * GameManager.Instance.playController.jumpHeight;
+                                                * GameManager.Instance.playController.jumpHeight
+                                                * 0.8f;
                                         ball.transform.position = ballPos;
                                     }
                                 },
