@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -58,7 +59,10 @@ public class Ball : MonoBehaviour
         if (passList.TryGetValue(passType, out pass))
         {
             if (duration > 0)
+            {
+                duration = Math.Max(0.2f, duration / GameManager.Instance.gameSpeed);
                 pass.GetTween().timeScale = pass.duration / (duration * Time.timeScale);
+            }
 
             switch (passType)
             {

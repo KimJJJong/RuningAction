@@ -9,30 +9,38 @@ public class CoinMagnetic : MonoBehaviour
 
     private void Start()
     {
-       // StartCoroutine(MagneticTimer());
-       _isMagnetic = true;
+        // StartCoroutine(MagneticTimer());
+        _isMagnetic = true;
     }
+
     void Update()
     {
-        Transform Target = GameManager.Instance.player.transform;
-        if ((_isMagnetic&&GameManager.Instance.playerController.eCh == ECharacter.Magnetic)||GameManager.Instance.playerController.IsMagnetic)  //¾ÕºÎºÐÀº Ä³¸¯ÅÍ ´É·Â µÚ´Â ¾ÆÀÌÅÛ ´É·Â
+        Transform Target = GameManager.Instance.playController.GetCurrentPlayer().transform;
+        if (
+            (
+                _isMagnetic
+                && GameManager.Instance.playController.GetCurrentController().eCh
+                    == ECharacter.Magnetic
+            ) || GameManager.Instance.playController.GetCurrentController().IsMagnetic
+        ) //ï¿½ÕºÎºï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½ ï¿½Ú´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É·ï¿½
         {
-            if( Vector3.Distance(transform.position, Target.position) < 5)
-            transform.position = Vector3.MoveTowards(transform.position, Target.position, 30 * Time.deltaTime);
-
+            if (Vector3.Distance(transform.position, Target.position) < 5)
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    Target.position,
+                    30 * Time.deltaTime
+                );
         }
     }
 
-  
-    IEnumerator MagneticTimer()   // Weapon Magnetic Lv
+    IEnumerator MagneticTimer() // Weapon Magnetic Lv
     {
-        while(true)
+        while (true)
         {
-            yield return new WaitForSeconds(10f);      //´ë±â ½Ã°£
+            yield return new WaitForSeconds(10f); //ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
             _isMagnetic = true;
-            yield return new WaitForSeconds(5f );        //ÀÚ¼® ½Ã°£
+            yield return new WaitForSeconds(5f); //ï¿½Ú¼ï¿½ ï¿½Ã°ï¿½
             _isMagnetic = false;
         }
-
     }
 }

@@ -36,7 +36,6 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        //GameManager�� MapIndexManager�θ��� (2���� ���)
         StartCoroutine(SyncGameManager());
 
         mapIndexManager = GetComponentInChildren<MapIndexManager>();
@@ -46,8 +45,8 @@ public class MapManager : MonoBehaviour
         mapObjectManager = FindObjectOfType<MapObjectManager>();
         if (!mapObjectManager)
             Debug.LogError("MapManager: Map Object Mangaer loading failed");
-            //Todo: If two or more MOM, check
-        
+        //Todo: If two or more MOM, check
+
         curvedController = GameObject
             .Find("Curved World Controller")
             .GetComponent<CurvedWorldController>();
@@ -82,14 +81,17 @@ public class MapManager : MonoBehaviour
                 mapObjectManager.RegisterMapObjects(mapIndexManager.activated_list.Last());
             }
 
-            //activatedlist�� �ִ� �� �����յ� �̵�
             foreach (GameObject obj in mapIndexManager.activated_list)
             {
-                obj.transform.Translate(orientation.normalized * map_speed * Time.deltaTime);
+                obj.transform.Translate(
+                    orientation.normalized
+                        * map_speed
+                        * Time.deltaTime
+                        * GameManager.Instance.gameSpeed
+                );
             }
 
-            //���̵� ���� ����
-            map_speed += Time.deltaTime * 0.1f;
+            //map_speed *= GameManager.Instance.gameSpeed;
         }
     }
 

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using DarkTonic.MasterAudio;
+using DG.Tweening;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -52,7 +54,15 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Collisions collisions;
     private Rigidbody rb;
-    private Weapon weapon;
+
+    [HideInInspector]
+    public StrengthenSubstance substance;
+
+    [HideInInspector]
+    public Weapon weapon;
+
+    [HideInInspector]
+    public CollectCoin score;
 
     public bool IsRush => _isRush;
     public bool IsMagnetic
@@ -72,18 +82,24 @@ public class PlayerController : MonoBehaviour
         set => _position = value;
     }
 
+    private Ball ball;
+
     void Awake()
     {
-        collisions = GetComponent<Collisions>();
         col = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        collisions = GetComponent<Collisions>();
+        substance = GetComponent<StrengthenSubstance>();
         weapon = GetComponent<Weapon>();
+        score = GetComponent<CollectCoin>();
     }
 
     private void Start()
     {
         gameUiManager = GameUIManager.instance;
+        ball = GameManager.Instance.playController.ball;
     }
 
     void Update()
@@ -228,9 +244,50 @@ public class PlayerController : MonoBehaviour
                     if (!isJumping)
                     {
                         isJumping = true;
-                        rb.AddForce(Vector3.up * jumpForce);
+                        Vector3 originPlayerPos = transform.position;
+
+                        bool ballFlag =
+                            GameManager.Instance.playController.GetCurrentPlayer() == gameObject;
+
+                        DOTween
+                            .To(
+                                () => 0f,
+                                t =>
+                                {
+                                    float jumpVal = 4 * t - 4 * t * t;
+                                    Vector3 playerPos = transform.position;
+                                    playerPos.y =
+                                        jumpVal * GameManager.Instance.playController.jumpHeight;
+                                    transform.position = playerPos;
+
+                                    if (ballFlag)
+                                    {
+                                        Vector3 ballPos = ball.transform.position;
+                                        ballPos.y =
+                                            ball.ballOffset.y
+                                            + jumpVal
+                                                * GameManager.Instance.playController.jumpHeight;
+                                        ball.transform.position = ballPos;
+                                    }
+                                },
+                                1f,
+                                (
+                                    Math.Max(
+                                        GameManager.Instance.playController.jumpSpeed
+                                            / GameManager.Instance.gameSpeed,
+                                        0.5f
+                                    )
+                                )
+                            )
+                            .OnComplete(() =>
+                            {
+                                isJumping = false;
+                                SetState(EState.Runing);
+                            });
+
+                        //rb.AddForce(Vector3.up * jumpForce);
                         animator.Play("Jumping");
-                        MasterAudio.PlaySound3DAtTransform("jump 2", transform);
+                        //MasterAudio.PlaySound3DAtTransform("jump 2", transform);
                     }
                 }
                 break;
@@ -289,28 +346,16 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isJumping = false;
+            //isJumping = false;
             slide = false;
         }
     }
 
     #region Special
-    public void Invincibility(bool isIteam)
-    {
-        if (!_isRush)
-        {
-            GameManager.Instance.postEffectController.RushPostEffect(0.125f, 0.25f, true);
-            if (!isIteam)
-                StartCoroutine(InvincibilityWeaponTimer());
-            else if (isIteam)
-                StartCoroutine(InvincibilityIteamTimer(5f + GameManager.Instance.substance.RushLv));
-        }
-    }
+    public void Invincibility(bool isIteam) { }
 
     public void BeMagnetic() //Iteam Magnetic
-    {
-        StartCoroutine(MagneticTimer(5f + GameManager.Instance.substance.MagneticLv));
-    }
+    { }
 
     IEnumerator appearHitBox(ERank chRank, ECharacter ch)
     {
@@ -332,46 +377,6 @@ public class PlayerController : MonoBehaviour
         col.center *= 2;
     }
 
-    IEnumerator InvincibilityWeaponTimer()
-    {
-        _isRush = true;
-
-        float tmpSpd = runningSpeed;
-        runningSpeed = 30;
-        GameManager.Instance.playController.isDmg = true;
-        while (GameManager.Instance.player.GetComponent<Weapon>().GageSlider.value > 0)
-        {
-            GameManager.Instance.weapon.DecreaseGage(10f);
-            yield return new WaitForSeconds(1);
-        }
-        GameManager.Instance.playController.isDmg = false;
-        GameManager.Instance.postEffectController.RushPostEffect(0.15f, 0.2f, false);
-
-        runningSpeed = tmpSpd;
-        _isRush = false;
-    }
-
-    IEnumerator InvincibilityIteamTimer(float time)
-    {
-        _isRush = true;
-        float tmpSpd = runningSpeed;
-        runningSpeed = 30;
-        GameManager.Instance.playController.isDmg = true;
-
-        yield return new WaitForSeconds(time);
-        GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, false);
-
-        GameManager.Instance.playController.isDmg = false;
-        runningSpeed = tmpSpd;
-        _isRush = false;
-    }
-
-    IEnumerator MagneticTimer(float time)
-    {
-        IsMagnetic = true;
-        yield return new WaitForSeconds(time);
-        IsMagnetic = false;
-    }
     #endregion
 
     #region Dodge

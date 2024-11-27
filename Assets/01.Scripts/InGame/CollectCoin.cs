@@ -73,11 +73,11 @@ public class CollectCoin : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "Rush":
-                GameManager.Instance.playerController.Invincibility(true);
+                GameManager.Instance.playController.GetCurrentController().Invincibility(true);
                 Destroy(other.gameObject);
                 break;
             case "Magnetic":
-                GameManager.Instance.playerController.BeMagnetic();
+                GameManager.Instance.playController.GetCurrentController().BeMagnetic();
                 Destroy(other.gameObject);
                 break;
             case "Heal":
