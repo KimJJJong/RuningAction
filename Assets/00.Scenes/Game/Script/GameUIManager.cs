@@ -51,36 +51,36 @@ public class GameUIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         gameUiPanel.SetActive(true);
 
-        StartCountdown();
+        //StartCountdown();
     }
 
     public void StartCountdown()
     {
-        Sequence countdownSequence = DOTween.Sequence();
+        // Sequence countdownSequence = DOTween.Sequence();
 
-        countdownText.transform.localScale = Vector3.zero;
-        countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, 1);
+        // countdownText.transform.localScale = Vector3.zero;
+        // countdownText.color = new Color(countdownText.color.r, countdownText.color.g, countdownText.color.b, 1);
 
-        countdownSequence.AppendCallback(() => UpdateCountdownText("3"))
-                         .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
-                         .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
+        // countdownSequence.AppendCallback(() => UpdateCountdownText("3"))
+        //                  .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
+        //                  .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
 
-                         .AppendCallback(() => UpdateCountdownText("2"))
-                         .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
-                         .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
+        //                  .AppendCallback(() => UpdateCountdownText("2"))
+        //                  .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
+        //                  .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
 
-                         .AppendCallback(() => UpdateCountdownText("1"))
-                         .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
-                         .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
+        //                  .AppendCallback(() => UpdateCountdownText("1"))
+        //                  .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
+        //                  .Append(countdownText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack))
 
-                         .AppendCallback(() => UpdateCountdownText("Start!"))
-                         .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
-                         .Append(countdownText.DOFade(0, 0.5f))
-                         .OnComplete(() =>
-                         {
-                             countdownText.gameObject.SetActive(false);
-                             GameManager.Instance.GamePlay();
-                         });
+        //                  .AppendCallback(() => UpdateCountdownText("Start!"))
+        //                  .Append(countdownText.transform.DOScale(1.5f, 0.5f).SetEase(Ease.OutBack))
+        //                  .Append(countdownText.DOFade(0, 0.5f))
+        //                  .OnComplete(() =>
+        //                  {
+        //                      countdownText.gameObject.SetActive(false);
+        //                      GameManager.Instance.GamePlay();
+        //                  });
     }
 
     private void UpdateCountdownText(string text)

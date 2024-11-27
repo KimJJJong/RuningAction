@@ -34,7 +34,7 @@ public class PlayerAI : MonoBehaviour
             if(hit.collider.tag == "ObstacleJump")
                 playerController.SetState(EState.Up);
             else if(hit.collider.tag == "ObstacleSlide")
-                playerController.SetState(EState.Down);               
+                playerController.SetState(EState.Down);
         }                
     }
 }

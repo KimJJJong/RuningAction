@@ -18,24 +18,25 @@ public class CinematicCameraController : MonoBehaviour
     void Start()
     {                
         timer = 0;
-        main_camera.SetActive(true);
+        //main_camera.SetActive(false);
 
-        updateCine();        
+        //main_camera.GetComponent<CameraFollowPlayer>().distance;
+
+        updateCine();
     }
 
     void Update()
     {        
         //For simplicity, CineManager only checks duration for now.
         //If checks if cine unit is really ended with following condition function, it would be perfect: if(cur_cine.IsCineEnded())
-        if(!is_cine_ended && timer >= cur_duration)
-        {         
-            cur_cine.endCine();               
+        if(!is_cine_ended && cur_cine.IsCineEnded())
+        {                 
             cines.RemoveAt(0);
             updateCine();
             timer = 0;
         }
 
-        timer += Time.deltaTime;                
+        //timer += Time.deltaTime;                
     }
 
     //checking all cines are done and if not, setting new cur_cine
@@ -51,7 +52,7 @@ public class CinematicCameraController : MonoBehaviour
         {
             //End all cinematics
             is_cine_ended = true;
-            main_camera.SetActive(true);            
+            main_camera.SetActive(true);   
         }
     }
 }

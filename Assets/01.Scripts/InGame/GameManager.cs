@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Camera Controller")]
     public PostEffectController postEffectController;
-    public CameraFollowPlayer cameraFollowPlayer;
+    public CameraManager camera_manager;
 
     private float currentPlayTime;
 
@@ -106,7 +106,8 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Playing;
         OnGameStateChange.Invoke(gameState);
 
-        cameraFollowPlayer.StartCameraMove(playController.GetCurrentPlayer().transform);
+        camera_manager.CameraSetting();
+        camera_manager.MoveCamera(1);
     }
 
     public void GameOver()

@@ -38,7 +38,7 @@ public class PlayController : MonoBehaviour
 
     [SerializeField]
     private int currentPlayer = 1;
-    private CameraFollowPlayer cameraFollowPlayer;
+    private CameraManager camera_manager;
 
     public class PassEvent : UnityEngine.Events.UnityEvent<PlayerController, PlayerController> { }
 
@@ -107,7 +107,7 @@ public class PlayController : MonoBehaviour
 
     public void Start()
     {
-        cameraFollowPlayer = Camera.main.GetComponent<CameraFollowPlayer>();
+        camera_manager = Camera.main.GetComponent<CameraManager>();
 
         Init();
 
@@ -134,7 +134,7 @@ public class PlayController : MonoBehaviour
 
     private void Init()
     {
-        cameraFollowPlayer.StartCameraMove(centerPos[1]);
+        //cameraFollowPlayer.StartCameraMove(centerPos[1]);
 
         leftPlayer.transform.position = leftPos[0].position;
         centerPlayer.transform.position = centerPos[1].position;
@@ -435,7 +435,7 @@ public class PlayController : MonoBehaviour
             (currentPlayer == 0) ? leftPos[1]
             : (currentPlayer == 1) ? centerPos[1]
             : rightPos[1];
-        cameraFollowPlayer.StartCameraMove(cameraTrans);
+        camera_manager.MoveCamera(newPlayerNum);
 
         GameManager.Instance.SetPlayer(GetCurrentController());
 
