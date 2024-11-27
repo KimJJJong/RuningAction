@@ -40,6 +40,12 @@ public class PlayController : MonoBehaviour
     private int currentPlayer = 1;
     private CameraManager camera_manager;
 
+    [SerializeField]
+    public float jumpSpeed;
+
+    [SerializeField]
+    public float jumpHeight;
+
     public class PassEvent : UnityEngine.Events.UnityEvent<PlayerController, PlayerController> { }
 
     public static PassEvent OnPass = new PassEvent();
@@ -67,42 +73,16 @@ public class PlayController : MonoBehaviour
     [SerializeField]
     private GameObject soccerBall;
 
+    [HideInInspector]
+    public Ball ball
+    {
+        get { return soccerBall.GetComponent<Ball>(); }
+    }
+
     [SerializeField]
     private float ballMoveSpeed = 5f;
-    private Transform targetTrans;
-
-    [SerializeField]
-    private DOTweenPath CToRPath;
-
-    [SerializeField]
-    private DOTweenPath CToLPath;
-
-    [SerializeField]
-    private DOTweenPath LtoCPath;
-
-    [SerializeField]
-    private DOTweenPath RtoCPath;
-
-    [SerializeField]
-    private PathArray[] leftToCenterPath;
-
-    [SerializeField]
-    private PathArray[] centerToLeftPath;
-
-    [SerializeField]
-    private PathArray[] centerToRightPath;
-
-    [SerializeField]
-    private PathArray[] rightToCenterPath;
-    private Transform[] selectedPath;
-    private DOTweenPath selectedTweenPath;
-    private int currentWaypointIndex = 0;
 
     public float passSpeed = 0.5f;
-    private float ballTime = 0f;
-
-    private bool isPass = false;
-
     private bool ctlLock = true;
 
     public void Start()
@@ -111,9 +91,9 @@ public class PlayController : MonoBehaviour
 
         Init();
 
-        initTween();
+        SetBall();
 
-        GameManager.Instance.SetPlayer(centerController);
+        GameManager.Instance.playController = this;
 
         GameManager.OnGameStateChange.AddListener(
             (state) =>
@@ -134,6 +114,8 @@ public class PlayController : MonoBehaviour
 
     private void Init()
     {
+        ctlLock = false;
+
         //cameraFollowPlayer.StartCameraMove(centerPos[1]);
 
         leftPlayer.transform.position = leftPos[0].position;
@@ -151,29 +133,14 @@ public class PlayController : MonoBehaviour
         leftController.position = EPlayerPosition.Left;
         centerController.position = EPlayerPosition.Center;
         rightController.position = EPlayerPosition.Right;
-
-        PositionSoccerBall(GetCurrentController().ballPos);
     }
 
-    private void initTween()
+    private void SetBall()
     {
-        //var tweenPaths = soccerBall.GetComponents<DOTweenPath>();
-        /* var tweenPaths = soccerBall.GetComponentsInChildren<DOTweenPath>();
-
-        CToRPath = Array.Find(tweenPaths, x => x.id == "CtoR");
-        CToLPath = Array.Find(tweenPaths, x => x.id == "CtoL");
-        LtoCPath = Array.Find(tweenPaths, x => x.id == "LtoC");
-        RtoCPath = Array.Find(tweenPaths, x => x.id == "RtoC"); */
-        isPass = false;
-
-        //addTweenListner(CToRPath);
-        //addTweenListner(CToLPath);
-        //addTweenListner(RtoCPath);
-
         var ball = soccerBall.GetComponent<Ball>();
         if (ball == null)
         {
-            Debug.LogError("ball is null");
+            Debug.LogError("Ball script is null");
             return;
         }
         ball.onPassStart.AddListener(() =>
@@ -186,39 +153,15 @@ public class PlayController : MonoBehaviour
         });
     }
 
-    public void addTweenListner(DOTweenPath path)
-    {
-        path.onStart.AddListener(() =>
-        {
-            passStart();
-        });
-        path.onComplete.AddListener(() =>
-        {
-            passEnd();
-        });
-        path.onRewind.AddListener(() =>
-        {
-            passEnd();
-        });
-        path.onUpdate.AddListener(() => {
-            //Debug.Log("path :" + path.transform.position);
-            //soccerBall.transform.position = path.transform.position;
-        });
-    }
-
     public void passStart()
     {
-        isPass = true;
         ctlLock = true;
-        Debug.Log("passStart");
     }
 
     public void passEnd()
     {
-        isPass = false;
         ctlLock = false;
         GetCurrentController().SetState(EState.Runing);
-        Debug.Log("passEnd");
     }
 
     public void SetRunningAnimation(bool isRun)
@@ -232,31 +175,14 @@ public class PlayController : MonoBehaviour
 
     void Update()
     {
-        if (ballTime > 0f)
-        {
-            ballTime -= Time.deltaTime;
-            //soccerBall.GetComponent<TrailRenderer>().enabled = true;
-        }
-        else
-        {
-            //soccerBall.GetComponent<TrailRenderer>().enabled = false;
-        }
-
         if (GameManager.Instance.gameState == GameState.Playing)
         {
             Controll();
-
-            if (targetTrans != null && selectedPath != null && selectedPath.Length > 0)
-            {
-                //MoveBallAlongPath();
-            }
         }
     }
 
     private void Controll()
     {
-        //Running();
-
         if (ctlLock)
             return;
 
@@ -275,61 +201,6 @@ public class PlayController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             Pass(false);
-        }
-    }
-
-    private void MoveBallAlongPath()
-    {
-        if (currentWaypointIndex < selectedPath.Length)
-        {
-            Transform waypoint = selectedPath[currentWaypointIndex];
-            soccerBall.transform.position = Vector3.MoveTowards(
-                soccerBall.transform.position,
-                waypoint.position,
-                ballMoveSpeed * Time.deltaTime
-            );
-            RotateTowardsTarget(waypoint.position);
-
-            if (Vector3.Distance(soccerBall.transform.position, waypoint.position) < 0.1f)
-            {
-                currentWaypointIndex++;
-            }
-        }
-        else
-        {
-            PositionSoccerBall(GetCurrentController().ballPos);
-            soccerBall.transform.position = Vector3.MoveTowards(
-                soccerBall.transform.position,
-                targetTrans.position,
-                ballMoveSpeed * Time.deltaTime
-            );
-            soccerBall.transform.rotation = Quaternion.identity;
-        }
-    }
-
-    private void RotateTowardsTarget(Vector3 targetPosition)
-    {
-        Vector3 direction = targetPosition - soccerBall.transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        soccerBall.transform.rotation = Quaternion.RotateTowards(
-            soccerBall.transform.rotation,
-            targetRotation,
-            360 * Time.deltaTime
-        );
-    }
-
-    private void Running()
-    {
-        Vector3 newPosition = transform.position + Vector3.left * runningSpeed * Time.deltaTime;
-        transform.position = newPosition;
-
-        timeSinceLastIncrease += Time.deltaTime;
-        if (timeSinceLastIncrease >= speedIncreaseInterval)
-        {
-            runningSpeed += accelerationRate;
-            runningSpeed = Mathf.Clamp(runningSpeed, 0, maxSpeed);
-            timeSinceLastIncrease = 0f;
         }
     }
 
@@ -354,10 +225,6 @@ public class PlayController : MonoBehaviour
 
         PlayerController to = from;
 
-        //CToRPath.GetTween().timeScale = CToRPath.duration / (passSpeed * Time.timeScale);
-        //CToLPath.GetTween().timeScale = CToLPath.duration / (passSpeed * Time.timeScale);
-        //RtoCPath.GetTween().timeScale = RtoCPath.duration / (passSpeed * Time.timeScale);
-
         if (isLeft)
         {
             to =
@@ -367,14 +234,10 @@ public class PlayController : MonoBehaviour
 
             if (currentPlayer == 2)
             {
-                //RtoCPath.DORestart();
-                //CToRPath.DOPlayBackwards();
                 soccerBall.GetComponent<Ball>().Pass(PassType.RtoC, passSpeed);
-                //DOTween.PlayBackwards("CtoR");
             }
             else if (currentPlayer == 1)
             {
-                //CToLPath.DORestart();
                 soccerBall.GetComponent<Ball>().Pass(PassType.CtoL, passSpeed);
             }
             SwitchPlayer(-1);
@@ -387,19 +250,14 @@ public class PlayController : MonoBehaviour
                 : from;
             if (currentPlayer == 0)
             {
-                //CToLPath.DOPlayBackwards();
                 soccerBall.GetComponent<Ball>().Pass(PassType.LtoC, passSpeed);
             }
             else if (currentPlayer == 1)
             {
                 soccerBall.GetComponent<Ball>().Pass(PassType.CtoR, passSpeed);
-                //CToRPath.DORestart();
-                //DOTween.Restart("CtoR");
             }
             SwitchPlayer(1);
         }
-
-        ballTime = passSpeed;
 
         if (from == to)
             return;
@@ -437,41 +295,49 @@ public class PlayController : MonoBehaviour
             : rightPos[1];
         camera_manager.MoveCamera(newPlayerNum);
 
-        GameManager.Instance.SetPlayer(GetCurrentController());
-
-        int random = 0; //Random.Range(0, 3);
-        switch (oldPlayerNum)
-        {
-            case 0:
-                selectedPath = leftToCenterPath[random].path;
-                break;
-            case 1:
-                selectedPath = currentPlayer switch
-                {
-                    0 => centerToLeftPath[random].path,
-                    2 => centerToRightPath[random].path,
-                    _ => null,
-                };
-                break;
-            case 2:
-                selectedPath = rightToCenterPath[random].path;
-                break;
-            default:
-                Debug.LogError("Wrong Path");
-                break;
-        }
-        currentWaypointIndex = 0;
+        //GameManager.Instance.SetPlayer(GetCurrentController());
 
         float elapsedTime = 0f;
         float duration = passSpeed;
 
-        while (elapsedTime < duration)
+        SetSwitchPositions(oldPlayerNum, out oldStartPos, out oldEndPos, true);
+        SetSwitchPositions(newPlayerNum, out newStartPos, out newEndPos, false);
+
+        DOTween.To(
+            () => oldStartPos,
+            pos =>
+            {
+                Vector3 oldPos = oldPlayer.transform.position;
+                oldPos.x = pos.x;
+                oldPos.z = pos.z;
+                oldPlayer.transform.position = oldPos;
+            },
+            oldEndPos,
+            passSpeed
+        );
+
+        DOTween.To(
+            () => newStartPos,
+            pos =>
+            {
+                Vector3 newPos = newPlayer.transform.position;
+                newPos.x = pos.x;
+                newPos.z = pos.z;
+                newPlayer.transform.position = newPos;
+            },
+            newEndPos,
+            passSpeed
+        );
+
+        yield return null;
+
+        /* while (elapsedTime < duration)
         {
             SetSwitchPositions(oldPlayerNum, out oldStartPos, out oldEndPos, true);
             SetSwitchPositions(newPlayerNum, out newStartPos, out newEndPos, false);
 
             oldPlayer.transform.position = Vector3.Lerp(
-                oldStartPos,
+                new Vector3(oldStartPos.x, oldPlayer.transform.position.y, oldStartPos.z),
                 oldEndPos,
                 elapsedTime / duration
             );
@@ -483,7 +349,7 @@ public class PlayController : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             yield return null;
-        }
+        } */
     }
 
     private GameObject GetPlayerByNumber(int playerNum)
@@ -523,11 +389,6 @@ public class PlayController : MonoBehaviour
         }
     }
 
-    private void PositionSoccerBall(Transform target)
-    {
-        targetTrans = target;
-    }
-
     public GameObject GetCurrentPlayer()
     {
         return (currentPlayer == 0) ? leftPlayer
@@ -546,10 +407,4 @@ public class PlayController : MonoBehaviour
     {
         return runningSpeed;
     }
-}
-
-[System.Serializable]
-public class PathArray
-{
-    public Transform[] path;
 }
