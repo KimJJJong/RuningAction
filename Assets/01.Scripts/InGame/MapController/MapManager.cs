@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmazingAssets.CurvedWorld;
 using JetBrains.Annotations;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class MapManager : MonoBehaviour
     private Vector3 orientation;
 
     MapIndexManager mapIndexManager;
+    MapObjectManager mapObjectManager;
     CurvedWorldController curvedController;
 
     [SerializeField]
@@ -41,6 +43,11 @@ public class MapManager : MonoBehaviour
         if (!mapIndexManager)
             Debug.LogError("MapManager: Map Index Mangaer loading failed");
 
+        mapObjectManager = FindObjectOfType<MapObjectManager>();
+        if (!mapObjectManager)
+            Debug.LogError("MapManager: Map Object Mangaer loading failed");
+            //Todo: If two or more MOM, check
+        
         curvedController = GameObject
             .Find("Curved World Controller")
             .GetComponent<CurvedWorldController>();
@@ -53,6 +60,7 @@ public class MapManager : MonoBehaviour
         }
 
         mapIndexManager.activateNextMap();
+        mapObjectManager.RegisterMapObjects(mapIndexManager.activated_list.Last());
     }
 
     // Update is called once per frame
@@ -64,12 +72,14 @@ public class MapManager : MonoBehaviour
             if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
             {
                 mapIndexManager.deactivateMap();
+                mapObjectManager.DeregisterMapObjects(mapIndexManager.activated_list.First());
             }
 
             MapPrefab lastMap = mapIndexManager.activated_list.Last().GetComponent<MapPrefab>();
             if (lastMap.transform.position.x > transform.position.x)
             {
                 mapIndexManager.activateNextMap();
+                mapObjectManager.RegisterMapObjects(mapIndexManager.activated_list.Last());
             }
 
             //activatedlist�� �ִ� �� �����յ� �̵�
