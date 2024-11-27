@@ -29,6 +29,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private int FOV;
 
+    int lane_num;
+
     void Start()
     {
         cam_waypoints = new Vector3[NUM_PLAYER];        
@@ -63,19 +65,42 @@ public class CameraManager : MonoBehaviour
 
     }
 
-    public void MoveCamera(int lane_num)
+    public void MoveCamera(int lane)
     {
-        // float smoothZ = Mathf.Lerp(
-        //     transform.position.z,
-        //     targetPosition.z,
-        //     smoothSpeed * Time.deltaTime
-        // );
-        transform.position = new Vector3(
-            cam_waypoints[lane_num].x, 
-            cam_waypoints[lane_num].y, 
-            cam_waypoints[lane_num].z); 
-            //smoothZ);
+        lane_num = lane;
+        isMove = true;
+    }
+
+void LateUpdate()
+    {
+        if (isMove)
+        {
+            float smoothZ = Mathf.Lerp(
+                transform.position.z,
+                cam_waypoints[lane_num].z,
+                smoothSpeed * Time.deltaTime
+            );
+            transform.position = new Vector3(cam_waypoints[lane_num].x, cam_waypoints[lane_num].y, smoothZ);
         }
     }
+
+    // public IEnumerator MoveCamera(int lane_num)
+    // {
+    //     while(Vector3.Distance(transform.position, cam_waypoints[lane_num]) > 0.1f)
+    //     {
+    //     float smoothZ = Mathf.Lerp(
+    //         transform.position.z,
+    //         cam_waypoints[lane_num].z,
+    //         smoothSpeed * Time.deltaTime);
+
+    //     transform.position = new Vector3(
+    //         cam_waypoints[lane_num].x, 
+    //         cam_waypoints[lane_num].y, 
+    //         smoothZ);             
+
+    //         yield return null;
+    //     }
+    // }
+}
 
 
