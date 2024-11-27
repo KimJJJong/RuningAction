@@ -59,6 +59,7 @@ public class CameraManager : MonoBehaviour
     {
         transform.rotation = cam_rotation;
         GetComponent<Camera>().fieldOfView = 90;
+        MoveCamera(1);
 
     }
 

@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         //player = playController.GetCurrentPlayer();
         //substance = player.GetComponent<StrengthenSubstance>();
         //weapon = player.GetComponent<Weapon>();
+        
     }
 
     private void Start()
@@ -102,7 +103,6 @@ public class GameManager : MonoBehaviour
         OnGameStateChange.Invoke(gameState);
 
         camera_manager.CameraSetting();
-        camera_manager.MoveCamera(1);
     }
 
     public void GameOver()

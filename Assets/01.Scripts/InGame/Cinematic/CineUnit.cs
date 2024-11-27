@@ -11,11 +11,6 @@ public class CineUnit : MonoBehaviour
 { 
     public CinemachineVirtualCamera virtual_camera;
 
-
-    [SerializeField]
-    private float duration;
-    public float getDuration() { return duration; }
-        
     private bool is_done = false;
 
     public CinemachineDollyCart dollyCart; 
@@ -27,11 +22,6 @@ public class CineUnit : MonoBehaviour
         //Only for dolly cart Cine Unit
             if (dollyCart.m_Position >= path.PathLength)
                 endCine();
-    }
-
-    void Start()
-    {
-        virtual_camera.enabled = false;
     }
 
     //Can accept bool to decide if v_cam will be turned on, but it cannot be mixed conceptually
@@ -47,7 +37,7 @@ public class CineUnit : MonoBehaviour
     }
     
     public bool IsCineEnded()
-    {
+    {        
         return is_done;                
     }
 
