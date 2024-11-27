@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map_list:
-  - {fileID: 1144615453210378116, guid: 5a9893ff27d7d1b428b0cd464cb94182, type: 3}
+  - {fileID: 101925142111717770, guid: 076361d3c0a49ca45bbdbf871029d590, type: 3}
   activated_list: []
   cur_order: 0
   cur_map_idx: 0
@@ -1809,6 +1809,63 @@ Transform:
   - {fileID: 1991743237}
   m_Father: {fileID: 1485162561}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &479539591
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3446252547733571856, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_Name
+      value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8790271267006705413, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
 --- !u!1 &480879176
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +2148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map_speed: 20
   orientation: {x: 1, y: 0, z: 0}
-  curvedSize: {x: 0, y: -3}
+  curvedSize: {x: -2, y: -3}
 --- !u!4 &587212477
 Transform:
   m_ObjectHideFlags: 0
@@ -3771,7 +3828,7 @@ MonoBehaviour:
   accelerationRate: 0.1
   speedIncreaseInterval: 1
   timeSinceLastIncrease: 0
-  soccerBall: {fileID: 1672945529}
+  soccerBall: {fileID: 2037681427}
   ballMoveSpeed: 7.5
   CToRPath: {fileID: 1672945531}
   CToLPath: {fileID: 1672945530}
@@ -6020,6 +6077,10 @@ PrefabInstance:
       value: Soccer Ball
       objectReference: {fileID: 0}
     - target: {fileID: 1975457108487340, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1975457108487340, guid: ec3e8f3ed27e2244caaedaf589590a03, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -7661,6 +7722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1639096b6d858864f9696cde59dd9b11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   rayDistance: 10
 --- !u!1 &1959496691
 GameObject:
@@ -8203,6 +8265,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014002934}
   m_CullTransparentMesh: 1
+--- !u!1 &2037681427 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3446252547733571856, guid: 21554cc1520e2cc4f920b3cbb1bac3e7, type: 3}
+  m_PrefabInstance: {fileID: 479539591}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2057292374
 GameObject:
   m_ObjectHideFlags: 0
@@ -9943,3 +10010,4 @@ SceneRoots:
   - {fileID: 955447379}
   - {fileID: 1877412849}
   - {fileID: 587212477}
+  - {fileID: 479539591}

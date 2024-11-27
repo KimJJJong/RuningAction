@@ -171,6 +171,11 @@ public class PlayController : MonoBehaviour
         //addTweenListner(RtoCPath);
 
         var ball = soccerBall.GetComponent<Ball>();
+        if (ball == null)
+        {
+            Debug.LogError("ball is null");
+            return;
+        }
         ball.onPassStart.AddListener(() =>
         {
             passStart();
@@ -364,13 +369,13 @@ public class PlayController : MonoBehaviour
             {
                 //RtoCPath.DORestart();
                 //CToRPath.DOPlayBackwards();
-                soccerBall.GetComponent<Ball>().Pass(PassType.RtoC);
+                soccerBall.GetComponent<Ball>().Pass(PassType.RtoC, passSpeed);
                 //DOTween.PlayBackwards("CtoR");
             }
             else if (currentPlayer == 1)
             {
                 //CToLPath.DORestart();
-                soccerBall.GetComponent<Ball>().Pass(PassType.CtoL);
+                soccerBall.GetComponent<Ball>().Pass(PassType.CtoL, passSpeed);
             }
             SwitchPlayer(-1);
         }
@@ -383,11 +388,11 @@ public class PlayController : MonoBehaviour
             if (currentPlayer == 0)
             {
                 //CToLPath.DOPlayBackwards();
-                soccerBall.GetComponent<Ball>().Pass(PassType.LtoC);
+                soccerBall.GetComponent<Ball>().Pass(PassType.LtoC, passSpeed);
             }
             else if (currentPlayer == 1)
             {
-                soccerBall.GetComponent<Ball>().Pass(PassType.CtoR);
+                soccerBall.GetComponent<Ball>().Pass(PassType.CtoR, passSpeed);
                 //CToRPath.DORestart();
                 //DOTween.Restart("CtoR");
             }

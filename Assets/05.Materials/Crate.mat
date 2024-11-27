@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: 5cb6db3eab65ee240ac33caef8489903, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_TYPE_SPIRALVERTICAL_Z_NEGATIVE
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_NEGATIVE
   m_InvalidKeywords:
   - CURVEDWORLD_BEND_ID_1
   m_LightmapFlags: 4
