@@ -197,7 +197,7 @@ public class GameUIManager : MonoBehaviour
     #region Text Update
     public void UpdateScoreText(int score)
     {
-        scoreText.text = $"Score : {score}";
+        scoreText.text = $"{score}";
     }
 
     public void UpdateCoinText(int coins)

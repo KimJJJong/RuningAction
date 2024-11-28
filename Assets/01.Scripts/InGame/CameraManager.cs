@@ -28,6 +28,7 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField]
     private int FOV;
+    public int getFOV() {return FOV;}
 
     int lane_num;
 

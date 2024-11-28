@@ -48,12 +48,12 @@ public class MapObjectManager : MonoBehaviour
 
     public void DeregisterMapObjects(GameObject mapSection)
     {
-        GameObject[] interactables = mapSection
-            .GetComponentsInChildren<Transform>(true)
-            .Where(t => t.CompareTag("InteractableMapObject"))
-            .Select(t => t.gameObject)
-            .ToArray();
+    //     GameObject[] interactables = mapSection
+    //         .GetComponentsInChildren<Transform>(true)
+    //         .Where(t => t.CompareTag("InteractableMapObject"))
+    //         .Select(t => t.gameObject)
+    //         .ToArray();
         
-        interactable_objects.RemoveAll(obj => interactables.Contains(obj));
-    }
+    //     interactable_objects.RemoveAll(obj => interactables.Contains(obj));
+     }
 }
