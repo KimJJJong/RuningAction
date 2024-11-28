@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using DarkTonic.MasterAudio;
 
 public class GameStateChangeEvent : UnityEngine.Events.UnityEvent<GameState> { }
 
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour
 
     public void GamePlay()
     {
+        MasterAudio.PlaySound("game_start");
         gameState = GameState.Playing;
         OnGameStateChange.Invoke(gameState);
 
