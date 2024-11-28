@@ -22,7 +22,7 @@ public class SoccerBall : MonoBehaviour
     {
         if (isShooting)
         {
-            transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
             GetComponent<MeshRenderer>().enabled = true;
             transform.Rotate(Vector3.up * rotationSpeedY * Time.deltaTime, Space.Self);
             transform.Rotate(Vector3.forward * rotationSpeedZ * Time.deltaTime, Space.Self);

@@ -73,6 +73,10 @@ public class GoalKeeper : MonoBehaviour
 
             HideDangerIcon();
         }
+        else
+        {
+            animator.Play("MoveRight");
+        }
     }
 
     private Vector3 GetLanePosition(int lane)
