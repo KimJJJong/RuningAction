@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public enum ECharacter
 {
     Bat,
@@ -13,9 +14,8 @@ public class Weapon : MonoBehaviour
     public GameObject Ball;
 
     [Space(10)]
-
-   // public int batLv = 0;
-   // public int gloveLv = 0;
+    // public int batLv = 0;
+    // public int gloveLv = 0;
     private float _gageSize;
 
     public float GageSize
@@ -25,6 +25,7 @@ public class Weapon : MonoBehaviour
     }
 
     GameObject hitBox;
+
     private void Start()
     {
         hitBox = GameObject.Find("HitBox");
@@ -35,14 +36,14 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         UpdateGage();
-
     }
+
     /// <summary>
-    /// »óÈ£ÀÛ¿ë Á¦¾î ¸Þ¼Òµå
+    /// ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
     /// </summary>
-    /// <param name="type">Ä³¸¯ÅÍ Á÷¾÷ÀÇ Å¸ÀÔ</param>
-    /// <param name="chRank">Ä³¸¯ÅÍÀÇ ·¹¾îµµ</param>
-    /// <param name="ch">»óÈ£ÀÛ¿ë Obj¼ÒÈ¯</param>
+    /// <param name="type">Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½</param>
+    /// <param name="chRank">Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½îµµ</param>
+    /// <param name="ch">ï¿½ï¿½È£ï¿½Û¿ï¿½ Objï¿½ï¿½È¯</param>
     public void Triger(ECharacter type, ERank chRank, ECharacter ch)
     {
         if (ch == ECharacter.Bat)
@@ -62,16 +63,10 @@ public class Weapon : MonoBehaviour
             case ECharacter.Magnetic:
                 BeMagnetic();
                 break;
-
-
         }
     }
 
-
-    void BeMagnetic()
-    {
-
-    }
+    void BeMagnetic() { }
 
     void Batting()
     {
@@ -82,24 +77,33 @@ public class Weapon : MonoBehaviour
     void Throw()
     {
         Vector3 pos = gameObject.transform.position;
-        GameObject _ball = Instantiate(Ball, new Vector3(pos.x, pos.y + 1, pos.z + 1), Quaternion.identity);
+        GameObject _ball = Instantiate(
+            Ball,
+            new Vector3(pos.x, pos.y + 1, pos.z + 1),
+            Quaternion.identity
+        );
     }
 
     void UpdateGage()
     {
         if (GageSlider.value >= GageSlider.maxValue)
         {
-            if(GameManager.Instance.playerController.eCh == ECharacter.Bat)
-                GameManager.Instance.player.GetComponent<PlayerController>().Invincibility(false);
-            if (GameManager.Instance.playerController.eCh == ECharacter.Glove)
-                Debug.Log("¾ÆÁ÷ ±¸Çö¾ÈÇÔ¿ä");
+            PlayerController playerController =
+                GameManager.Instance.playController.GetCurrentController();
+
+            if (playerController.eCh == ECharacter.Bat)
+                playerController.Invincibility(false);
+            if (playerController.eCh == ECharacter.Glove)
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½");
         }
     }
 
-
     void InitWeapon()
     {
-        ECharacter type = GameManager.Instance.playerController.eCh;
+        PlayerController playerController =
+            GameManager.Instance.playController.GetCurrentController();
+
+        ECharacter type = playerController.eCh;
         switch (type)
         {
             case ECharacter.Bat:
@@ -109,66 +113,66 @@ public class Weapon : MonoBehaviour
             case ECharacter.Magnetic:
                 GageSlider.gameObject.SetActive(false);
                 break;
-
         }
-
     }
-    public void GageUpdate()    // ¿ÀºêÁ§Æ®°¡ ÆÄ±«µÉ ¶§ ¸¶´Ù update
+
+    public void GageUpdate() // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ update
     {
         GageSlider.value += _gageSize;
     }
+
     public void DecreaseGage(float num)
     {
         GageSlider.value -= num;
     }
+
     public void BatLv(ERank rank)
     {
         switch (rank)
         {
             case ERank.Normal:
-                _gageSize = 6.7f;   // 15¹ø
+                _gageSize = 6.7f; // 15ï¿½ï¿½
                 break;
             case ERank.Rare:
-                _gageSize = 7.7f;   // 13¹ø
+                _gageSize = 7.7f; // 13ï¿½ï¿½
                 break;
             case ERank.Epic:
-                _gageSize = 9.1f;   // 11¹ø
+                _gageSize = 9.1f; // 11ï¿½ï¿½
                 break;
             case ERank.Legendary:
-                _gageSize = 11.12f; // 9¹ø
+                _gageSize = 11.12f; // 9ï¿½ï¿½
                 break;
             case ERank.Mythic:
-                _gageSize = 14.3f;  // 7¹ø
+                _gageSize = 14.3f; // 7ï¿½ï¿½
                 break;
             default:
                 _gageSize = 0;
                 break;
-
         }
     }
+
     public void GloveLv(ERank rank)
     {
         switch (rank)
         {
             case ERank.Normal:
-                _gageSize = 11.2f;   // 9¹ø
+                _gageSize = 11.2f; // 9ï¿½ï¿½
                 break;
             case ERank.Rare:
-                _gageSize = 12.5f;   // 8¹ø
+                _gageSize = 12.5f; // 8ï¿½ï¿½
                 break;
             case ERank.Epic:
-                _gageSize = 14.3f;   // 7¹ø
+                _gageSize = 14.3f; // 7ï¿½ï¿½
                 break;
             case ERank.Legendary:
-                _gageSize = 16.7f; // 6¹ø
+                _gageSize = 16.7f; // 6ï¿½ï¿½
                 break;
             case ERank.Mythic:
-                _gageSize = 20f;  // 5¹ø
+                _gageSize = 20f; // 5ï¿½ï¿½
                 break;
             default:
                 _gageSize = 0;
                 break;
-
         }
     }
 }

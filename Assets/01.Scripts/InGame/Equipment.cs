@@ -2,12 +2,13 @@ using UnityEngine;
 
 public enum EEquipment
 {
-    Destroyer,      // Àå¾Ö¹° ÆÄ±«½Ã Á¡¼ö È¹µæ
-    Gold,        // Ãß°¡ Coin || EventStage È®·ü UP 
+    Destroyer, // ï¿½ï¿½Ö¹ï¿½ ï¿½Ä±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¹ï¿½ï¿½
+    Gold, // ï¿½ß°ï¿½ Coin || EventStage È®ï¿½ï¿½ UP
     LuckyGuy,
     NoPain,
     None,
 }
+
 public enum ERank
 {
     Normal,
@@ -48,68 +49,77 @@ public class Equipment : MonoBehaviour
         }
     }
 
-
     void Destroyer(ERank rank)
     {
+        PlayerController playerController =
+            GameManager.Instance.playController.GetCurrentController();
+
         switch (rank)
         {
             case ERank.Normal:
-                GameManager.Instance.score.SetIncreasObsRate(20);
+                playerController.score.SetIncreasObsRate(20);
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.SetIncreasObsRate(30);
+                playerController.score.SetIncreasObsRate(30);
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.SetIncreasObsRate(40);
+                playerController.score.SetIncreasObsRate(40);
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.SetIncreasObsRate(50);
+                playerController.score.SetIncreasObsRate(50);
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.SetIncreasObsRate(60);
+                playerController.score.SetIncreasObsRate(60);
                 break;
         }
     }
+
     void Gold(ERank rank)
     {
+        PlayerController playerController =
+            GameManager.Instance.playController.GetCurrentController();
+
         switch (rank)
         {
             case ERank.Normal:
-                GameManager.Instance.score.SetIncreasCoinRate(0);
+                playerController.score.SetIncreasCoinRate(0);
                 break;
             case ERank.Rare:
-                GameManager.Instance.score.SetIncreasCoinRate(10);
+                playerController.score.SetIncreasCoinRate(10);
                 break;
             case ERank.Epic:
-                GameManager.Instance.score.SetIncreasCoinRate(15);
+                playerController.score.SetIncreasCoinRate(15);
                 break;
             case ERank.Legendary:
-                GameManager.Instance.score.SetIncreasCoinRate(20);
+                playerController.score.SetIncreasCoinRate(20);
                 break;
             case ERank.Mythic:
-                GameManager.Instance.score.SetIncreasCoinRate(25);
+                playerController.score.SetIncreasCoinRate(25);
                 break;
         }
     }
 
     void NoPain(ERank rank)
     {
+        PlayerController playerController =
+            GameManager.Instance.playController.GetCurrentController();
+
         switch (rank)
         {
             case ERank.Normal:
-                GameManager.Instance.collisions.chance = 0;
+                playerController.collisions.chance = 0;
                 break;
             case ERank.Rare:
-                GameManager.Instance.collisions.chance = 0.15f;
+                playerController.collisions.chance = 0.15f;
                 break;
             case ERank.Epic:
-                GameManager.Instance.collisions.chance = 0.30f;
+                playerController.collisions.chance = 0.30f;
                 break;
             case ERank.Legendary:
-                GameManager.Instance.collisions.chance = 0.45f;
+                playerController.collisions.chance = 0.45f;
                 break;
             case ERank.Mythic:
-                GameManager.Instance.collisions.chance = 0.60f;
+                playerController.collisions.chance = 0.60f;
                 break;
         }
     }
@@ -120,13 +130,13 @@ public class Equipment : MonoBehaviour
         switch (rank)
         {
             case ERank.Normal:
-                goldSpawn.goldStageProbability=12;
+                goldSpawn.goldStageProbability = 12;
                 break;
             case ERank.Rare:
                 goldSpawn.goldStageProbability = 14;
                 break;
             case ERank.Epic:
-                goldSpawn.goldStageProbability = 16; 
+                goldSpawn.goldStageProbability = 16;
                 break;
             case ERank.Legendary:
                 goldSpawn.goldStageProbability = 18;

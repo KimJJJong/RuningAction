@@ -30,19 +30,9 @@ public class GameManager : MonoBehaviour
 
     public PlayController playController;
 
-    [HideInInspector]
-    public CollectCoin score;
-
-    [Header("Character")]
-    public GameObject player;
-    public PlayerController playerController;
-    public Collisions collisions;
-    public StrengthenSubstance substance;
-    public Weapon weapon;
-
     [Header("Camera Controller")]
     public PostEffectController postEffectController;
-    public CameraFollowPlayer cameraFollowPlayer;
+    public CameraManager camera_manager;
 
     private float currentPlayTime;
 
@@ -53,8 +43,28 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float map_speed = 5.0f;
 
-    public float GetMapSpeed() { return map_speed; }
+    [SerializeField]
+    private float max_game_speed = 5.0f;
 
+    [HideInInspector]
+    public float maxGameSpeed
+    {
+        get { return max_game_speed; }
+    }
+
+    [SerializeField]
+    private float game_speed = 1f;
+
+    [HideInInspector]
+    public float gameSpeed
+    {
+        get { return game_speed; }
+    }
+
+    public float GetMapSpeed()
+    {
+        return map_speed;
+    }
 
     #endregion
 
@@ -69,36 +79,22 @@ public class GameManager : MonoBehaviour
         //player = playController.GetCurrentPlayer();
         //substance = player.GetComponent<StrengthenSubstance>();
         //weapon = player.GetComponent<Weapon>();
+        
     }
 
     private void Start()
     {
         gameUiManager.SetGamePlayPanel();
-
-        PlayController.OnPass.AddListener(
-            (from, to) =>
-            {
-                SetPlayer(to);
-            }
-        );
     }
 
     private void Update()
     {
         if (gameState == GameState.Playing)
+        {
             currentPlayTime += Time.deltaTime;
-    }
-
-    public void SetPlayer(PlayerController pc)
-    {
-        playerController = pc;
-        collisions = pc.collisions;
-
-        player = playController.GetCurrentPlayer();
-        substance = player.GetComponent<StrengthenSubstance>();
-        weapon = player.GetComponent<Weapon>();
-
-        score = playerController.GetComponent<CollectCoin>();
+            if (game_speed < maxGameSpeed)
+                game_speed += Time.deltaTime * 0.01f;
+        }
     }
 
     public void GamePlay()
@@ -106,7 +102,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Playing;
         OnGameStateChange.Invoke(gameState);
 
-        cameraFollowPlayer.StartCameraMove(playController.GetCurrentPlayer().transform);
+        camera_manager.CameraSetting();
     }
 
     public void GameOver()

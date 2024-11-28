@@ -51,8 +51,8 @@ public class MapIndexManager : MonoBehaviour
     {
         map_order_list = new int[10];
         map_order_list[0] = 0;
-        map_order_list[1] = 1;
-        map_order_list[2] = 1;
+        map_order_list[1] = 0;
+        map_order_list[2] = 0;
         map_order_list[3] = 0;
         map_order_list[4] = 0;
         map_order_list[5] = 0;
@@ -123,7 +123,7 @@ public class MapIndexManager : MonoBehaviour
         cur_map_idx = idx;
 
         map_poll[cur_map_idx].Get();
-        ++cur_order;
+        ++cur_order;        
     }
 
     public void deactivateMap()

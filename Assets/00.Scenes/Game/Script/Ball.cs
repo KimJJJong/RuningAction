@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -35,23 +36,34 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        Init();
+        SetPassList();
+        transform.position = ballOffset;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ballObject != null)
-        {
-            ballObject.transform.Rotate(new Vector3(0, 0, ballRotationSpeed) * Time.deltaTime);
-        }
+        BallRotate();
     }
 
+    public void Shoot() { }
+
     public void Pass(PassType passType)
+    {
+        Pass(passType, 0);
+    }
+
+    public void Pass(PassType passType, float duration)
     {
         DOTweenPath pass;
         if (passList.TryGetValue(passType, out pass))
         {
+            if (duration > 0)
+            {
+                duration = Math.Max(0.2f, duration / GameManager.Instance.gameSpeed);
+                pass.GetTween().timeScale = pass.duration / (duration * Time.timeScale);
+            }
+
             switch (passType)
             {
                 case PassType.CtoR:
@@ -68,8 +80,9 @@ public class Ball : MonoBehaviour
         }
     }
 
-    private void Init()
+    private void SetPassList()
     {
+        passList = new Dictionary<PassType, DOTweenPath>();
         foreach (DOTweenPath tweenPath in gameObject.GetComponentsInChildren<DOTweenPath>())
         {
             if (tweenPath.id == "CtoR")
@@ -83,8 +96,6 @@ public class Ball : MonoBehaviour
 
             AddTweenListener(tweenPath);
         }
-
-        transform.position = ballOffset;
     }
 
     private void AddTweenListener(DOTweenPath path)
@@ -108,5 +119,13 @@ public class Ball : MonoBehaviour
 
             onPassing.Invoke();
         });
+    }
+
+    private void BallRotate()
+    {
+        if (ballObject == null)
+            return;
+
+        ballObject.transform.Rotate(new Vector3(0, 0, ballRotationSpeed) * Time.deltaTime);
     }
 }

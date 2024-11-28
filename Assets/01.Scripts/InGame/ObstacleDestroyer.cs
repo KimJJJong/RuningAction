@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class ObstacleDestroyer : MonoBehaviour
 {
-    [SerializeField] string colliObj;
+    [SerializeField]
+    string colliObj;
 
     int batRank;
     int gloveRank;
+
     private void Start()
     {
         //batRank = (int)GameManager.Instance.playerController.eBatRank;
@@ -16,28 +18,28 @@ public class ObstacleDestroyer : MonoBehaviour
     {
         if (other.CompareTag(colliObj))
         {
+            PlayerController playerController =
+                GameManager.Instance.playController.GetCurrentController();
             if (colliObj == "HitBox")
             {
-                //BatWeapon Rank¿¡ µû¶ó Á¡¼ö Ãß°¡
-                GameManager.Instance.score.AddScore(batRank);
+                //BatWeapon Rankï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+                playerController.score.AddScore(batRank);
 
-                if (GameManager.Instance.playerController.eCh == ECharacter.Bat)
+                if (playerController.eCh == ECharacter.Bat)
                 {
-                    GameManager.Instance.weapon.GageUpdate();
+                    playerController.weapon.GageUpdate();
                 }
-
             }
             else if (colliObj == "Ball")
             {
-                //GloveWeapon Rank¿¡ µû¶ó Á¡¼ö Ãß°¡
-                GameManager.Instance.score.AddScore(gloveRank);
-                if (GameManager.Instance.playerController.eCh == ECharacter.Glove)
+                //GloveWeapon Rankï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+                playerController.score.AddScore(gloveRank);
+                if (playerController.eCh == ECharacter.Glove)
                 {
-                    GameManager.Instance.weapon.GageUpdate();
+                    playerController.weapon.GageUpdate();
                 }
             }
             Destroy(gameObject);
-
         }
     }
 }
