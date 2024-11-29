@@ -2,6 +2,9 @@ using UnityEngine;
 using Cinemachine;
 using Unity.IO.LowLevel.Unsafe;
 
+using DarkTonic.MasterAudio;
+using TMPro;
+
 public class CameraTransition : MonoBehaviour
 {
     //This file is for smooth transition between the end position of virtual camera after its move and the purposed start position of main camera.
@@ -33,6 +36,8 @@ public class CameraTransition : MonoBehaviour
     private float aft_trs_timer;
 
 
+    public TextMeshProUGUI ready_text;
+
     void Start()
     {
         cine_unit = GetComponent<CineUnit>();
@@ -55,12 +60,15 @@ public class CameraTransition : MonoBehaviour
         if(is_trs_ended)
         {
             //if there is any additional wait after transitioning, wait
-            if(if_aft_trs_wait)            
+            if(if_aft_trs_wait)
                 aft_trs_timer += Time.deltaTime;
             
             if(!if_aft_trs_wait || aft_trs_timer >= aft_trs_duration)
             {
+                //This codes cannot be here bc of separation of functionality. This part is not reponsible for this file. TODO: Move it when ready
+                ready_text.gameObject.SetActive(false);
                 GameManager.Instance.GamePlay();
+
                 this.enabled = false;
             }
 
@@ -98,17 +106,14 @@ public class CameraTransition : MonoBehaviour
     }
 
     void PerformTransition()
-    {
-        // Lerp 비율 증가
+    {        
         trs_progress += Time.deltaTime / trs_duration;
         float lerpFactor = Mathf.Clamp01(trs_progress);
-
-        // 위치, 회전, FOV을 Lerp로 변화
+        
         main_camera.transform.position = Vector3.Lerp(start_position, end_position, lerpFactor);
         main_camera.transform.rotation = Quaternion.Lerp(start_rotation, end_rotation, lerpFactor);
         main_camera.fieldOfView = Mathf.Lerp(start_FOV, end_FOV, lerpFactor);
-
-        // 전환 완료 시 Virtual Camera 비활성화
+        
         if (lerpFactor >= 1.0f)
         {
             EndTransition();
@@ -116,11 +121,13 @@ public class CameraTransition : MonoBehaviour
     }
 
     void EndTransition()
-    {
-        // Virtual Camera 비활성화 또는 Priority 조정
+    {        
         virtual_camera.Priority = 0;
 
         is_trsing = false;
         is_trs_ended = true;
+
+        ready_text.gameObject.SetActive(true);
+        MasterAudio.PlaySound("ready");
     }
 }

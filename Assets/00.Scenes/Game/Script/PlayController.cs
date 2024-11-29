@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using DarkTonic.MasterAudio;
 
 public class PlayController : MonoBehaviour
 {
@@ -187,7 +188,7 @@ public class PlayController : MonoBehaviour
             return;
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
+        {            
             Jump();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -196,10 +197,12 @@ public class PlayController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            MasterAudio.PlaySound("pass_1");
             Pass(true);
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
+            MasterAudio.PlaySound("pass_1");
             Pass(false);
         }
     }
@@ -406,5 +409,26 @@ public class PlayController : MonoBehaviour
     public float GetSpeed()
     {
         return runningSpeed;
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Triggered");
+
+        if (other.gameObject.CompareTag("SoundTrigger"))
+        {
+            Debug.Log("Triggered2");
+
+            string sound_id = other.GetComponent<SoundTrigger>().getTriggerSoundID();
+
+            switch (sound_id)
+            {
+                case "car_horn":
+                    MasterAudio.PlaySound("car_horn");
+                    break;
+
+            }
+        }
     }
 }

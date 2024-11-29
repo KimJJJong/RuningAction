@@ -243,6 +243,8 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!isJumping)
                     {
+                        MasterAudio.PlaySound("jump_4");
+
                         isJumping = true;
                         Vector3 PlayerPosOffset = transform.position;
 
@@ -306,7 +308,7 @@ public class PlayerController : MonoBehaviour
                         animator.Play("Slide");
                         slide = true;
 
-                        MasterAudio.PlaySound3DAtTransform("side_move", transform);
+                        MasterAudio.PlaySound3DAtTransform("slide", transform);
                         StartCoroutine(MoveDownAndUp());
                     }
                 }
@@ -420,6 +422,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!slide)
         {
+            MasterAudio.PlaySound("slide");
             animator.Play("Slide");
             slide = true;
             if (isJumping)

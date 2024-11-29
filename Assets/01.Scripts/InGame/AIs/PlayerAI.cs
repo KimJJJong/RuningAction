@@ -28,8 +28,8 @@ public class PlayerAI : MonoBehaviour
         if (Physics.Raycast(ray, out hit, rayDistance))
         {
             //for debugginh
-            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
-            Debug.Log("Hit Object Tag: " + hit.collider.tag);
+            //Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
+            //Debug.Log("Hit Object Tag: " + hit.collider.tag);
 
             if(hit.collider.tag == "ObstacleJump")
                 playerController.SetState(EState.Up);
