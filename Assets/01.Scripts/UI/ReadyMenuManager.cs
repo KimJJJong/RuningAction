@@ -54,24 +54,24 @@ public class ReadyMenuManager : MonoBehaviour
             btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
 
-        for (int i = 0; i < userData.bets.Count; i++)
-        {
-            var weapon = userData.bets[i];
-            var btn_bet = Instantiate(weaponBetSelectButton);
-            btn_bet.GetComponent<Button>().image.sprite = weapon.weaponImg;
-            btn_bet.GetComponent<ReadyItem>().SetStar(weapon);
+        //for (int i = 0; i < userData.bets.Count; i++)
+        //{
+        //    var weapon = userData.bets[i];
+        //    var btn_bet = Instantiate(weaponBetSelectButton);
+        //    btn_bet.GetComponent<Button>().image.sprite = weapon.weaponImg;
+        //    btn_bet.GetComponent<ReadyItem>().SetStar(weapon);
 
-            int index_bet = i;
-            btn_bet.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                UpdateWeaponBetImage(btn_bet.GetComponent<Button>());
-                DataManager.instance.userData.selectedWeaponBat = index_bet;
-                Debug.Log("Selected WeaponBat Index: " + index_bet);
-            });
-            btn_bet.transform.parent = weaponBetSelectList.transform;
-            btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-            break;
-        }
+        //    int index_bet = i;
+        //    btn_bet.GetComponent<Button>().onClick.AddListener(() =>
+        //    {
+        //        UpdateWeaponBetImage(btn_bet.GetComponent<Button>());
+        //        DataManager.instance.userData.selectedWeaponBat = index_bet;
+        //        Debug.Log("Selected WeaponBat Index: " + index_bet);
+        //    });
+        //    btn_bet.transform.parent = weaponBetSelectList.transform;
+        //    btn_bet.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        //    break;
+        //}
 
         for (int i = 0; i < userData.gloves.Count; i++)
         {

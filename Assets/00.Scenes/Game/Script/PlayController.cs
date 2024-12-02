@@ -414,12 +414,8 @@ public class PlayController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
-
         if (other.gameObject.CompareTag("SoundTrigger"))
-        {
-            Debug.Log("Triggered2");
-
+        {            
             string sound_id = other.GetComponent<SoundTrigger>().getTriggerSoundID();
 
             switch (sound_id)
