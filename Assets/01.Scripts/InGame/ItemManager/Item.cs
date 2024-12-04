@@ -19,14 +19,10 @@ public abstract class Item : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Item acquired");
-
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Item acquired2");
-
             if (ItemManager.instance != null)
-                ItemManager.instance.handleItem(this);
+                ItemManager.instance.HandleItem(this);
             else
                 Debug.Log("Item: No item manager instance");
             

@@ -10,11 +10,13 @@ public class ItemManager : MonoBehaviour
     {
         if (instance == null) 
             instance = this;
+        else
+            Destroy(this);
     }
 
     private List<Item> item_list = new List<Item>();
 
-    public void handleItem(Item item)
+    public void HandleItem(Item item)
     {
         item.obtain();
 
@@ -59,5 +61,5 @@ public class ItemManager : MonoBehaviour
 
 
     //TODO: (if applicable) Make storable item in game in real time.
-    //We don't provide item storage function in game, so using storable item function is made yet   
+    //We don't provide item storage function in game, so using storable item function is made yet
 }
