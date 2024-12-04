@@ -19,7 +19,7 @@ public class ObstacleDestroyer : MonoBehaviour
         if (other.CompareTag(colliObj))
         {
             PlayerController playerController =
-                GameManager.Instance.playController.GetCurrentController();
+                GameManager.Instance.playerManager.GetCurrentController();
             if (colliObj == "HitBox")
             {
                 //BatWeapon Rank�� ���� ���� �߰�

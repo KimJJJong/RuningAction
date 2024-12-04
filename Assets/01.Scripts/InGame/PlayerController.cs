@@ -1,24 +1,27 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DarkTonic.MasterAudio;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    [System.Serializable]
+    public class PlayerPosition
+    {
+        public Transform front;
+        public Transform back;
+    }
+
     private GameUIManager gameUiManager;
 
+    public GameObject playerObj;
     public Animator animator;
-    public Transform ballPos;
 
-    [SerializeField]
-    private Transform centerPos;
-
-    [SerializeField]
-    private Transform leftPos;
-
-    [SerializeField]
-    private Transform rightPos;
+    public PlayerPosition playerPosition;
 
     [Header("Move Stat")]
     public float sideSpeed;
@@ -28,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float downForce = 400;
     public float fallMultiplier = 3;
+    public int jumpCount = 0;
+    public int maxJumpCount = 2;
 
     [Space(10f)]
     [Header("Character")]
@@ -41,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     bool smash;
     bool slide;
-    bool isJumping = false;
+
     bool _isRush;
     bool _isMagnetic;
 
@@ -84,23 +89,248 @@ public class PlayerController : MonoBehaviour
 
     private Ball ball;
 
+    private List<PlayerAction> action_list = new List<PlayerAction>();
+    private UnityEvent OnActionClear = new UnityEvent();
+
     void Awake()
     {
-        col = GetComponent<CapsuleCollider>();
-        rb = GetComponent<Rigidbody>();
+        col = playerObj.GetComponent<CapsuleCollider>();
+        rb = playerObj.GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-        collisions = GetComponent<Collisions>();
-        substance = GetComponent<StrengthenSubstance>();
-        weapon = GetComponent<Weapon>();
-        score = GetComponent<CollectCoin>();
+        collisions = playerObj.GetComponent<Collisions>();
+        collisions.setController(this);
+
+        substance = playerObj.GetComponent<StrengthenSubstance>();
+        weapon = playerObj.GetComponent<Weapon>();
+        score = playerObj.GetComponent<CollectCoin>();
     }
 
     private void Start()
     {
         gameUiManager = GameUIManager.instance;
-        ball = GameManager.Instance.playController.ball;
+        ball = GameManager.Instance.playerManager.ball;
     }
+
+    void ActionClear()
+    {
+        int loop = action_list.Count;
+        while (loop > 0)
+        {
+            var action = action_list.First();
+            if (action.Kill())
+                action_list.Remove(action);
+
+            loop--;
+        }
+        Debug.Log("ActionClear:" + action_list.Count);
+    }
+
+    public PlayerActionCallback MoveFront()
+    {
+        return Move(playerPosition.front.position);
+    }
+
+    public PlayerActionCallback MoveBack()
+    {
+        return Move(playerPosition.back.position);
+    }
+
+    public PlayerActionCallback Move(Vector3 targetPosition)
+    {
+        return Move(targetPosition, GameManager.Instance.playerManager.passSpeed);
+    }
+
+    public PlayerActionCallback Move(Vector3 targetPosition, float duration)
+    {
+        Tweener tweener = DOTween.To(
+            () => playerObj.transform.position,
+            position =>
+            {
+                Vector3 tmp = playerObj.transform.position;
+                tmp.x = position.x;
+                tmp.y = position.y;
+                tmp.z = position.z;
+                playerObj.transform.position = tmp;
+            },
+            targetPosition,
+            duration
+        );
+
+        PlayerActionCallback callback = new PlayerActionCallback(tweener);
+
+        ActionClear();
+
+        //callback.OnFinish
+        //action_list.Add(new PlayerAction(tweener));
+        action_list.Insert(0, new PlayerAction(tweener));
+
+        return callback;
+    }
+
+    public PlayerActionCallback Jump()
+    {
+        if (jumpCount >= maxJumpCount)
+            return null;
+
+        int inJumpCnt = ++jumpCount;
+
+        float jumpSpd = Math.Max(
+            GameManager.Instance.playerManager.jumpSpeed / GameManager.Instance.gameSpeed,
+            0.5f
+        );
+
+        Debug.Log("jumpSpd:" + jumpSpd / 2f);
+
+        Vector3 positionOffset = playerObj.transform.position;
+
+        Vector3 down = playerObj.transform.position - Vector3.up * playerObj.transform.position.y;
+        Vector3 up =
+            playerObj.transform.position
+            + Vector3.up * GameManager.Instance.playerManager.jumpHeight;
+
+        //
+        /* Tweener tweener = DOTween.To(
+            () => 0f,
+            t =>
+            {
+                float jumpVal = 4 * t - 4 * t * t;
+                Vector3 playerPos = playerObj.transform.position;
+                playerPos.y =
+                    positionOffset.y + jumpVal * GameManager.Instance.playerManager.jumpHeight;
+                playerObj.transform.position = playerPos;
+            },
+            1f,
+            jumpSpd
+        ); */
+
+        //Jump-up
+        Tweener jumpUp = DOTween
+            .To(
+                () => playerObj.transform.position,
+                position =>
+                {
+                    Vector3 tmp = playerObj.transform.position;
+                    tmp.x = position.x;
+                    tmp.y = position.y;
+                    tmp.z = position.z;
+                    playerObj.transform.position = tmp;
+                },
+                up,
+                jumpSpd * 0.5f
+            )
+            .SetEase(Ease.OutQuad);
+
+        //Jump-down
+        Tweener jumpDown = DOTween
+            .To(
+                () => up,
+                position =>
+                {
+                    Vector3 tmp = playerObj.transform.position;
+                    tmp.x = position.x;
+                    tmp.y = position.y;
+                    tmp.z = position.z;
+                    playerObj.transform.position = tmp;
+                },
+                down,
+                jumpSpd * 0.5f
+            )
+            .SetEase(Ease.InQuad);
+
+        PlayerActionCallback callback = new PlayerActionCallback(jumpUp, jumpDown);
+
+        callback
+            .OnStart(() =>
+            {
+                jumpCount = inJumpCnt;
+
+                //if (jumpCount == 1)
+                animator.Play("Jumping");
+            })
+            .OnComplete(() =>
+            {
+                jumpCount = 0;
+                animator.Play("Run_Animation");
+            })
+            .OnFinish(() =>
+            {
+                jumpCount = 0;
+            });
+
+        ActionClear();
+
+        action_list.Add(new PlayerAction(jumpUp));
+        action_list.Add(new PlayerAction(jumpDown));
+        //action_list.Add(tweener);
+
+        return callback;
+    }
+
+    public PlayerActionCallback Slide()
+    {
+        float slideSpd = Math.Max(1f / GameManager.Instance.gameSpeed, 0.5f);
+
+        Tweener tweener = DOTween
+            .To(
+                () => playerObj.transform.position,
+                position =>
+                {
+                    Vector3 tmp = playerObj.transform.position;
+                    tmp.x = position.x;
+                    tmp.y = position.y;
+                    tmp.z = position.z;
+                    playerObj.transform.position = tmp;
+                },
+                playerObj.transform.position - Vector3.up * playerObj.transform.position.y,
+                slideSpd
+            )
+            .SetEase(Ease.OutQuart);
+
+        PlayerActionCallback callback = new PlayerActionCallback(tweener);
+        callback
+            .OnStart(() =>
+            {
+                col.height /= 2;
+                col.center /= 2;
+            })
+            .OnComplete(() => { })
+            .OnFinish(() =>
+            {
+                col.height *= 2;
+                col.center *= 2;
+            });
+
+        ActionClear();
+
+        action_list.Add(new PlayerAction(tweener));
+
+        return callback;
+    }
+
+    public void ActionTask()
+    {
+        if (action_list.Count == 0)
+            return;
+
+        var action = action_list.First();
+
+        //action.IsPlaying()
+
+        if (action.GetTask().IsActive())
+        {
+            if (!action.GetTask().IsPlaying())
+                action.GetTask().Play();
+        }
+        else
+        {
+            action_list.Remove(action);
+        }
+    }
+
+    /* IEnumerator ActionTask_Cor(){
+        return
+    } */
 
     void Update()
     {
@@ -124,6 +354,8 @@ public class PlayerController : MonoBehaviour
                     GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
                 }
             }
+
+            ActionTask();
         }
     }
 
@@ -132,94 +364,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Run", isRun);
     }
 
-    /*
-    private void Running()
-    {
-        if (rb.velocity.y < 0)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-
-        Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + runningSpeed * Time.deltaTime);
-        transform.position = newPosition;
-
-        runningSpeed += accelerationRate * Time.deltaTime;
-        if (runningSpeed > maxSpeed)
-        {
-            runningSpeed = maxSpeed;
-        }
-    }
-
-    private void MoveHorizontal()
-    {
-        if (!autoDodge)
-        {
-            if (curPos == 1 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !IsObstacleLane(0))
-            {
-                SetState(EState.Left);
-                curPos = 0;
-            }
-            else if (curPos == 1 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !IsObstacleLane(2))
-            {
-                SetState(EState.Right);
-                curPos = 2;
-            }
-            else if (curPos == 0 && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !IsObstacleLane(1))
-            {
-                SetState(EState.Right);
-                curPos = 1;
-            }
-            else if (curPos == 2 && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !IsObstacleLane(1))
-            {
-                SetState(EState.Left);
-                curPos = 1;
-            }
-        }
-
-        MoveToCenter();
-    }
-
-    void StateUpdate()
-    {
-        MoveHorizontal();
-
-
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && !isJumping)
-        {
-            SetState(EState.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            SetState(EState.Down);
-
-        }
-        if (Input.GetKeyDown(KeyCode.K) && !smash)
-        {
-            SetState(EState.Throw);
-        }
-        if (Input.GetKeyDown(KeyCode.L) && !smash)
-        {
-            SetState(EState.Batting);
-        }
-
-    }
-
-    private void MoveToCenter()
-    {
-        Vector3 targetPos = transform.position;
-
-        if (curPos == 1) targetPos = new Vector3(centerPos.position.x, transform.position.y, transform.position.z);
-        else if (curPos == 0) targetPos = new Vector3(leftPos.position.x, transform.position.y, transform.position.z);
-        else if (curPos == 2) targetPos = new Vector3(rightPos.position.x, transform.position.y, transform.position.z);
-
-        if (Vector3.Distance(transform.position, targetPos) > 0.1f)
-        {
-            Vector3 dir = (targetPos - transform.position).normalized;
-            transform.Translate(dir * sideSpeed * Time.deltaTime, Space.World);
-        }
-    }
-
-    */
     public void SetState(EState state)
     {
         switch (state)
@@ -241,27 +385,36 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Up:
                 {
-                    if (!isJumping)
+                    if (jumpCount < maxJumpCount)
                     {
                         MasterAudio.PlaySound("jump_4");
 
-                        isJumping = true;
-                        Vector3 PlayerPosOffset = transform.position;
+                        jumpCount++;
+
+                        Vector3 PlayerPosOffset = playerObj.transform.position;
 
                         bool ballFlag =
-                            GameManager.Instance.playController.GetCurrentPlayer() == gameObject;
+                            GameManager.Instance.playerManager.GetCurrentPlayer() == gameObject;
 
+                        Debug.Log(
+                            "jumpSpd:"
+                                + Math.Max(
+                                    GameManager.Instance.playerManager.jumpSpeed
+                                        / GameManager.Instance.gameSpeed,
+                                    0.5f
+                                )
+                        );
                         DOTween
                             .To(
                                 () => 0f,
                                 t =>
                                 {
                                     float jumpVal = 4 * t - 4 * t * t;
-                                    Vector3 playerPos = transform.position;
+                                    Vector3 playerPos = playerObj.transform.position;
                                     playerPos.y =
                                         PlayerPosOffset.y
-                                        + jumpVal * GameManager.Instance.playController.jumpHeight;
-                                    transform.position = playerPos;
+                                        + jumpVal * GameManager.Instance.playerManager.jumpHeight;
+                                    playerObj.transform.position = playerPos;
 
                                     if (ballFlag)
                                     {
@@ -269,7 +422,7 @@ public class PlayerController : MonoBehaviour
                                         ballPos.y =
                                             ball.ballOffset.y
                                             + jumpVal
-                                                * GameManager.Instance.playController.jumpHeight
+                                                * GameManager.Instance.playerManager.jumpHeight
                                                 * 0.8f;
                                         ball.transform.position = ballPos;
                                     }
@@ -277,7 +430,7 @@ public class PlayerController : MonoBehaviour
                                 1f,
                                 (
                                     Math.Max(
-                                        GameManager.Instance.playController.jumpSpeed
+                                        GameManager.Instance.playerManager.jumpSpeed
                                             / GameManager.Instance.gameSpeed,
                                         0.5f
                                     )
@@ -285,7 +438,7 @@ public class PlayerController : MonoBehaviour
                             )
                             .OnComplete(() =>
                             {
-                                isJumping = false;
+                                jumpCount = 0;
                                 SetState(EState.Runing);
                             });
 
@@ -299,17 +452,23 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!slide)
                     {
-                        if (isJumping)
+                        /* if (jumpCount == 0)
                         {
                             rb.velocity = Vector3.zero;
                             rb.AddForce(Vector3.down * downForce * 2f);
-                        }
+                        } */
 
+                        Slide()
+                            .OnFinish(() =>
+                            {
+                                slide = false;
+                            });
                         animator.Play("Slide");
                         slide = true;
 
                         MasterAudio.PlaySound3DAtTransform("slide", transform);
-                        StartCoroutine(MoveDownAndUp());
+
+                        //StartCoroutine(MoveDownAndUp());
                     }
                 }
                 break;
@@ -383,145 +542,101 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Dodge
-    private IEnumerator AutoDodgeRoutine(float duration)
-    {
-        autoDodge = true;
-        float timer = 0f;
 
-        while (timer < duration)
+    class PlayerAction
+    {
+        Tweener tweener;
+
+        //bool killable = true;
+        KillableSetter isKillable = () => true;
+
+        public PlayerAction(Tweener tweener)
         {
-            timer += Time.deltaTime;
-            yield return null;
+            this.tweener = tweener;
+            //this.killable = true;
         }
 
-        GameManager.Instance.postEffectController.RushPostEffect(0.25f, 0.25f, false);
-        //autoDodge = false;
+        public PlayerAction(Tweener tweener, bool killable)
+        {
+            this.tweener = tweener;
+            this.isKillable = () => killable;
+        }
+
+        public PlayerAction(Tweener tweener, KillableSetter killableSetter)
+        {
+            this.tweener = tweener;
+            this.isKillable = killableSetter;
+        }
+
+        public bool Kill()
+        {
+            bool result = isKillable();
+            if (result)
+                tweener.Kill();
+
+            return result;
+        }
+
+        public Tweener GetTask()
+        {
+            return tweener;
+        }
+
+        public delegate bool KillableSetter();
     }
 
-    public void DodgeOnPosition()
+    public class PlayerActionCallback
     {
-        if (curPos == 0 || curPos == 2)
+        public delegate void ActionCallback();
+
+        public event ActionCallback onStart;
+        public event ActionCallback onComplete;
+        public event ActionCallback onFinish;
+
+        public PlayerActionCallback() { }
+
+        public PlayerActionCallback(params Tweener[] tweeners)
         {
-            MoveToLane(1);
-        }
-        else if (curPos == 1)
-        {
-            if (!IsObstacleLane(0))
+            for (int i = 0; i < tweeners.Length; i++)
             {
-                MoveToLane(0);
+                bool isFirst = i == 0;
+                bool isLast = i == tweeners.Length - 1;
+
+                Tweener tweener = tweeners[i].Pause().SetAutoKill(true);
+
+                if (isFirst)
+                {
+                    tweener.OnStart(() => onStart?.Invoke());
+                }
+
+                if (isLast)
+                {
+                    tweener.OnComplete(() => onComplete?.Invoke()).OnKill(() => onFinish?.Invoke());
+                }
             }
-            else if (!IsObstacleLane(2))
-            {
-                MoveToLane(2);
-            }
-        }
-    }
-
-    public void DodgeOnSlide()
-    {
-        if (!slide)
-        {
-            MasterAudio.PlaySound("slide");
-            animator.Play("Slide");
-            slide = true;
-            if (isJumping)
-            {
-                rb.AddForce(Vector3.down * downForce);
-            }
-            MasterAudio.PlaySound3DAtTransform("side_move", transform);
-
-            StartCoroutine(MoveDownAndUp());
-        }
-    }
-
-    public void DodgeOnJump()
-    {
-        if (!isJumping)
-        {
-            isJumping = true;
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
-            animator.Play("Jumping");
-            MasterAudio.PlaySound3DAtTransform("jump 2", transform);
-        }
-    }
-
-    private bool IsObstacleLane(int lane)
-    {
-        Vector3 lanePosition =
-            lane == 0
-                ? new Vector3(leftPos.position.x, transform.position.y, transform.position.z)
-                : (
-                    lane == 1
-                        ? new Vector3(
-                            centerPos.position.x,
-                            transform.position.y,
-                            transform.position.z
-                        )
-                        : new Vector3(
-                            rightPos.position.x,
-                            transform.position.y,
-                            transform.position.z
-                        )
-                );
-
-        Vector3 boxHalfExtents = new Vector3(0.5f, 1f, 0.5f);
-        RaycastHit hit;
-
-        bool hasObstacle = Physics.BoxCast(
-            transform.position + new Vector3(0, 1f, 0),
-            boxHalfExtents,
-            (lanePosition - transform.position).normalized,
-            out hit,
-            Quaternion.identity,
-            0.5f,
-            LayerMask.GetMask("Obstacle")
-        );
-
-        if (hasObstacle && hit.collider.CompareTag("ObstacleWall"))
-        {
-            return true;
         }
 
-        return false;
-    }
+        public PlayerActionCallback OnStart(ActionCallback callback)
+        {
+            onStart += callback;
+            return this;
+        }
 
-    private void MoveToLane(int lane)
-    {
-        if (lane == 0)
+        public PlayerActionCallback OnComplete(ActionCallback callback)
         {
-            SetState(EState.Left);
-            curPos = 0;
+            onComplete += callback;
+            return this;
         }
-        else if (lane == 1)
-        {
-            SetState(EState.Right);
-            curPos = 1;
-        }
-        else if (lane == 2)
-        {
-            SetState(EState.Right);
-            curPos = 2;
-        }
-    }
-    #endregion
 
-    public void MoveToEmptyLane()
-    {
-        if (curPos != 0 && !IsObstacleLane(0))
+        public PlayerActionCallback OnFinish(ActionCallback callback)
         {
-            SetState(EState.Left);
-            curPos = 0;
+            onFinish += callback;
+            return this;
         }
-        else if (curPos != 1 && !IsObstacleLane(1))
+
+        public void OnStartCall()
         {
-            SetState(EState.Right);
-            curPos = 1;
-        }
-        else if (curPos != 2 && !IsObstacleLane(2))
-        {
-            SetState(EState.Right);
-            curPos = 2;
+            onStart?.Invoke();
         }
     }
 }

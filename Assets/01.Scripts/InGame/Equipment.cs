@@ -52,7 +52,7 @@ public class Equipment : MonoBehaviour
     void Destroyer(ERank rank)
     {
         PlayerController playerController =
-            GameManager.Instance.playController.GetCurrentController();
+            GameManager.Instance.playerManager.GetCurrentController();
 
         switch (rank)
         {
@@ -77,7 +77,7 @@ public class Equipment : MonoBehaviour
     void Gold(ERank rank)
     {
         PlayerController playerController =
-            GameManager.Instance.playController.GetCurrentController();
+            GameManager.Instance.playerManager.GetCurrentController();
 
         switch (rank)
         {
@@ -102,7 +102,7 @@ public class Equipment : MonoBehaviour
     void NoPain(ERank rank)
     {
         PlayerController playerController =
-            GameManager.Instance.playController.GetCurrentController();
+            GameManager.Instance.playerManager.GetCurrentController();
 
         switch (rank)
         {

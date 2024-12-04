@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1639096b6d858864f9696cde59dd9b11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   rayDistance: 3
 --- !u!1 &5661088154827517377
 GameObject:
@@ -70,7 +71,7 @@ Transform:
   m_GameObject: {fileID: 5661088154827517377}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87,7 +88,6 @@ GameObject:
   - component: {fileID: 7584882918192567263}
   - component: {fileID: 6408387289296446874}
   - component: {fileID: 2832421182826127890}
-  - component: {fileID: 4123184191767348453}
   - component: {fileID: 1446555858700510785}
   - component: {fileID: 6028468638919631221}
   - component: {fileID: 9217322455213705442}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: -679738809821252179}
   m_Layer: 0
   m_Name: Player 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3.437}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5000001, y: 1.5, z: 1.5000001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1321196823218294736}
@@ -169,39 +169,6 @@ CapsuleCollider:
   m_Height: 0.9595962
   m_Direction: 1
   m_Center: {x: -0.0036180317, y: 0.48578742, z: 0.048041105}
---- !u!114 &4123184191767348453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7465772840558185984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 118f59f6ce35cfe4d99b93787b39898f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 7938665644613455907}
-  ballPos: {fileID: 2293291025018601731}
-  centerPos: {fileID: 0}
-  leftPos: {fileID: 0}
-  rightPos: {fileID: 0}
-  sideSpeed: 15
-  runningSpeed: 10
-  maxSpeed: 30
-  accelerationRate: 0.1
-  jumpForce: 450
-  downForce: 400
-  fallMultiplier: 3
-  eCh: 0
-  eChRank: 1
-  eBatRank: 0
-  eGloveRank: 0
-  curPos: 1
-  col: {fileID: 0}
-  collisions: {fileID: 0}
-  autoDodge: 0
-  dodgeDuration: 3
 --- !u!114 &1446555858700510785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,6 +395,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0ac849de585634240940838b7d52b0bc, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7538907515923593577, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -444,10 +415,5 @@ PrefabInstance:
 --- !u!4 &4092613739951786585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
-  m_PrefabInstance: {fileID: 4558025445194919346}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &7938665644613455907 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
   m_PrefabInstance: {fileID: 4558025445194919346}
   m_PrefabAsset: {fileID: 0}
