@@ -75,7 +75,14 @@ public class GoalKeeper : MonoBehaviour
         }
         else
         {
+            Vector3 targetPosition = GetLanePosition(playerLane);
+            float targetX = targetPosition.x;
+
+            transform.DOMoveX(targetX, 0.5f).SetEase(Ease.InOutQuad);
+
             animator.Play("MoveRight");
+
+            transform.DOMoveX(targetX, 0.5f).SetEase(Ease.InOutQuad);
         }
     }
 
