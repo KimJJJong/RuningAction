@@ -24,6 +24,7 @@ public class SoccerBall : MonoBehaviour
         {
             transform.position += Vector3.left * moveSpeed * Time.deltaTime;
             GetComponent<MeshRenderer>().enabled = true;
+            GetComponent<TrailRenderer>().enabled =true;
             transform.Rotate(Vector3.up * rotationSpeedY * Time.deltaTime, Space.Self);
             transform.Rotate(Vector3.forward * rotationSpeedZ * Time.deltaTime, Space.Self);
         }
@@ -42,12 +43,14 @@ public class SoccerBall : MonoBehaviour
             isShooting = false;
             GetComponent<TrailRenderer>().enabled = false;
             shotOnGoal.PlayBlockEvent();
+            gameObject.SetActive(false);
         }
         else if (other.CompareTag("GoalPost"))
         {
             isShooting = false;
             GetComponent<TrailRenderer>().enabled = false;
             shotOnGoal.PlayGoalEvent();
+            gameObject.SetActive(false);
         }
 
     }

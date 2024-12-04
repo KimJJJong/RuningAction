@@ -27,7 +27,13 @@ public class ShotOnGoal : MonoBehaviour
 
     public void ShootEvent(int playerLane)
     {
+        Debug.Log("슛함");
         goalKeeper.TryBlockShot(playerLane);
+        foreach(var tweens in GetComponentsInChildren<DOTweenAnimation>())
+        {
+            tweens.DOPlay();
+        }
+        
     }
 
     public void PlayGoalEvent()
@@ -37,6 +43,7 @@ public class ShotOnGoal : MonoBehaviour
         //�̺�Ʈ ����
         int eventCount = System.Enum.GetValues(typeof(GoalEvent)).Length;
         GoalEvent goalEvent = (GoalEvent)Random.Range(0, eventCount);
+        
 
         switch (goalEvent)
         {
@@ -59,13 +66,13 @@ public class ShotOnGoal : MonoBehaviour
                 break;
         }
 
-        SetGoalObj();
+        //SetGoalObj();
     }
 
     public void PlayBlockEvent()
     {
         //�̺�Ʈ ����
-        SetGoalObj();
+        //SetGoalObj();
     }
 
     public void SetGoalObj()
