@@ -85,7 +85,7 @@ public class ObstacleDribble : MonoBehaviour, IBonusObstacle
         StopMoving();
         FadeOut();
 
-        GameManager.Instance.playController.GetCurrentController().score.IncreasObsScore();
+        GameManager.Instance.playerManager.GetCurrentController().score.IncreasObsScore();
     }
 
     private void FadeOut()

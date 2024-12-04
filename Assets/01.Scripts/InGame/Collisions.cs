@@ -1,7 +1,7 @@
 using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.Rendering;
 
 public class Collisions : MonoBehaviour
@@ -9,12 +9,13 @@ public class Collisions : MonoBehaviour
     HpController hpController;
 
     public bool canInteract;
+
     //public bool isDmg;
     //public bool isDmgItem;
     public float chance;
     private Animator animator;
 
-    private PlayController playController;
+    private PlayerManager playerManager;
     private PlayerController playerController;
     private SoccerBall ball;
     private float shootCooldown = 2f;
@@ -26,8 +27,13 @@ public class Collisions : MonoBehaviour
     {
         hpController = FindAnyObjectByType<HpController>();
         animator = GetComponent<Animator>();
-        playerController = GetComponent<PlayerController>();
-        playController = FindAnyObjectByType<PlayController>();
+        //playerController = GetComponent<PlayerController>();
+        playerManager = FindAnyObjectByType<PlayerManager>();
+    }
+
+    public void setController(PlayerController controller)
+    {
+        playerController = controller;
     }
 
     void OnTriggerEnter(Collider other)
@@ -40,24 +46,21 @@ public class Collisions : MonoBehaviour
                 {
                     if (other.CompareTag("ObstacleSlide"))
                     {
-                        playerController.DodgeOnSlide();
+                        //playerController.DodgeOnSlide();
                     }
                     else if (other.CompareTag("ObstacleJump"))
                     {
-                        playerController.DodgeOnJump();
+                        //playerController.DodgeOnJump();
                     }
                     else
                     {
-                        playerController.DodgeOnPosition();
+                        //playerController.DodgeOnPosition();
                     }
                     return;
                 }
                 ObstacleCollision(other);
 
-                if (other.CompareTag("ObstacleWall"))
-                {
-                    playerController.MoveToEmptyLane();
-                }
+                if (other.CompareTag("ObstacleWall")) { }
             }
             else if (other.CompareTag("SoccerBall"))
             {
@@ -77,10 +80,10 @@ public class Collisions : MonoBehaviour
             return;
         }
 
-        playController.isDmgItem = Random.value <= chance;
+        playerManager.isDmgItem = Random.value <= chance;
 
         bool isSliding = playerController.animator.GetCurrentAnimatorStateInfo(0).IsName("Slide");
-        bool shouldTakeDamage = !playController.isDmg && !playController.isDmgItem;
+        bool shouldTakeDamage = !playerManager.isDmg && !playerManager.isDmgItem;
 
         if (isSliding)
         {
@@ -104,7 +107,7 @@ public class Collisions : MonoBehaviour
 
     public void Damage()
     {
-        playController.isDmg = true;
+        playerManager.isDmg = true;
 
         hpController.CollsionObstacle();
 
@@ -152,12 +155,13 @@ public class Collisions : MonoBehaviour
                 Color originalColor = material.color;
                 Color targetColor = new Color(145, 0, 0, 255f);
 
-                material.DOColor(targetColor, 0.2f)
+                material
+                    .DOColor(targetColor, 0.2f)
                     .SetLoops(10, LoopType.Yoyo)
                     .OnComplete(() =>
                     {
                         material.color = originalColor;
-                        playController.isDmg = false;
+                        playerManager.isDmg = false;
                     });
             }
         }

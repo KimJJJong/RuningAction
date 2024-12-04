@@ -6,7 +6,7 @@ using UnityEngine;
 public class ObstacleBase : MonoBehaviour
 {
     public ObstacleManager.ObstacleType obstacle_type;
-    
+
     void Start()
     {
         SetCollisionBox();
@@ -18,7 +18,7 @@ public class ObstacleBase : MonoBehaviour
 
         box_collider.isTrigger = true;
 
-        switch(obstacle_type)
+        switch (obstacle_type)
         {
             case ObstacleManager.ObstacleType.jump_obstacle_short:
                 box_collider.size = new Vector3(2, 1, 1);
@@ -31,14 +31,14 @@ public class ObstacleBase : MonoBehaviour
                 break;
 
             case ObstacleManager.ObstacleType.slide_obstacle:
-            break;
+                break;
             case ObstacleManager.ObstacleType.block_obstacle:
-            break;
+                break;
             case ObstacleManager.ObstacleType.defender_obstacle:
-            break;
+                break;
         }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -47,10 +47,8 @@ public class ObstacleBase : MonoBehaviour
                 ObstacleManager.instance.HandleObstacleCollision(other.gameObject, this);
             else
                 Debug.Log("Item: No item manager instance");
-            
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }
-

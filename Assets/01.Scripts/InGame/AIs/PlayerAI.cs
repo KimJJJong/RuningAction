@@ -11,9 +11,9 @@ public class PlayerAI : MonoBehaviour
     void Start()
     {
         playerController = GetComponentInParent<PlayerController>();
-        
+
         //TODO: Perfect Error Handling is needed
-        if(!playerController)
+        if (!playerController)
             Debug.Log("PlayerAI: cannot find PlayerController in Parent");
     }
 
@@ -31,10 +31,14 @@ public class PlayerAI : MonoBehaviour
             //Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
             //Debug.Log("Hit Object Tag: " + hit.collider.tag);
 
-            if(hit.collider.tag == "ObstacleJump")
-                playerController.SetState(EState.Up);
-            else if(hit.collider.tag == "ObstacleSlide")
+            if (hit.collider.tag == "ObstacleJump")
+            {
+                //playerController.SetState(EState.Up);
+            }
+            else if (hit.collider.tag == "ObstacleSlide")
+            {
                 playerController.SetState(EState.Down);
-        }                
+            }
+        }
     }
 }

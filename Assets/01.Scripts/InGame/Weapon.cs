@@ -89,7 +89,7 @@ public class Weapon : MonoBehaviour
         if (GageSlider.value >= GageSlider.maxValue)
         {
             PlayerController playerController =
-                GameManager.Instance.playController.GetCurrentController();
+                GameManager.Instance.playerManager.GetCurrentController();
 
             if (playerController.eCh == ECharacter.Bat)
                 playerController.Invincibility(false);
@@ -101,7 +101,7 @@ public class Weapon : MonoBehaviour
     void InitWeapon()
     {
         PlayerController playerController =
-            GameManager.Instance.playController.GetCurrentController();
+            GameManager.Instance.playerManager.GetCurrentController();
 
         ECharacter type = playerController.eCh;
         switch (type)

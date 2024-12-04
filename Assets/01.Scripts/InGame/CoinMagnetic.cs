@@ -15,13 +15,13 @@ public class CoinMagnetic : MonoBehaviour
 
     void Update()
     {
-        Transform Target = GameManager.Instance.playController.GetCurrentPlayer().transform;
+        Transform Target = GameManager.Instance.playerManager.GetCurrentPlayer().transform;
         if (
             (
                 _isMagnetic
-                && GameManager.Instance.playController.GetCurrentController().eCh
+                && GameManager.Instance.playerManager.GetCurrentController().eCh
                     == ECharacter.Magnetic
-            ) || GameManager.Instance.playController.GetCurrentController().IsMagnetic
+            ) || GameManager.Instance.playerManager.GetCurrentController().IsMagnetic
         ) //�պκ��� ĳ���� �ɷ� �ڴ� ������ �ɷ�
         {
             if (Vector3.Distance(transform.position, Target.position) < 5)

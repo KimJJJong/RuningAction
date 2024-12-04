@@ -40,7 +40,7 @@ public class StrengthenSubstance : MonoBehaviour
 
     public void SetHpState(int hpLv)
     {
-        GameObject player = GameManager.Instance.playController.GetCurrentPlayer();
+        GameObject player = GameManager.Instance.playerManager.GetCurrentPlayer();
         player.GetComponent<HpController>().SetHp(hpLv * 10);
         player.GetComponent<HpController>().HpBar.GetComponent<RectTransform>().sizeDelta =
             new Vector2(270 + (hpLv * 10), 30);

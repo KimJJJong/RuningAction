@@ -1,8 +1,8 @@
+using DarkTonic.MasterAudio;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using DarkTonic.MasterAudio;
 
 public class GameStateChangeEvent : UnityEngine.Events.UnityEvent<GameState> { }
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     public GameUIManager gameUiManager;
 
-    public PlayController playController;
+    public PlayerManager playerManager;
 
     [Header("Camera Controller")]
     public PostEffectController postEffectController;
@@ -73,14 +73,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         _instance = GetComponent<GameManager>();
-
-        //playerController = playController.GetCurrentController();
-        //collisions = playerController.collisions;
-
-        //player = playController.GetCurrentPlayer();
-        //substance = player.GetComponent<StrengthenSubstance>();
-        //weapon = player.GetComponent<Weapon>();
-        
     }
 
     private void Start()
