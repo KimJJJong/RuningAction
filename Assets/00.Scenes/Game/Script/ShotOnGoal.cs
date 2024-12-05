@@ -116,6 +116,10 @@ public class ShotOnGoal : MonoBehaviour
         {
             tweens.DOPlayBackwards();
         }
+        foreach(var ball in balls)
+        {
+            ball.gameObject.SetActive(true);
+        }
     }
 }
 
