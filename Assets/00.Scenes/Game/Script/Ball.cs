@@ -43,7 +43,35 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BallRotate();
+        if (GameManager.Instance.gameState == GameState.Playing)
+        {
+            BallRotate();
+        }
+    }
+
+    public void Jump(Vector3 position, float duration)
+    {
+        Vector3 positionOffset = transform.position;
+
+        DOTween
+            .To(
+                () => transform.position,
+                position => transform.position = position,
+                position,
+                duration / 2f
+            )
+            .SetEase(Ease.OutQuad)
+            .OnKill(() =>
+            {
+                DOTween
+                    .To(
+                        () => transform.position,
+                        position => transform.position = position,
+                        ballOffset,
+                        duration / 2f
+                    )
+                    .SetEase(Ease.InQuad);
+            });
     }
 
     public void Shoot() { }

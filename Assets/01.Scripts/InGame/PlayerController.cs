@@ -31,21 +31,16 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float downForce = 400;
     public float fallMultiplier = 3;
-    public int jumpCount = 0;
-    public int maxJumpCount = 2;
 
     [Space(10f)]
     [Header("Character")]
-    public ECharacter eCh;
-    public ERank eChRank;
-
-    [Space(10f)]
-    [Header("Bat/Glove Ranks")]
-    public ERank eBatRank;
-    public ERank eGloveRank;
+    public int idleType;
 
     bool smash;
-    bool slide;
+
+    public int jumpCount = 0;
+    public int maxJumpCount = 2;
+    bool isSliding = false;
 
     bool _isRush;
     bool _isMagnetic;
@@ -56,15 +51,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public CapsuleCollider col;
 
-    [HideInInspector]
-    public Collisions collisions;
     private Rigidbody rb;
 
     [HideInInspector]
     public StrengthenSubstance substance;
-
-    [HideInInspector]
-    public Weapon weapon;
 
     [HideInInspector]
     public CollectCoin score;
@@ -87,9 +77,11 @@ public class PlayerController : MonoBehaviour
         set => _position = value;
     }
 
+    MoveActionWorker actionWorker = new MoveActionWorker();
+
     private Ball ball;
 
-    private List<PlayerAction> action_list = new List<PlayerAction>();
+    //private List<MoveAction> action_list = new List<MoveAction>();
     private UnityEvent OnActionClear = new UnityEvent();
 
     void Awake()
@@ -98,11 +90,7 @@ public class PlayerController : MonoBehaviour
         rb = playerObj.GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-        collisions = playerObj.GetComponent<Collisions>();
-        collisions.setController(this);
-
         substance = playerObj.GetComponent<StrengthenSubstance>();
-        weapon = playerObj.GetComponent<Weapon>();
         score = playerObj.GetComponent<CollectCoin>();
     }
 
@@ -110,38 +98,25 @@ public class PlayerController : MonoBehaviour
     {
         gameUiManager = GameUIManager.instance;
         ball = GameManager.Instance.playerManager.ball;
+        SetIdleAnimation(idleType);
     }
 
-    void ActionClear()
-    {
-        int loop = action_list.Count;
-        while (loop > 0)
-        {
-            var action = action_list.First();
-            if (action.Kill())
-                action_list.Remove(action);
-
-            loop--;
-        }
-        Debug.Log("ActionClear:" + action_list.Count);
-    }
-
-    public PlayerActionCallback MoveFront()
+    public MoveActionWorker.MoveActionListener MoveFront()
     {
         return Move(playerPosition.front.position);
     }
 
-    public PlayerActionCallback MoveBack()
+    public MoveActionWorker.MoveActionListener MoveBack()
     {
         return Move(playerPosition.back.position);
     }
 
-    public PlayerActionCallback Move(Vector3 targetPosition)
+    public MoveActionWorker.MoveActionListener Move(Vector3 targetPosition)
     {
         return Move(targetPosition, GameManager.Instance.playerManager.passSpeed);
     }
 
-    public PlayerActionCallback Move(Vector3 targetPosition, float duration)
+    public MoveActionWorker.MoveActionListener Move(Vector3 targetPosition, float duration)
     {
         Tweener tweener = DOTween.To(
             () => playerObj.transform.position,
@@ -157,18 +132,17 @@ public class PlayerController : MonoBehaviour
             duration
         );
 
-        PlayerActionCallback callback = new PlayerActionCallback(tweener);
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(tweener)
+            .Build();
 
-        ActionClear();
+        actionWorker.Clear().AddAction(action);
 
-        //callback.OnFinish
-        //action_list.Add(new PlayerAction(tweener));
-        action_list.Insert(0, new PlayerAction(tweener));
-
-        return callback;
+        return action.listener;
     }
 
-    public PlayerActionCallback Jump()
+    public MoveActionWorker.MoveActionListener Jump()
     {
         if (jumpCount >= maxJumpCount)
             return null;
@@ -180,29 +154,15 @@ public class PlayerController : MonoBehaviour
             0.5f
         );
 
-        Debug.Log("jumpSpd:" + jumpSpd / 2f);
-
         Vector3 positionOffset = playerObj.transform.position;
 
-        Vector3 down = playerObj.transform.position - Vector3.up * playerObj.transform.position.y;
-        Vector3 up =
-            playerObj.transform.position
-            + Vector3.up * GameManager.Instance.playerManager.jumpHeight;
+        float jumpForce = GameManager.Instance.playerManager.jumpHeight;
 
-        //
-        /* Tweener tweener = DOTween.To(
-            () => 0f,
-            t =>
-            {
-                float jumpVal = 4 * t - 4 * t * t;
-                Vector3 playerPos = playerObj.transform.position;
-                playerPos.y =
-                    positionOffset.y + jumpVal * GameManager.Instance.playerManager.jumpHeight;
-                playerObj.transform.position = playerPos;
-            },
-            1f,
-            jumpSpd
-        ); */
+        for (int i = 1; i < jumpCount; i++)
+            jumpForce *= 0.6f;
+
+        Vector3 down = playerObj.transform.position - Vector3.up * playerObj.transform.position.y;
+        Vector3 up = playerObj.transform.position + Vector3.up * jumpForce;
 
         //Jump-up
         Tweener jumpUp = DOTween
@@ -224,7 +184,10 @@ public class PlayerController : MonoBehaviour
         //Jump-down
         Tweener jumpDown = DOTween
             .To(
-                () => up,
+                () =>
+                {
+                    return up;
+                },
                 position =>
                 {
                     Vector3 tmp = playerObj.transform.position;
@@ -238,37 +201,43 @@ public class PlayerController : MonoBehaviour
             )
             .SetEase(Ease.InQuad);
 
-        PlayerActionCallback callback = new PlayerActionCallback(jumpUp, jumpDown);
+        bool ballFlag = GameManager.Instance.playerManager.GetCurrentController() == this;
+        if (ballFlag)
+        {
+            Vector3 ballPos = new Vector3(ball.ballOffset.x, ball.ballOffset.y, ball.ballOffset.z);
 
-        callback
-            .OnStart(() =>
+            ballPos.y = up.y;
+            //ball.Jump(ballPos, jumpSpd);
+        }
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(jumpUp, jumpDown)
+            .AddStartCallBack(() =>
             {
                 jumpCount = inJumpCnt;
 
                 //if (jumpCount == 1)
-                animator.Play("Jumping");
+                animator.Play("Jumping", 0, 0f);
             })
-            .OnComplete(() =>
+            .AddCompleteCallback(() => { })
+            .AddFinishCallBack(() =>
             {
                 jumpCount = 0;
-                animator.Play("Run_Animation");
+                animator.SetBool("isJumping", false);
             })
-            .OnFinish(() =>
-            {
-                jumpCount = 0;
-            });
+            .Build();
 
-        ActionClear();
+        actionWorker.Clear().AddAction(action);
 
-        action_list.Add(new PlayerAction(jumpUp));
-        action_list.Add(new PlayerAction(jumpDown));
-        //action_list.Add(tweener);
-
-        return callback;
+        return action.listener;
     }
 
-    public PlayerActionCallback Slide()
+    public MoveActionWorker.MoveActionListener Slide()
     {
+        if (isSliding)
+            return null;
+
         float slideSpd = Math.Max(1f / GameManager.Instance.gameSpeed, 0.5f);
 
         Tweener tweener = DOTween
@@ -287,81 +256,53 @@ public class PlayerController : MonoBehaviour
             )
             .SetEase(Ease.OutQuart);
 
-        PlayerActionCallback callback = new PlayerActionCallback(tweener);
-        callback
-            .OnStart(() =>
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(tweener)
+            .AddStartCallBack(() =>
             {
                 col.height /= 2;
                 col.center /= 2;
+
+                isSliding = true;
+
+                animator.Play("Slide");
+                MasterAudio.PlaySound3DAtTransform("slide", transform);
             })
-            .OnComplete(() => { })
-            .OnFinish(() =>
+            .AddCompleteCallback(() => { })
+            .AddFinishCallBack(() =>
             {
                 col.height *= 2;
                 col.center *= 2;
-            });
 
-        ActionClear();
+                isSliding = false;
+            })
+            .Build();
 
-        action_list.Add(new PlayerAction(tweener));
+        isSliding = true;
+        actionWorker.Clear().AddAction(action);
 
-        return callback;
+        return action.listener;
     }
-
-    public void ActionTask()
-    {
-        if (action_list.Count == 0)
-            return;
-
-        var action = action_list.First();
-
-        //action.IsPlaying()
-
-        if (action.GetTask().IsActive())
-        {
-            if (!action.GetTask().IsPlaying())
-                action.GetTask().Play();
-        }
-        else
-        {
-            action_list.Remove(action);
-        }
-    }
-
-    /* IEnumerator ActionTask_Cor(){
-        return
-    } */
 
     void Update()
     {
-        if (GameManager.Instance.gameState == GameState.Playing)
-        {
-            if (collisions.canInteract)
-            {
-                //Running();
-                //StateUpdate();
-
-                if (Input.GetKeyDown(KeyCode.Space)) // && !autoDodge)
-                {
-                    //StartCoroutine(AutoDodgeRoutine(dodgeDuration));
-
-                    autoDodge = !autoDodge;
-                    if (autoDodge)
-                        col.center = new Vector3(col.center.x, col.center.y, col.center.z + 0.5f);
-                    else
-                        col.center = new Vector3(col.center.x, col.center.y, col.center.z - 0.5f);
-
-                    GameManager.Instance.postEffectController.RushPostEffect(0f, 0.25f, autoDodge);
-                }
-            }
-
-            ActionTask();
-        }
+        if (GameManager.Instance.gameState == GameState.Playing) { }
     }
 
     public void SetRunningAnimation(bool isRun)
     {
         animator.SetBool("Run", isRun);
+
+        if (!isRun)
+        {
+            animator.SetInteger("idle", idleType);
+        }
+    }
+
+    public void SetIdleAnimation(int type)
+    {
+        animator.SetInteger("idle", type);
     }
 
     public void SetState(EState state)
@@ -385,91 +326,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Up:
                 {
-                    if (jumpCount < maxJumpCount)
-                    {
-                        MasterAudio.PlaySound("jump_4");
-
-                        jumpCount++;
-
-                        Vector3 PlayerPosOffset = playerObj.transform.position;
-
-                        bool ballFlag =
-                            GameManager.Instance.playerManager.GetCurrentPlayer() == gameObject;
-
-                        Debug.Log(
-                            "jumpSpd:"
-                                + Math.Max(
-                                    GameManager.Instance.playerManager.jumpSpeed
-                                        / GameManager.Instance.gameSpeed,
-                                    0.5f
-                                )
-                        );
-                        DOTween
-                            .To(
-                                () => 0f,
-                                t =>
-                                {
-                                    float jumpVal = 4 * t - 4 * t * t;
-                                    Vector3 playerPos = playerObj.transform.position;
-                                    playerPos.y =
-                                        PlayerPosOffset.y
-                                        + jumpVal * GameManager.Instance.playerManager.jumpHeight;
-                                    playerObj.transform.position = playerPos;
-
-                                    if (ballFlag)
-                                    {
-                                        Vector3 ballPos = ball.transform.position;
-                                        ballPos.y =
-                                            ball.ballOffset.y
-                                            + jumpVal
-                                                * GameManager.Instance.playerManager.jumpHeight
-                                                * 0.8f;
-                                        ball.transform.position = ballPos;
-                                    }
-                                },
-                                1f,
-                                (
-                                    Math.Max(
-                                        GameManager.Instance.playerManager.jumpSpeed
-                                            / GameManager.Instance.gameSpeed,
-                                        0.5f
-                                    )
-                                )
-                            )
-                            .OnComplete(() =>
-                            {
-                                jumpCount = 0;
-                                SetState(EState.Runing);
-                            });
-
-                        //rb.AddForce(Vector3.up * jumpForce);
-                        animator.Play("Jumping");
-                        //MasterAudio.PlaySound3DAtTransform("jump 2", transform);
-                    }
+                    Jump();
                 }
                 break;
             case EState.Down:
                 {
-                    if (!slide)
-                    {
-                        /* if (jumpCount == 0)
-                        {
-                            rb.velocity = Vector3.zero;
-                            rb.AddForce(Vector3.down * downForce * 2f);
-                        } */
-
-                        Slide()
-                            .OnFinish(() =>
-                            {
-                                slide = false;
-                            });
-                        animator.Play("Slide");
-                        slide = true;
-
-                        MasterAudio.PlaySound3DAtTransform("slide", transform);
-
-                        //StartCoroutine(MoveDownAndUp());
-                    }
+                    Slide();
                 }
                 break;
             case EState.Kick:
@@ -479,13 +341,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Batting:
                 {
-                    StartCoroutine(appearHitBox(eChRank, ECharacter.Glove));
                     animator.Play("Hit");
                 }
                 break;
             case EState.Throw:
                 {
-                    StartCoroutine(appearHitBox(eChRank, ECharacter.Bat));
                     animator.Play("Pitch");
                 }
                 break;
@@ -510,7 +370,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             //isJumping = false;
-            slide = false;
+            //slide = false;
         }
     }
 
@@ -520,125 +380,7 @@ public class PlayerController : MonoBehaviour
     public void BeMagnetic() //Iteam Magnetic
     { }
 
-    IEnumerator appearHitBox(ERank chRank, ECharacter ch)
-    {
-        smash = true;
-        weapon.Triger(eCh, chRank, ch);
-        yield return new WaitForSeconds(1f);
-        smash = false;
-    }
-
-    IEnumerator MoveDownAndUp()
-    {
-        col.height /= 2;
-        col.center /= 2;
-
-        yield return new WaitForSeconds(1f);
-
-        slide = false;
-        col.height *= 2;
-        col.center *= 2;
-    }
-
     #endregion
-
-
-    class PlayerAction
-    {
-        Tweener tweener;
-
-        //bool killable = true;
-        KillableSetter isKillable = () => true;
-
-        public PlayerAction(Tweener tweener)
-        {
-            this.tweener = tweener;
-            //this.killable = true;
-        }
-
-        public PlayerAction(Tweener tweener, bool killable)
-        {
-            this.tweener = tweener;
-            this.isKillable = () => killable;
-        }
-
-        public PlayerAction(Tweener tweener, KillableSetter killableSetter)
-        {
-            this.tweener = tweener;
-            this.isKillable = killableSetter;
-        }
-
-        public bool Kill()
-        {
-            bool result = isKillable();
-            if (result)
-                tweener.Kill();
-
-            return result;
-        }
-
-        public Tweener GetTask()
-        {
-            return tweener;
-        }
-
-        public delegate bool KillableSetter();
-    }
-
-    public class PlayerActionCallback
-    {
-        public delegate void ActionCallback();
-
-        public event ActionCallback onStart;
-        public event ActionCallback onComplete;
-        public event ActionCallback onFinish;
-
-        public PlayerActionCallback() { }
-
-        public PlayerActionCallback(params Tweener[] tweeners)
-        {
-            for (int i = 0; i < tweeners.Length; i++)
-            {
-                bool isFirst = i == 0;
-                bool isLast = i == tweeners.Length - 1;
-
-                Tweener tweener = tweeners[i].Pause().SetAutoKill(true);
-
-                if (isFirst)
-                {
-                    tweener.OnStart(() => onStart?.Invoke());
-                }
-
-                if (isLast)
-                {
-                    tweener.OnComplete(() => onComplete?.Invoke()).OnKill(() => onFinish?.Invoke());
-                }
-            }
-        }
-
-        public PlayerActionCallback OnStart(ActionCallback callback)
-        {
-            onStart += callback;
-            return this;
-        }
-
-        public PlayerActionCallback OnComplete(ActionCallback callback)
-        {
-            onComplete += callback;
-            return this;
-        }
-
-        public PlayerActionCallback OnFinish(ActionCallback callback)
-        {
-            onFinish += callback;
-            return this;
-        }
-
-        public void OnStartCall()
-        {
-            onStart?.Invoke();
-        }
-    }
 }
 
 public enum EState

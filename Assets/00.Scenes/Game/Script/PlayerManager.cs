@@ -116,10 +116,6 @@ public class PlayerManager : MonoBehaviour
             .position;
         rightController.playerObj.transform.position = rightController.playerPosition.back.position;
 
-        leftController.collisions.canInteract = false;
-        centerController.collisions.canInteract = false;
-        rightController.collisions.canInteract = false;
-
         leftController.position = EPlayerPosition.Left;
         centerController.position = EPlayerPosition.Center;
         rightController.position = EPlayerPosition.Right;
@@ -159,8 +155,6 @@ public class PlayerManager : MonoBehaviour
         centerController.SetRunningAnimation(isRun);
         leftController.SetRunningAnimation(isRun);
         rightController.SetRunningAnimation(isRun);
-
-        GetCurrentController().collisions.canInteract = true;
     }
 
     void Update()
@@ -178,7 +172,7 @@ public class PlayerManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            GetCurrentController().Jump();
+            Jump();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -226,12 +220,12 @@ public class PlayerManager : MonoBehaviour
 
     private void Jump()
     {
-        GetCurrentController().SetState(EState.Up);
+        GetCurrentController().Jump();
     }
 
     private void Slide()
     {
-        GetCurrentController().SetState(EState.Down);
+        GetCurrentController().Slide();
     }
 
     private void Pass(bool isLeft)
@@ -294,8 +288,6 @@ public class PlayerManager : MonoBehaviour
         PlayerController oldPlayerCtl = GetCurrentController();
         PlayerController newPlayerCtl = GetPlayerControllerByNumber(newPlayerNum);
 
-        oldPlayerCtl.collisions.canInteract = false;
-        newPlayerCtl.collisions.canInteract = true;
         currentPlayer = newPlayerNum;
 
         Transform cameraTrans = newPlayerCtl.playerPosition.front;
@@ -304,84 +296,6 @@ public class PlayerManager : MonoBehaviour
 
         oldPlayerCtl.MoveBack();
         newPlayerCtl.MoveFront();
-
-        //StartCoroutine(SmoothSwitchPlayer(newPlayer));
-    }
-
-    private IEnumerator SmoothSwitchPlayer(int newPlayerNum)
-    {
-        int oldPlayerNum = currentPlayer;
-
-        Vector3 oldStartPos,
-            oldEndPos;
-        Vector3 newStartPos,
-            newEndPos;
-
-        GetCurrentController().collisions.canInteract = false;
-        currentPlayer = newPlayerNum;
-        GetCurrentController().collisions.canInteract = true;
-
-        Transform cameraTrans =
-            (currentPlayer == 0) ? leftPos[1]
-            : (currentPlayer == 1) ? centerPos[1]
-            : rightPos[1];
-        camera_manager.MoveCamera(newPlayerNum);
-
-        //GameManager.Instance.SetPlayer(GetCurrentController());
-
-        float elapsedTime = 0f;
-        float duration = passSpeed;
-
-        SetSwitchPositions(oldPlayerNum, out oldStartPos, out oldEndPos, true);
-        SetSwitchPositions(newPlayerNum, out newStartPos, out newEndPos, false);
-
-        /* DOTween.To(
-            () => oldStartPos,
-            pos =>
-            {
-                Vector3 oldPos = oldPlayer.transform.position;
-                oldPos.x = pos.x;
-                oldPos.z = pos.z;
-                oldPlayer.transform.position = oldPos;
-            },
-            oldEndPos,
-            passSpeed
-        );
-
-        DOTween.To(
-            () => newStartPos,
-            pos =>
-            {
-                Vector3 newPos = newPlayer.transform.position;
-                newPos.x = pos.x;
-                newPos.z = pos.z;
-                newPlayer.transform.position = newPos;
-            },
-            newEndPos,
-            passSpeed
-        ); */
-
-        yield return null;
-
-        /* while (elapsedTime < duration)
-        {
-            SetSwitchPositions(oldPlayerNum, out oldStartPos, out oldEndPos, true);
-            SetSwitchPositions(newPlayerNum, out newStartPos, out newEndPos, false);
-
-            oldPlayer.transform.position = Vector3.Lerp(
-                new Vector3(oldStartPos.x, oldPlayer.transform.position.y, oldStartPos.z),
-                oldEndPos,
-                elapsedTime / duration
-            );
-            newPlayer.transform.position = Vector3.Lerp(
-                newStartPos,
-                newEndPos,
-                elapsedTime / duration
-            );
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        } */
     }
 
     private PlayerController GetPlayerControllerByNumber(int playerNum)

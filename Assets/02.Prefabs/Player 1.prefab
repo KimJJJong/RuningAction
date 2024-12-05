@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
-  rayDistance: 3
+  rayDistance: 2
 --- !u!1 &5661088154827517377
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,11 +88,7 @@ GameObject:
   - component: {fileID: 7584882918192567263}
   - component: {fileID: 6408387289296446874}
   - component: {fileID: 2832421182826127890}
-  - component: {fileID: 1446555858700510785}
-  - component: {fileID: 6028468638919631221}
   - component: {fileID: 9217322455213705442}
-  - component: {fileID: 2012378856529233257}
-  - component: {fileID: 6566370876624635291}
   - component: {fileID: -679738809821252179}
   m_Layer: 0
   m_Name: Player 1
@@ -169,34 +165,6 @@ CapsuleCollider:
   m_Height: 0.9595962
   m_Direction: 1
   m_Center: {x: -0.0036180317, y: 0.48578742, z: 0.048041105}
---- !u!114 &1446555858700510785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7465772840558185984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ae119245440594dad0ce428f1bb463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canInteract: 0
-  chance: 0
---- !u!114 &6028468638919631221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7465772840558185984}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f668fed0912c849b095baf10f7c99f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  equip: 4
-  erank: 0
 --- !u!114 &9217322455213705442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,32 +181,6 @@ MonoBehaviour:
   _goldStageLv: 0
   _rushLv: 0
   _magneticLv: 0
---- !u!114 &2012378856529233257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7465772840558185984}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f51ccf7ce022664ea133f93f463545b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GageSlider: {fileID: 0}
-  Ball: {fileID: 8248042332050722682, guid: f51be6ae2533b8544ae52fc550452121, type: 3}
---- !u!114 &6566370876624635291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7465772840558185984}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5d81d0145b17ae40856897cd4471387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-679738809821252179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 889674596f1314ff09db4cc04e7ad493, type: 2}
     - target: {fileID: -3716654579830075659, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3347090507751969436, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -359,6 +301,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fa03127f7905fa248a50d111be6b2655, type: 2}
+    - target: {fileID: -2716019489700317883, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -2635703230415866668, guid: 07f552168c4ca4cd6b3de45937c43cbb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
