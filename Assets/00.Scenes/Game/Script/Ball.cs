@@ -23,6 +23,8 @@ public class Ball : MonoBehaviour
     public Vector3 ballOffset;
     public float ballRotationSpeed;
 
+    MoveActionWorker actionWorker = new MoveActionWorker();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,29 +51,36 @@ public class Ball : MonoBehaviour
         }
     }
 
-    public void Jump(Vector3 position, float duration)
+    public void Jump(float force, float duration)
     {
-        Vector3 positionOffset = transform.position;
-
-        DOTween
+        //Vector3 positionOffset = transform.position;
+        Tweener up = DOTween
             .To(
                 () => transform.position,
                 position => transform.position = position,
-                position,
+                transform.position + Vector3.up * force,
                 duration / 2f
             )
-            .SetEase(Ease.OutQuad)
-            .OnKill(() =>
-            {
-                DOTween
-                    .To(
-                        () => transform.position,
-                        position => transform.position = position,
-                        ballOffset,
-                        duration / 2f
-                    )
-                    .SetEase(Ease.InQuad);
-            });
+            .SetEase(Ease.OutQuad);
+
+        Tweener down = DOTween
+            .To(
+                () =>
+                {
+                    return transform.position;
+                },
+                position => transform.position = position,
+                ballOffset,
+                duration / 2f
+            )
+            .SetEase(Ease.InQuad);
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(up, down)
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
     }
 
     public void Shoot() { }
@@ -84,28 +93,48 @@ public class Ball : MonoBehaviour
     public void Pass(PassType passType, float duration)
     {
         DOTweenPath pass;
-        if (passList.TryGetValue(passType, out pass))
+
+        if (!passList.TryGetValue(passType, out pass))
+            return;
+
+        if (duration > 0)
         {
-            if (duration > 0)
-            {
-                duration = Math.Max(0.2f, duration / GameManager.Instance.gameSpeed);
-                pass.GetTween().timeScale = pass.duration / (duration * Time.timeScale);
-            }
-
-            switch (passType)
-            {
-                case PassType.CtoR:
-                    break;
-                case PassType.CtoL:
-                    break;
-                case PassType.RtoC:
-                    break;
-                case PassType.LtoC:
-                    break;
-            }
-
-            pass.DORestart();
+            duration = Math.Max(0.2f, duration / GameManager.Instance.gameSpeed);
+            pass.GetTween().timeScale = pass.duration / (duration * Time.timeScale);
         }
+
+        switch (passType)
+        {
+            case PassType.CtoR:
+                break;
+            case PassType.CtoL:
+                break;
+            case PassType.RtoC:
+                break;
+            case PassType.LtoC:
+                break;
+        }
+
+        pass.DORestart();
+
+        Tweener down = DOTween
+            .To(
+                () =>
+                {
+                    return transform.position;
+                },
+                position => transform.position = position,
+                ballOffset,
+                duration * 0.7f
+            )
+            .SetEase(Ease.OutSine);
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(down)
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
     }
 
     private void SetPassList()

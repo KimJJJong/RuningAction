@@ -2202,9 +2202,9 @@ MonoBehaviour:
   jumpForce: 0
   downForce: 400
   fallMultiplier: 3
+  idleType: 3
   jumpCount: 0
   maxJumpCount: 2
-  idleType: 0
   curPos: 1
   col: {fileID: 0}
   substance: {fileID: 0}
@@ -2469,9 +2469,9 @@ MonoBehaviour:
   jumpForce: 0
   downForce: 400
   fallMultiplier: 3
+  idleType: 1
   jumpCount: 0
   maxJumpCount: 2
-  idleType: 0
   curPos: 1
   col: {fileID: 0}
   substance: {fileID: 0}
@@ -5004,9 +5004,9 @@ MonoBehaviour:
   jumpForce: 0
   downForce: 400
   fallMultiplier: 3
+  idleType: 2
   jumpCount: 0
   maxJumpCount: 2
-  idleType: 0
   curPos: 1
   col: {fileID: 0}
   substance: {fileID: 0}

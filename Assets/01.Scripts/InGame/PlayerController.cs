@@ -81,9 +81,6 @@ public class PlayerController : MonoBehaviour
 
     private Ball ball;
 
-    //private List<MoveAction> action_list = new List<MoveAction>();
-    private UnityEvent OnActionClear = new UnityEvent();
-
     void Awake()
     {
         col = playerObj.GetComponent<CapsuleCollider>();
@@ -144,22 +141,31 @@ public class PlayerController : MonoBehaviour
 
     public MoveActionWorker.MoveActionListener Jump()
     {
-        if (jumpCount >= maxJumpCount)
-            return null;
-
-        int inJumpCnt = ++jumpCount;
-
         float jumpSpd = Math.Max(
             GameManager.Instance.playerManager.jumpSpeed / GameManager.Instance.gameSpeed,
             0.5f
         );
 
-        Vector3 positionOffset = playerObj.transform.position;
-
         float jumpForce = GameManager.Instance.playerManager.jumpHeight;
 
         for (int i = 1; i < jumpCount; i++)
             jumpForce *= 0.6f;
+
+        return Jump(jumpForce, jumpSpd);
+    }
+
+    public MoveActionWorker.MoveActionListener Jump(float force, float duration)
+    {
+        /* if (jumpCount >= maxJumpCount)
+            return null; */
+
+        int inJumpCnt = ++jumpCount;
+
+        float jumpSpd = duration;
+
+        Vector3 positionOffset = playerObj.transform.position;
+
+        float jumpForce = force;
 
         Vector3 down = playerObj.transform.position - Vector3.up * playerObj.transform.position.y;
         Vector3 up = playerObj.transform.position + Vector3.up * jumpForce;
@@ -186,7 +192,7 @@ public class PlayerController : MonoBehaviour
             .To(
                 () =>
                 {
-                    return up;
+                    return playerObj.transform.position;
                 },
                 position =>
                 {
@@ -217,13 +223,19 @@ public class PlayerController : MonoBehaviour
             {
                 jumpCount = inJumpCnt;
 
-                //if (jumpCount == 1)
-                animator.Play("Jumping", 0, 0f);
+                if (jumpCount == 2)
+                {
+                    animator.SetBool("isJumping", true);
+                    animator.SetTrigger("doubleJump");
+                }
+                else
+                    animator.Play("Jumping", 0, 0f);
             })
             .AddCompleteCallback(() => { })
             .AddFinishCallBack(() =>
             {
                 jumpCount = 0;
+
                 animator.SetBool("isJumping", false);
             })
             .Build();
@@ -351,7 +363,14 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Pass:
                 {
-                    animator.Play("Kick");
+                    if (jumpCount > 0)
+                    {
+                        animator.Play("Pass_Heading", 0, 0f);
+                    }
+                    else
+                    {
+                        animator.Play("Kick");
+                    }
                 }
                 break;
         }
