@@ -71,8 +71,6 @@ public class MoveActionWorker
         return this;
     }
 
-    public delegate void ActionCallback();
-
     public static ActionItemBuilder ActionBuilder()
     {
         return new ActionItemBuilder();
@@ -293,4 +291,6 @@ public class MoveActionWorker
             return this;
         }
     }
+
+    public delegate void ActionCallback();
 }

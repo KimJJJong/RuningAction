@@ -147,7 +147,7 @@ public class PlayerManager : MonoBehaviour
     public void passEnd()
     {
         ctlLock = false;
-        GetCurrentController().SetState(EState.Runing);
+        //GetCurrentController().SetState(EState.Runing);
     }
 
     public void SetRunningAnimation(bool isRun)
@@ -220,7 +220,25 @@ public class PlayerManager : MonoBehaviour
 
     private void Jump()
     {
-        GetCurrentController().Jump();
+        PlayerController controller = GetCurrentController();
+
+        if (controller.jumpCount >= controller.maxJumpCount)
+            return;
+
+        float jumpSpd = Math.Max(
+            GameManager.Instance.playerManager.jumpSpeed / GameManager.Instance.gameSpeed,
+            0.5f
+        );
+
+        float jumpForce = GameManager.Instance.playerManager.jumpHeight;
+
+        for (int i = 0; i < controller.jumpCount; i++)
+            jumpForce *= 0.6f;
+
+        Debug.Log("jumpForce: " + jumpForce);
+        controller.Jump(jumpForce, jumpSpd);
+
+        ball.Jump(jumpForce + 0.5f, jumpSpd);
     }
 
     private void Slide()
