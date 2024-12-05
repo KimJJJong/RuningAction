@@ -36,6 +36,9 @@ public class ObstacleBase : MonoBehaviour
                 break;
             case ObstacleManager.ObstacleType.defender_obstacle:
                 break;
+                default:
+                Debug.Log("Obstacle Base: No matching obstacle type");
+                break;
         }
     }
 
@@ -46,9 +49,7 @@ public class ObstacleBase : MonoBehaviour
             if (ObstacleManager.instance != null)
                 ObstacleManager.instance.HandleObstacleCollision(other.gameObject, this);
             else
-                Debug.Log("Item: No item manager instance");
-
-            //Destroy(gameObject);
+                Debug.Log("Item: No item manager instance");            
         }
     }
 }

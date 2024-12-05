@@ -4875,12 +4875,64 @@ Transform:
   m_GameObject: {fileID: 567009423}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.004045277, y: 0.6474118, z: -1.878675}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 955447379}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &569113910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 569113912}
+  - component: {fileID: 569113911}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &569113911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569113910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b342ffa8e532454a947f767d1234dfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle_list:
+  - id: ItemObtainEffect
+    prefab: {fileID: 2060212803351811498, guid: bff634e3e03551940a068a569559cb95, type: 3}
+    pool_size: 10
+  - id: ItemObtainEffect
+    prefab: {fileID: 8748687995501502678, guid: 7fc8a9e588d903e4e9d4371ac200711c, type: 3}
+    pool_size: 10
+  activated_particles: []
+--- !u!4 &569113912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569113910}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.653477, y: -1.2837876, z: 2.0788527}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 974744253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &575097263 stripped
 Transform:
@@ -4916,7 +4968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd88bb3ecb27094e84d0643d6a73400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map_speed: 20
+  initial_map_speed: 0
   orientation: {x: 1, y: 0, z: 0}
   curvedSize: {x: 0, y: -3}
 --- !u!4 &587212477
@@ -7130,7 +7182,7 @@ Transform:
   m_GameObject: {fileID: 955447377}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.004045277, y: -0.6474118, z: 1.878675}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7745,6 +7797,7 @@ Transform:
   - {fileID: 1837087090}
   - {fileID: 1486370094}
   - {fileID: 624675954}
+  - {fileID: 569113912}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &976112089

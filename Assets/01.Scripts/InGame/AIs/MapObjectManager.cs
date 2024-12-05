@@ -8,12 +8,6 @@ public class MapObjectManager : MonoBehaviour
     public float act_dist = 100f;
     public List<GameObject> interactable_objects;
 
-
-    private void Start()
-    {
-
-    }
-
     void Update()
     {
         List<GameObject> objectsToRemove = new List<GameObject>();
@@ -45,15 +39,4 @@ public class MapObjectManager : MonoBehaviour
 
         interactable_objects.AddRange(interactables);
     }
-
-    public void DeregisterMapObjects(GameObject mapSection)
-    {
-    //     GameObject[] interactables = mapSection
-    //         .GetComponentsInChildren<Transform>(true)
-    //         .Where(t => t.CompareTag("InteractableMapObject"))
-    //         .Select(t => t.gameObject)
-    //         .ToArray();
-        
-    //     interactable_objects.RemoveAll(obj => interactables.Contains(obj));
-     }
 }

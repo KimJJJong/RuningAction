@@ -9,7 +9,10 @@ using UnityEngine;
 public class MapManager : MonoBehaviour
 {
     [SerializeField]
+    private float initial_map_speed;
+    
     private float map_speed;
+    public float getMapSpeed(){return map_speed;}
 
     [SerializeField]
     private Vector3 orientation;
@@ -32,10 +35,12 @@ public class MapManager : MonoBehaviour
     private float sync_threshold = 1.0f;
     private float sync_tick = .1f;
 
+
+
     #endregion
 
     void Start()
-    {
+    {        
         StartCoroutine(SyncGameManager());
 
         mapIndexManager = GetComponentInChildren<MapIndexManager>();
@@ -70,8 +75,7 @@ public class MapManager : MonoBehaviour
             MapPrefab firstMap = mapIndexManager.activated_list.First().GetComponent<MapPrefab>();
             if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
             {
-                mapIndexManager.deactivateMap();
-                mapObjectManager.DeregisterMapObjects(mapIndexManager.activated_list.First());
+                mapIndexManager.deactivateMap();                
             }
 
             MapPrefab lastMap = mapIndexManager.activated_list.Last().GetComponent<MapPrefab>();
@@ -81,17 +85,35 @@ public class MapManager : MonoBehaviour
                 mapObjectManager.RegisterMapObjects(mapIndexManager.activated_list.Last());
             }
 
-            foreach (GameObject obj in mapIndexManager.activated_list)
-            {
-                obj.transform.Translate(
-                    orientation.normalized
-                        * map_speed
-                        * Time.deltaTime
-                        * GameManager.Instance.gameSpeed
-                );
-            }
+            map_speed = initial_map_speed * GameManager.Instance.gameSpeed * Time.deltaTime;
+
+            foreach (GameObject obj in mapIndexManager.activated_list)            
+                obj.transform.Translate(orientation.normalized * map_speed);
+            
 
             //map_speed *= GameManager.Instance.gameSpeed;
+
+
+            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                curvedSize.x += Time.deltaTime * 0.2f;
+            }
+            if(Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                curvedSize.x -= Time.deltaTime * 0.2f;
+            }
+            if(Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                curvedSize.y += Time.deltaTime * 0.2f;
+            }
+            if(Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                curvedSize.y -= Time.deltaTime * 0.2f;
+            }
+
+            curvedController.SetBendHorizontalSize(curvedSize.x);
+            curvedController.SetBendVerticalSize(curvedSize.y);
+
         }
     }
 
@@ -106,7 +128,7 @@ public class MapManager : MonoBehaviour
             if (gameManager)
             {
                 is_sync_ready = true;
-                map_speed = gameManager.GetMapSpeed();
+                initial_map_speed = gameManager.GetInitialMapSpeed();
             }
             else
             {

@@ -17,7 +17,6 @@ public class Coin : Item
     {
         CoinManager.instance.obtainCoin(coin_type);
     }
-
 }
 
 

@@ -7,6 +7,7 @@ public abstract class Item : MonoBehaviour
     public string id;
     public float duration;
     public bool is_storable;
+    public bool is_implemented_in_map;
 
     public virtual void obtain()
     {
@@ -24,11 +25,7 @@ public abstract class Item : MonoBehaviour
             if (ItemManager.instance != null)
                 ItemManager.instance.HandleItem(this);
             else
-                Debug.Log("Item: No item manager instance");
-            
-
-            Destroy(gameObject);
+                Debug.LogWarning("Item: No item manager instance");
         }
     }
 }
-

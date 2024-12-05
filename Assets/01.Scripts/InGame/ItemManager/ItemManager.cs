@@ -8,7 +8,7 @@ public class ItemManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) 
+        if (instance == null)
             instance = this;
         else
             Destroy(this);
@@ -25,14 +25,19 @@ public class ItemManager : MonoBehaviour
         else
             StoreItem(item);
 
-        Destroy(item);
+        if (item.is_implemented_in_map)
+            item.gameObject.SetActive(false);
+        else
+            Destroy(item.gameObject);
+
+        ParticlePoolManager.instance.SpawnEffect("ItemObtainEffect", item.transform.position);
     }
 
     public void StoreItem(Item item)
     {
         item_list.Add(item);
     }
-    
+
     public void UseItemWithIndex(int index)
     {
         if (index < 0 || index >= item_list.Count)
@@ -51,14 +56,13 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < item_list.Count; i++)
         {
             if (item_list[i].name == id)
-            { 
+            {
                 UseItemWithIndex(i);
                 return;
             }
         }
         Debug.Log("Item Use: No matching id with given id");
     }
-
 
     //TODO: (if applicable) Make storable item in game in real time.
     //We don't provide item storage function in game, so using storable item function is made yet

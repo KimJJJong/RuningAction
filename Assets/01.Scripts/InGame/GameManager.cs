@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DarkTonic.MasterAudio;
 using UnityEditor;
 using UnityEngine;
@@ -39,6 +40,20 @@ public class GameManager : MonoBehaviour
 
     public float CurrentPlayTime => currentPlayTime;
 
+
+    public enum Lane
+    {
+        NotDecidedYet,
+        Left,
+        Center,
+        Right
+    }
+    float mapCenter = 0;
+    float laneGap = 2;    
+    public Dictionary<Lane, float> lanePositions = new Dictionary<Lane, float>();
+
+
+
     #region MapManager
 
     [SerializeField]
@@ -62,7 +77,7 @@ public class GameManager : MonoBehaviour
         get { return game_speed; }
     }
 
-    public float GetMapSpeed()
+    public float GetInitialMapSpeed()
     {
         return map_speed;
     }
@@ -78,6 +93,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameUiManager.SetGamePlayPanel();
+
+        lanePositions[Lane.Left] = mapCenter - laneGap;
+        lanePositions[Lane.Center] = mapCenter;
+        lanePositions[Lane.Right] = mapCenter + laneGap;
+
     }
 
     private void Update()

@@ -12,6 +12,7 @@ public class MapIndexManager : MonoBehaviour
     public List<IObjectPool<GameObject>> map_poll = new List<IObjectPool<GameObject>>();
     private List<MapPrefab> clone_list;
     public List<GameObject> activated_list = new List<GameObject>();
+    
 
     private int[] map_order_list;
     public int cur_order;
