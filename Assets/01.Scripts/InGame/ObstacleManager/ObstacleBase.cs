@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObstacleBase : MonoBehaviour
+public class ObstacleBase : MapProp
 {
     public ObstacleManager.ObstacleType obstacle_type;
 
@@ -36,7 +36,7 @@ public class ObstacleBase : MonoBehaviour
                 break;
             case ObstacleManager.ObstacleType.defender_obstacle:
                 break;
-                default:
+            default:
                 Debug.Log("Obstacle Base: No matching obstacle type");
                 break;
         }
@@ -49,7 +49,7 @@ public class ObstacleBase : MonoBehaviour
             if (ObstacleManager.instance != null)
                 ObstacleManager.instance.HandleObstacleCollision(other.gameObject, this);
             else
-                Debug.Log("Item: No item manager instance");            
+                Debug.Log("Item: No item manager instance");
         }
     }
 }
