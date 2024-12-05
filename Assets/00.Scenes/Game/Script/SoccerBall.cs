@@ -12,7 +12,7 @@ public class SoccerBall : MonoBehaviour
 
     private bool isShooting = false;
     private ShotOnGoal shotOnGoal;
-    private void Start()
+    private void OnEnable()
     {
         shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
         GetComponent<MeshRenderer>().enabled = false;

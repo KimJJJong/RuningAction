@@ -19,6 +19,7 @@ public class ShotOnGoal : MonoBehaviour
 
     public GoalKeeper goalKeeper;
     private Coroutine coroutine;
+  
 
     private void Start()
     {
@@ -29,11 +30,15 @@ public class ShotOnGoal : MonoBehaviour
     {
         Debug.Log("슛함");
         goalKeeper.TryBlockShot(playerLane);
+
         foreach(var tweens in GetComponentsInChildren<DOTweenAnimation>())
         {
             tweens.DOPlay();
+            Debug.Log(tweens + "발동");
         }
         
+        StartCoroutine(SetGoalObjCor());
+
     }
 
     public void PlayGoalEvent()
@@ -66,13 +71,14 @@ public class ShotOnGoal : MonoBehaviour
                 break;
         }
 
+
         //SetGoalObj();
+
     }
 
     public void PlayBlockEvent()
     {
-        //�̺�Ʈ ����
-        //SetGoalObj();
+       // SetGoalObj();
     }
 
     public void SetGoalObj()
@@ -87,20 +93,11 @@ public class ShotOnGoal : MonoBehaviour
 
     private IEnumerator SetGoalObjCor()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(6f);
 
-        foreach (GameObject obj in goalObjects)
-        {
-            obj.SetActive(false);
-        }
         ResetPosition();
 
-        yield return new WaitForSeconds(2f);
-
-        foreach (GameObject obj in goalObjects)
-        {
-            obj.SetActive(true);
-        }
+        yield return new WaitForSeconds(6f);
 
         coroutine = null;
     }
@@ -114,6 +111,11 @@ public class ShotOnGoal : MonoBehaviour
         }
 
         goalKeeper.SetKeeperLane();
+
+        foreach(var tweens in GetComponentsInChildren<DOTweenAnimation>())
+        {
+            tweens.DOPlayBackwards();
+        }
     }
 }
 
