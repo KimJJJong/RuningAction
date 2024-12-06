@@ -6,7 +6,8 @@ public class ObstacleManager : MonoBehaviour
 {
     public static ObstacleManager instance { get; private set; }
 
-    private Dictionary<ObstacleType, float> obstacle_damage_dic = new Dictionary<ObstacleType, float>(); 
+    private Dictionary<ObstacleType, float> obstacle_damage_dic =
+        new Dictionary<ObstacleType, float>();
 
     public enum ObstacleType
     {
@@ -14,9 +15,8 @@ public class ObstacleManager : MonoBehaviour
         jump_obstacle_long,
         slide_obstacle,
         block_obstacle,
-        defender_obstacle
+        defender_obstacle,
     }
-
 
     private void Awake()
     {
@@ -34,14 +34,15 @@ public class ObstacleManager : MonoBehaviour
         obstacle_damage_dic[ObstacleType.slide_obstacle] = 20;
         obstacle_damage_dic[ObstacleType.block_obstacle] = 30;
         obstacle_damage_dic[ObstacleType.defender_obstacle] = 10000;
-
     }
 
     public void HandleObstacleCollision(GameObject player, ObstacleBase obstacle)
     {
         float damage = obstacle_damage_dic[obstacle.obstacle_type];
+        //TODO: Do the damage according to damage variable
 
+        //if 같은 레인이면
 
-        //TODO: Do the damage according to damage variable    
+        HpController.Damage(player, damage);
     }
 }

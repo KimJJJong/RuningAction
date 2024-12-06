@@ -33,7 +33,7 @@ public class ShotOnGoal : MonoBehaviour
     public void PlayGoalEvent()
     {
         GameUIManager.instance.PlayGoalText();
-
+        PlayerController controller = GameManager.Instance.playerManager.GetCurrentController();
         //�̺�Ʈ ����
         int eventCount = System.Enum.GetValues(typeof(GoalEvent)).Length;
         GoalEvent goalEvent = (GoalEvent)Random.Range(0, eventCount);
@@ -50,7 +50,7 @@ public class ShotOnGoal : MonoBehaviour
                 break;
             case GoalEvent.EventAddHp:
                 gameUiManager.UpdateScoreText(2000);
-                HpController.OnHeal.Invoke(10);
+                HpController.Heal(controller.playerObj, 10);
                 //GameManager.Instance.hpController.Heal(10);
                 break;
             default:

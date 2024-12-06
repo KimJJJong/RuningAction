@@ -65,6 +65,8 @@ public class CollectCoin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        PlayerController controller = GameManager.Instance.playerManager.GetCurrentController();
+
         switch (other.tag)
         {
             case "Coin":
@@ -81,7 +83,7 @@ public class CollectCoin : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             case "Heal":
-                HpController.OnHeal?.Invoke(10);
+                HpController.Heal(controller.playerObj, 10);
                 //GameManager.Instance.hpController.Heal(10);
                 Destroy(other.gameObject);
                 break;

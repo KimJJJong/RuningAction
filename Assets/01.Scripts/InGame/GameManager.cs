@@ -40,19 +40,17 @@ public class GameManager : MonoBehaviour
 
     public float CurrentPlayTime => currentPlayTime;
 
-
     public enum Lane
     {
-        NotDecidedYet,
+        NotDecidedYet = -1,
         Left,
         Center,
-        Right
+        Right,
     }
+
     float mapCenter = 0;
-    float laneGap = 2;    
+    float laneGap = 2;
     public Dictionary<Lane, float> lanePositions = new Dictionary<Lane, float>();
-
-
 
     #region MapManager
 
@@ -97,7 +95,6 @@ public class GameManager : MonoBehaviour
         lanePositions[Lane.Left] = mapCenter - laneGap;
         lanePositions[Lane.Center] = mapCenter;
         lanePositions[Lane.Right] = mapCenter + laneGap;
-
     }
 
     private void Update()

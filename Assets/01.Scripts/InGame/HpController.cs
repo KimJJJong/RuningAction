@@ -1,75 +1,132 @@
+using System;
 using System.Collections;
+using Blobcreate.Universal;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-
-public class HealEvent : UnityEngine.Events.UnityEvent<float> { }
 
 public class HpController : MonoBehaviour
 {
-    public static HealEvent OnHeal = new HealEvent();
+    private static event BaseActionWithParams onHeal;
+    private static event BaseActionWithParams onDamage;
+    private static event BaseAction onHpZero;
+
+    //public static UnityEvent<GameObject> OnHpZero = new UnityEvent<GameObject>();
+
+    public static void Heal(GameObject player, float value)
+    {
+        if (!player.CompareTag("Player"))
+        {
+            Debug.LogError("Heal target Is Not Player");
+            return;
+        }
+        onHeal?.Invoke(player, value);
+    }
+
+    public static void Damage(GameObject player, float value)
+    {
+        if (!player.CompareTag("Player"))
+        {
+            Debug.LogError("Damage target Is Not Player");
+            return;
+        }
+        onDamage?.Invoke(player, value);
+    }
+
+    public static void OnHpZero(BaseAction action)
+    {
+        onHpZero += action;
+    }
+
     public Slider HpBar;
+
+    public float maxHp = 0f;
+
+    [SerializeField]
+    private float _hp;
+    public float hp
+    {
+        get { return _hp; }
+    }
+
+    private float hpReductionPerSecond = 1f;
 
     public void Start()
     {
+        InitHpBar();
+
         GameManager.OnGameStateChange.AddListener(
             (state) =>
             {
                 if (state == GameState.Playing)
                 {
-                    StartHpControll();
+                    StartReduceHpOverTime();
+                }
+                else
+                {
+                    StopReduceHpOverTime();
                 }
             }
         );
 
-        OnHeal.AddListener(
-            (heal) =>
-            {
-                Heal(heal);
-            }
-        );
+        onHeal += (player, value) =>
+        {
+            if (player == gameObject)
+                UpdateHp(+value);
+        };
+
+        onDamage += (player, value) =>
+        {
+            if (player == gameObject)
+                UpdateHp(-value);
+        };
     }
 
-    public void StartHpControll()
+    public void InitHpBar()
     {
-        SetHp(1000.0f);
-        StartCoroutine(DecressHp());
-    }
+        _hp = maxHp;
 
-    public void SetHp(float maxHp)
-    {
-        HpBar.maxValue += maxHp;
+        if (HpBar == null)
+            return;
+        HpBar.maxValue = maxHp;
         HpBar.value = HpBar.maxValue;
     }
 
-    public void Heal(float heal)
+    public void StartReduceHpOverTime()
     {
-        if (HpBar.value + heal >= HpBar.maxValue)
-            HpBar.value = HpBar.maxValue;
-        else
-            HpBar.value += heal;
+        StartCoroutine(ReduceHealthOverTime_Cor());
     }
 
-    public void CollsionObstacle()
+    public void StopReduceHpOverTime()
     {
-        if (HpBar.value <= 0)
-            HpBar.value = 0;
-        HpBar.value -= 10f;
+        StopCoroutine(ReduceHealthOverTime_Cor());
     }
 
-    IEnumerator DecressHp()
+    public IEnumerator ReduceHealthOverTime_Cor()
     {
-        while (true)
+        while (_hp > 0)
         {
-            if (HpBar.value <= 0)
-                GameManager.Instance.GameOver();
-            HpBar.value -= 0.1f;
-
             yield return new WaitForSeconds(0.1f);
+            float value = hpReductionPerSecond * 0.1f;
+            UpdateHp(-value);
+
+            if (HpBar != null)
+                HpBar.value = _hp;
         }
+
+        onHpZero?.Invoke(gameObject);
     }
 
-    public float GetValue()
+    private void UpdateHp(float value)
     {
-        return HpBar.value;
+        _hp = Math.Min(_hp + value, maxHp);
+
+        if (_hp > 0)
+            return;
+
+        onHpZero?.Invoke(this.gameObject);
     }
+
+    public delegate void BaseAction(GameObject gameObject);
+    private delegate void BaseActionWithParams(GameObject gameObject, float value);
 }

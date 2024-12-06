@@ -28,11 +28,11 @@ public class PlayerManager : MonoBehaviour
     private PlayerController rightController;
 
     [SerializeField]
-    private int currentPlayer = 1;
+    private GameManager.Lane currentLane = GameManager.Lane.NotDecidedYet;
     private CameraManager camera_manager;
 
     [SerializeField]
-    public float jumpSpeed;
+    public float jumpDuration;
 
     [SerializeField]
     public float jumpHeight;
@@ -94,6 +94,7 @@ public class PlayerManager : MonoBehaviour
                     case GameState.Playing:
                         ctlLock = false;
                         SetRunningAnimation(true);
+                        currentLane = GameManager.Lane.Center;
                         break;
                     case GameState.GameOver:
                         SetRunningAnimation(false);
@@ -226,7 +227,7 @@ public class PlayerManager : MonoBehaviour
             return;
 
         float jumpSpd = Math.Max(
-            GameManager.Instance.playerManager.jumpSpeed / GameManager.Instance.gameSpeed,
+            GameManager.Instance.playerManager.jumpDuration / GameManager.Instance.gameSpeed,
             0.5f
         );
 
@@ -251,44 +252,52 @@ public class PlayerManager : MonoBehaviour
         GetCurrentController().SetState(EState.Pass);
 
         PlayerController from =
-            (currentPlayer == 0) ? leftController
-            : (currentPlayer == 1) ? centerController
-            : rightController;
+            (currentLane == GameManager.Lane.Left) ? leftController
+            : (currentLane == GameManager.Lane.Center) ? centerController
+            : (currentLane == GameManager.Lane.Right) ? rightController
+            : null;
+
+        if (from == null)
+            return;
 
         PlayerController to = from;
 
         if (isLeft)
         {
             to =
-                (currentPlayer == 1) ? leftController
-                : currentPlayer == 2 ? centerController
+                (currentLane == GameManager.Lane.Center) ? leftController
+                : currentLane == GameManager.Lane.Right ? centerController
                 : from;
 
-            if (currentPlayer == 2)
+            if (currentLane == GameManager.Lane.Right)
             {
                 soccerBall.GetComponent<Ball>().Pass(PassType.RtoC, passSpeed);
+                SwitchPlayer(GameManager.Lane.Center);
             }
-            else if (currentPlayer == 1)
+            else if (currentLane == GameManager.Lane.Center)
             {
                 soccerBall.GetComponent<Ball>().Pass(PassType.CtoL, passSpeed);
+                SwitchPlayer(GameManager.Lane.Left);
             }
-            SwitchPlayer(-1);
+            //SwitchPlayer(-1);
         }
         else
         {
             to =
-                (currentPlayer == 0) ? centerController
-                : currentPlayer == 1 ? rightController
+                (currentLane == GameManager.Lane.Left) ? centerController
+                : currentLane == GameManager.Lane.Center ? rightController
                 : from;
-            if (currentPlayer == 0)
+            if (currentLane == GameManager.Lane.Left)
             {
                 soccerBall.GetComponent<Ball>().Pass(PassType.LtoC, passSpeed);
+                SwitchPlayer(GameManager.Lane.Center);
             }
-            else if (currentPlayer == 1)
+            else if (currentLane == GameManager.Lane.Center)
             {
                 soccerBall.GetComponent<Ball>().Pass(PassType.CtoR, passSpeed);
+                SwitchPlayer(GameManager.Lane.Right);
             }
-            SwitchPlayer(1);
+            //SwitchPlayer(1);
         }
 
         if (from == to)
@@ -297,32 +306,28 @@ public class PlayerManager : MonoBehaviour
         OnPass.Invoke(from, to);
     }
 
-    private void SwitchPlayer(int direction)
+    private void SwitchPlayer(GameManager.Lane lane)
     {
-        int newPlayerNum = currentPlayer + direction;
-        if (newPlayerNum < 0 || newPlayerNum > 2)
-            return;
+        PlayerController oldPlayerCtl = GetPlayerControllerByLane(currentLane);
+        PlayerController newPlayerCtl = GetPlayerControllerByLane(lane);
 
-        PlayerController oldPlayerCtl = GetCurrentController();
-        PlayerController newPlayerCtl = GetPlayerControllerByNumber(newPlayerNum);
-
-        currentPlayer = newPlayerNum;
+        currentLane = lane;
 
         Transform cameraTrans = newPlayerCtl.playerPosition.front;
 
-        camera_manager.MoveCamera(newPlayerNum);
+        camera_manager.MoveCamera((int)lane);
 
         oldPlayerCtl.MoveBack();
         newPlayerCtl.MoveFront();
     }
 
-    private PlayerController GetPlayerControllerByNumber(int playerNum)
+    private PlayerController GetPlayerControllerByLane(GameManager.Lane playerNum)
     {
         return playerNum switch
         {
-            0 => leftController,
-            1 => centerController,
-            2 => rightController,
+            GameManager.Lane.Left => leftController,
+            GameManager.Lane.Center => centerController,
+            GameManager.Lane.Right => rightController,
             _ => null,
         };
     }
@@ -366,15 +371,15 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject GetCurrentPlayer()
     {
-        return (currentPlayer == 0) ? leftController.playerObj
-            : (currentPlayer == 1) ? centerController.playerObj
+        return (currentLane == GameManager.Lane.Left) ? leftController.playerObj
+            : (currentLane == GameManager.Lane.Center) ? centerController.playerObj
             : rightController.playerObj;
     }
 
     public PlayerController GetCurrentController()
     {
-        return (currentPlayer == 0) ? leftController
-            : (currentPlayer == 1) ? centerController
+        return (currentLane == GameManager.Lane.Left) ? leftController
+            : (currentLane == GameManager.Lane.Center) ? centerController
             : rightController;
     }
 

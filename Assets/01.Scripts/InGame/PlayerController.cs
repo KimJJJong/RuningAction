@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
     public MoveActionWorker.MoveActionListener Jump()
     {
         float jumpSpd = Math.Max(
-            GameManager.Instance.playerManager.jumpSpeed / GameManager.Instance.gameSpeed,
+            GameManager.Instance.playerManager.jumpDuration / GameManager.Instance.gameSpeed,
             0.5f
         );
 
@@ -373,23 +373,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 break;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Score"))
-        {
-            gameUiManager.UpdateScoreText(500);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            //isJumping = false;
-            //slide = false;
         }
     }
 
