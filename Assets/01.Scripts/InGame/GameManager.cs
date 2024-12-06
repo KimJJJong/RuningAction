@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        OnGameStateChange = new GameStateChangeEvent();
         _instance = GetComponent<GameManager>();
     }
 

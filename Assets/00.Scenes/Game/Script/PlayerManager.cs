@@ -236,7 +236,6 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < controller.jumpCount; i++)
             jumpForce *= 0.6f;
 
-        Debug.Log("jumpForce: " + jumpForce);
         controller.Jump(jumpForce, jumpSpd);
 
         ball.Jump(jumpForce + 0.5f, jumpSpd);

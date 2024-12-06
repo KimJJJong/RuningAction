@@ -51,6 +51,13 @@ public class HpController : MonoBehaviour
 
     private float hpReductionPerSecond = 1f;
 
+    public void Awake()
+    {
+        onHeal = null;
+        onDamage = null;
+        onHpZero = null;
+    }
+
     public void Start()
     {
         InitHpBar();
@@ -68,7 +75,7 @@ public class HpController : MonoBehaviour
                 }
             }
         );
-
+        GameObject gameObject = this.gameObject;
         onHeal += (player, value) =>
         {
             if (player == gameObject)
