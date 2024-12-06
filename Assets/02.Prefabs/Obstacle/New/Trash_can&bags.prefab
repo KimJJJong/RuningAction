@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 7887603100872017931}
   m_Layer: 0
   m_Name: trash_bags
-  m_TagString: Untagged
+  m_TagString: ObstacleWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,7 +274,7 @@ Transform:
   m_GameObject: {fileID: 1897873825259375257}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4874573, y: -3.6965978, z: -1.7170422}
+  m_LocalPosition: {x: -3.4874573, y: 0.01, z: -1.7170422}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -799,7 +799,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6865368576755110059}
-  - component: {fileID: 5412546283266650135}
   m_Layer: 0
   m_Name: Trash_can&bags
   m_TagString: Untagged
@@ -816,28 +815,14 @@ Transform:
   m_GameObject: {fileID: 6680627570191549827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.151466, y: 3.6965978, z: -0.37695795}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7887603100872017931}
   - {fileID: 3120590619112998399}
+  - {fileID: 7887603100872017931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5412546283266650135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6680627570191549827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6070b0f4a9f23a45809a5fa24b8e170, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lane: 0
-  obstacle_type: 3
 --- !u!1 &6788807277620562899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,7 +1330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3120590619112998399}
-  - component: {fileID: 1173898602153529145}
+  - component: {fileID: 7581653653595353763}
   m_Layer: 0
   m_Name: Trash_can (1)
   m_TagString: Untagged
@@ -1362,7 +1347,7 @@ Transform:
   m_GameObject: {fileID: 9182941173340255873}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.4874573, y: -3.6965973, z: 0.26695806}
+  m_LocalPosition: {x: -3.4874573, y: -0.04, z: 0.26695806}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1371,7 +1356,7 @@ Transform:
   - {fileID: 2535824492537230205}
   m_Father: {fileID: 6865368576755110059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1173898602153529145
+--- !u!114 &7581653653595353763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1384,4 +1369,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lane: 0
-  obstacle_type: 1
+  obstacle_type: 3

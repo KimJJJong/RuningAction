@@ -30,7 +30,7 @@ public class ItemManager : MonoBehaviour
         else
             Destroy(item.gameObject);
 
-        ParticlePoolManager.instance.SpawnEffect("ItemObtainEffect", item.transform.position);
+        ParticlePoolManager.instance.SpawnEffect("ItemObtainEffect1", item.transform.position);
     }
 
     public void StoreItem(Item item)

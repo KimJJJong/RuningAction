@@ -55,8 +55,7 @@ public class ParticlePoolManager : MonoBehaviour
             {
                 float x = particle.transform.position.x;
 
-                Debug.Log("speed:" + map_manager.getMapSpeed());
-
+                //TODO: FIX SPEED
                 //x += map_manager.getMapSpeed();
                 x += 5 * Time.deltaTime;
 
@@ -94,17 +93,6 @@ public class ParticlePoolManager : MonoBehaviour
             Debug.LogWarning("Particle Manager: No Effect: " + effectName);
     }
 
-    // 활성화된 파티클을 비활성화하고 풀에 다시 넣기
-    public IEnumerator ReturnParticleAfterDelay(GameObject particle)
-    {
-        ParticleSystem ps = particle.GetComponent<ParticleSystem>();
-
-        while (ps.isPlaying)
-            yield return null;
-
-        particle.SetActive(false);
-    }
-
     void RegisterParticles()
     {
         foreach (particle_unit item in particle_list)
@@ -114,6 +102,7 @@ public class ParticlePoolManager : MonoBehaviour
             for (int i = 0; i < item.pool_size; i++)
             {
                 GameObject particle = Instantiate(item.prefab);
+                particle.transform.SetParent(transform);
                 particle.SetActive(false);
                 pool.Add(particle);
             }
