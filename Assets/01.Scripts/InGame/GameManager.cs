@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     public PlayerManager playerManager;
 
+    public MapManager mapManager;
+
     [Header("Camera Controller")]
     public PostEffectController postEffectController;
     public CameraManager camera_manager;

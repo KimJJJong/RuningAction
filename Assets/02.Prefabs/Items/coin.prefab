@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19fc56f384fb4940bbce4a3a1fdd165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lane: 0
+  lane: -1
   id: coin
   duration: 0
   is_storable: 0

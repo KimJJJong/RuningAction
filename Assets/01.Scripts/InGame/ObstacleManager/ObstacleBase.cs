@@ -9,6 +9,12 @@ public class ObstacleBase : MapProp
 
     void Start()
     {
+        int newLayer = LayerMask.NameToLayer("Obstacle");
+        if (newLayer != -1)
+        {
+            gameObject.layer = newLayer;
+        }
+
         SetCollisionBox();
     }
 
