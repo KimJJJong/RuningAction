@@ -51,9 +51,9 @@ public class MapIndexManager : MonoBehaviour
     {
         map_order_list = new int[10];
         map_order_list[0] = 0;
-        map_order_list[1] = 0;
+        map_order_list[1] = 1;
         map_order_list[2] = 0;
-        map_order_list[3] = 1;
+        map_order_list[3] = 0;
         map_order_list[4] = 0;
         map_order_list[5] = 1;
         map_order_list[6] = 0;
@@ -79,7 +79,9 @@ public class MapIndexManager : MonoBehaviour
             MapPrefab lastMap = activated_list.Last().GetComponent<MapPrefab>();
 
             MapPrefab nextMap = obj.GetComponent<MapPrefab>();
-            spawnPos = lastMap.transform.position - new Vector3(nextMap.prefab_size.x, 0, 0);
+            float offset =
+                nextMap.prefab_size.x - lastMap.prefab_bounds_min.x + nextMap.prefab_bounds_min.x;
+            spawnPos = lastMap.transform.position - new Vector3(offset, 0, 0);
         }
 
         activated_list.Add(obj);

@@ -15393,6 +15393,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forgotten Hero
       objectReference: {fileID: 0}
+    - target: {fileID: 65382505597161943, guid: 9a51804941d26a0479f01c273ae6cb4f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4256513940862880535, guid: 9a51804941d26a0479f01c273ae6cb4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

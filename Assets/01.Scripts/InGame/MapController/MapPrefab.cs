@@ -8,6 +8,11 @@ public class MapPrefab : MonoBehaviour
     public int prefab_id;
     public float prefab_length;
     public Vector3 prefab_size;
+    public Vector3 prefab_center;
+    public Bounds prefab_bounds;
+
+    public Vector3 prefab_bounds_max;
+    public Vector3 prefab_bounds_min;
 
     private bool in_use = false;
 
@@ -68,7 +73,11 @@ public class MapPrefab : MonoBehaviour
                 bounds.Encapsulate(render.bounds);
             }
         }
-        return bounds.size;
+        prefab_center = bounds.center;
+        prefab_bounds = bounds;
+        prefab_bounds_max = bounds.max;
+        prefab_bounds_min = bounds.min;
+        return bounds.size - transform.position;
     }
 
     public void ReleaseObject()
