@@ -61,11 +61,439 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7994349218400360203}
-  - {fileID: 3646336743317821924}
   - {fileID: 4459780428756138677}
+  - {fileID: 3646336743317821924}
+  - {fileID: 940415932729394588}
   - {fileID: 3799464057054654130}
+  - {fileID: 5422449391552360153}
   m_Father: {fileID: 8790271267006705413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2869362103126478795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 940415932729394588}
+  - component: {fileID: 8533429945448101147}
+  - component: {fileID: 2451167322554234694}
+  m_Layer: 0
+  m_Name: RtoL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &940415932729394588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869362103126478795}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3460882242830126801}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8533429945448101147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869362103126478795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 40306178, guid: aa0b1eebb5db27a419fa4564bbe5c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: 0
+  onEnableBehaviour: 0
+  onDisableBehaviour: 0
+--- !u!114 &2451167322554234694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869362103126478795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -333801856, guid: aa0b1eebb5db27a419fa4564bbe5c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateType: 0
+  isSpeedBased: 0
+  hasOnStart: 1
+  hasOnPlay: 0
+  hasOnUpdate: 1
+  hasOnStepComplete: 0
+  hasOnComplete: 1
+  hasOnTweenCreated: 0
+  hasOnRewind: 1
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onStepComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onTweenCreated:
+    m_PersistentCalls:
+      m_Calls: []
+  onRewind:
+    m_PersistentCalls:
+      m_Calls: []
+  delay: 0
+  duration: 0.5
+  easeType: 3
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loops: 0
+  id: RtoL
+  loopType: 0
+  orientType: 0
+  lookAtTransform: {fileID: 0}
+  lookAtPosition: {x: 0, y: 0, z: 0}
+  lookAhead: 0.01
+  autoPlay: 0
+  autoKill: 0
+  relative: 0
+  isLocal: 1
+  isClosedPath: 0
+  pathResolution: 10
+  pathMode: 1
+  lockRotation: 0
+  assignForwardAndUp: 0
+  forwardDirection: {x: 0, y: 0, z: 1}
+  upDirection: {x: 0, y: 1, z: 0}
+  tweenRigidbody: 0
+  wps:
+  - {x: -0.53049123, y: 0, z: 1.272791}
+  - {x: -0.7456229, y: 0, z: 0.8652259}
+  - {x: -0.86739296, y: 0, z: 0.4525033}
+  - {x: -0.9244723, y: 0, z: 0.007206082}
+  - {x: -0.92266834, y: 0, z: -0.4749998}
+  - {x: -0.8270339, y: 0, z: -0.9562598}
+  - {x: -0.59447336, y: 0, z: -1.382294}
+  - {x: -0.32565713, y: 0, z: -1.708419}
+  - {x: 0, y: 0, z: -2}
+  fullWps: []
+  path:
+    wpLengths:
+    - 0
+    - 0.9001418
+    - 0.4608589
+    - 0.4303114
+    - 0.4489406
+    - 0.48220924
+    - 0.49067008
+    - 0.48537573
+    - 0.42263415
+    - 0.4371179
+    wps:
+    - {x: 8.526513e-14, y: 0, z: 2.000001}
+    - {x: -0.53049123, y: 0, z: 1.272791}
+    - {x: -0.7456229, y: 0, z: 0.8652259}
+    - {x: -0.86739296, y: 0, z: 0.4525033}
+    - {x: -0.9244723, y: 0, z: 0.007206082}
+    - {x: -0.92266834, y: 0, z: -0.4749998}
+    - {x: -0.8270339, y: 0, z: -0.9562598}
+    - {x: -0.59447336, y: 0, z: -1.382294}
+    - {x: -0.32565713, y: 0, z: -1.708419}
+    - {x: 0, y: 0, z: -2}
+    type: 0
+    subdivisionsXSegment: 10
+    subdivisions: 100
+    controlPoints: []
+    length: 4.55826
+    isFinalized: 1
+    timesTable:
+    - 0
+    - 0.19747487
+    - 0.29857898
+    - 0.39298156
+    - 0.49147102
+    - 0.59725904
+    - 0.7049032
+    - 0.8113858
+    - 0.9041042
+    - 1
+    lengthsTable: []
+  inspectorMode: 0
+  pathType: 0
+  handlesType: 0
+  livePreview: 1
+  handlesDrawMode: 0
+  perspectiveHandleSize: 0.5
+  showIndexes: 1
+  showWpLength: 0
+  pathColor: {r: 1, g: 1, b: 1, a: 0.5}
+  lastSrcPosition: {x: 8.526513e-14, y: 0, z: 2.000001}
+  lastSrcRotation: {x: -0, y: -0, z: -0, w: 1}
+  wpsDropdown: 1
+  dropToFloorOffset: 0
+--- !u!1 &3035817005328930189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5422449391552360153}
+  - component: {fileID: 554587816714219953}
+  - component: {fileID: 1737276306932643132}
+  m_Layer: 0
+  m_Name: LtoR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5422449391552360153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3035817005328930189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3460882242830126801}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &554587816714219953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3035817005328930189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 40306178, guid: aa0b1eebb5db27a419fa4564bbe5c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: 0
+  onEnableBehaviour: 0
+  onDisableBehaviour: 0
+--- !u!114 &1737276306932643132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3035817005328930189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -333801856, guid: aa0b1eebb5db27a419fa4564bbe5c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateType: 0
+  isSpeedBased: 0
+  hasOnStart: 1
+  hasOnPlay: 0
+  hasOnUpdate: 1
+  hasOnStepComplete: 0
+  hasOnComplete: 1
+  hasOnTweenCreated: 0
+  hasOnRewind: 1
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+  onStepComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onTweenCreated:
+    m_PersistentCalls:
+      m_Calls: []
+  onRewind:
+    m_PersistentCalls:
+      m_Calls: []
+  delay: 0
+  duration: 0.5
+  easeType: 3
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loops: 0
+  id: LtoR
+  loopType: 0
+  orientType: 0
+  lookAtTransform: {fileID: 0}
+  lookAtPosition: {x: 0, y: 0, z: 0}
+  lookAhead: 0.01
+  autoPlay: 0
+  autoKill: 0
+  relative: 0
+  isLocal: 1
+  isClosedPath: 0
+  pathResolution: 10
+  pathMode: 1
+  lockRotation: 0
+  assignForwardAndUp: 0
+  forwardDirection: {x: 0, y: 0, z: 1}
+  upDirection: {x: 0, y: 1, z: 0}
+  tweenRigidbody: 0
+  wps:
+  - {x: -0.53049123, y: 0, z: -1.2727911}
+  - {x: -0.7456229, y: 0, z: -0.8652259}
+  - {x: -0.86739296, y: 0, z: -0.45250332}
+  - {x: -0.9244723, y: 0, z: -0.0072060823}
+  - {x: -0.92266834, y: 0, z: 0.4749998}
+  - {x: -0.8270339, y: 0, z: 0.95625985}
+  - {x: -0.59447336, y: 0, z: 1.382294}
+  - {x: -0.32565713, y: 0, z: 1.708419}
+  - {x: 0, y: 0, z: 2}
+  fullWps: []
+  path:
+    wpLengths:
+    - 0
+    - 0.90014166
+    - 0.46085903
+    - 0.43031138
+    - 0.44894063
+    - 0.48220924
+    - 0.49067014
+    - 0.48537567
+    - 0.42263415
+    - 0.4371179
+    wps:
+    - {x: -8.526513e-14, y: 0, z: -2.000001}
+    - {x: -0.53049123, y: 0, z: -1.2727911}
+    - {x: -0.7456229, y: 0, z: -0.8652259}
+    - {x: -0.86739296, y: 0, z: -0.45250332}
+    - {x: -0.9244723, y: 0, z: -0.0072060823}
+    - {x: -0.92266834, y: 0, z: 0.4749998}
+    - {x: -0.8270339, y: 0, z: 0.95625985}
+    - {x: -0.59447336, y: 0, z: 1.382294}
+    - {x: -0.32565713, y: 0, z: 1.708419}
+    - {x: 0, y: 0, z: 2}
+    type: 0
+    subdivisionsXSegment: 10
+    subdivisions: 100
+    controlPoints: []
+    length: 4.55826
+    isFinalized: 1
+    timesTable:
+    - 0
+    - 0.19747484
+    - 0.29857898
+    - 0.39298153
+    - 0.491471
+    - 0.597259
+    - 0.7049032
+    - 0.8113858
+    - 0.9041042
+    - 1
+    lengthsTable: []
+  inspectorMode: 0
+  pathType: 0
+  handlesType: 0
+  livePreview: 1
+  handlesDrawMode: 0
+  perspectiveHandleSize: 0.5
+  showIndexes: 1
+  showWpLength: 0
+  pathColor: {r: 1, g: 1, b: 1, a: 0.5}
+  lastSrcPosition: {x: 0, y: 0, z: -2}
+  lastSrcRotation: {x: -0, y: -0, z: -0, w: 1}
+  wpsDropdown: 1
+  dropToFloorOffset: 0
 --- !u!1 &3177459241506742045
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +598,7 @@ MonoBehaviour:
       m_Calls: []
   delay: 0
   duration: 0.5
-  easeType: 6
+  easeType: 3
   easeCurve:
     serializedVersion: 2
     m_Curve:
@@ -218,11 +646,11 @@ MonoBehaviour:
   - {x: -0.374632, y: 0, z: 0.49526668}
   - {x: -0.464916, y: 0, z: 0.6951017}
   - {x: -0.511201, y: 0, z: 0.86659145}
-  - {x: -0.5501, y: 0, z: 1.0862142}
-  - {x: -0.570896, y: 0, z: 1.284102}
-  - {x: -0.510237, y: 0, z: 1.5000799}
-  - {x: -0.414295, y: 0, z: 1.7231797}
-  - {x: -0.217253, y: 0, z: 1.9273167}
+  - {x: -0.5223118, y: -0.0010490417, z: 1.0602456}
+  - {x: -0.5245743, y: -0.0017504692, z: 1.2408154}
+  - {x: -0.45376346, y: -0.0020985603, z: 1.4212906}
+  - {x: -0.31284338, y: -0.0038433075, z: 1.6370474}
+  - {x: -0.13384312, y: -0.0031385422, z: 1.8407252}
   - {x: 0, y: 0, z: 2}
   fullWps: []
   path:
@@ -231,39 +659,39 @@ MonoBehaviour:
     - 0.6209978
     - 0.21928345
     - 0.17762615
-    - 0.22304097
-    - 0.1989775
-    - 0.22433452
-    - 0.24285468
-    - 0.28372073
-    - 0.22908892
+    - 0.1939755
+    - 0.18058531
+    - 0.19387007
+    - 0.25770622
+    - 0.2711572
+    - 0.20806801
     wps:
     - {x: 0, y: 0, z: 0}
     - {x: -0.374632, y: 0, z: 0.49526668}
     - {x: -0.464916, y: 0, z: 0.6951017}
     - {x: -0.511201, y: 0, z: 0.86659145}
-    - {x: -0.5501, y: 0, z: 1.0862142}
-    - {x: -0.570896, y: 0, z: 1.284102}
-    - {x: -0.510237, y: 0, z: 1.5000799}
-    - {x: -0.414295, y: 0, z: 1.7231797}
-    - {x: -0.217253, y: 0, z: 1.9273167}
+    - {x: -0.5223118, y: -0.0010490417, z: 1.0602456}
+    - {x: -0.5245743, y: -0.0017504692, z: 1.2408154}
+    - {x: -0.45376346, y: -0.0020985603, z: 1.4212906}
+    - {x: -0.31284338, y: -0.0038433075, z: 1.6370474}
+    - {x: -0.13384312, y: -0.0031385422, z: 1.8407252}
     - {x: 0, y: 0, z: 2}
     type: 0
     subdivisionsXSegment: 10
     subdivisions: 100
     controlPoints: []
-    length: 2.4199247
+    length: 2.3232698
     isFinalized: 1
     timesTable:
     - 0
-    - 0.25661865
-    - 0.34723446
-    - 0.42063597
-    - 0.5128045
-    - 0.5950292
-    - 0.6877322
-    - 0.78808856
-    - 0.90533215
+    - 0.26729473
+    - 0.36168045
+    - 0.43813565
+    - 0.5216281
+    - 0.599357
+    - 0.6828041
+    - 0.79372805
+    - 0.9104417
     - 1
     lengthsTable: []
   inspectorMode: 0
@@ -714,51 +1142,55 @@ MonoBehaviour:
   upDirection: {x: 0, y: 1, z: 0}
   tweenRigidbody: 0
   wps:
-  - {x: -0.914876, y: 0, z: -0.5360525}
-  - {x: -0.952881, y: 0, z: -0.74999917}
-  - {x: -0.945661, y: 0, z: -1.0022178}
-  - {x: -0.842486, y: 0, z: -1.2375559}
-  - {x: -0.732808, y: 0, z: -1.4688616}
-  - {x: -0.517507, y: 0, z: -1.6702414}
-  - {x: -0.357788, y: 0, z: -1.8374546}
+  - {x: -0.374632, y: 0, z: -0.4952667}
+  - {x: -0.464916, y: 0, z: -0.6951017}
+  - {x: -0.511201, y: 0, z: -0.8665915}
+  - {x: -0.5223118, y: -0.001049042, z: -1.060246}
+  - {x: -0.5245743, y: -0.001750469, z: -1.240815}
+  - {x: -0.4537635, y: -0.00209856, z: -1.421291}
+  - {x: -0.3128434, y: -0.003843307, z: -1.637047}
+  - {x: -0.1338431, y: -0.003138542, z: -1.840725}
   - {x: 0, y: 0, z: -2}
   fullWps: []
   path:
     wpLengths:
     - 0
-    - 1.0790507
-    - 0.29532617
-    - 0.3219726
-    - 0.3256211
-    - 0.32485628
-    - 0.35624194
-    - 0.30572933
-    - 0.4409459
+    - 0.6209978
+    - 0.21928342
+    - 0.17762621
+    - 0.19397579
+    - 0.1805846
+    - 0.19387071
+    - 0.25770563
+    - 0.27115732
+    - 0.20806818
     wps:
     - {x: 0, y: 0, z: 0}
-    - {x: -0.914876, y: 0, z: -0.5360525}
-    - {x: -0.952881, y: 0, z: -0.74999917}
-    - {x: -0.945661, y: 0, z: -1.0022178}
-    - {x: -0.842486, y: 0, z: -1.2375559}
-    - {x: -0.732808, y: 0, z: -1.4688616}
-    - {x: -0.517507, y: 0, z: -1.6702414}
-    - {x: -0.357788, y: 0, z: -1.8374546}
+    - {x: -0.374632, y: 0, z: -0.4952667}
+    - {x: -0.464916, y: 0, z: -0.6951017}
+    - {x: -0.511201, y: 0, z: -0.8665915}
+    - {x: -0.5223118, y: -0.001049042, z: -1.060246}
+    - {x: -0.5245743, y: -0.001750469, z: -1.240815}
+    - {x: -0.4537635, y: -0.00209856, z: -1.421291}
+    - {x: -0.3128434, y: -0.003843307, z: -1.637047}
+    - {x: -0.1338431, y: -0.003138542, z: -1.840725}
     - {x: 0, y: 0, z: -2}
     type: 0
     subdivisionsXSegment: 10
-    subdivisions: 90
+    subdivisions: 100
     controlPoints: []
-    length: 2.9806404
+    length: 2.3232694
     isFinalized: 1
     timesTable:
     - 0
-    - 0.36201975
-    - 0.4349222
-    - 0.5195758
-    - 0.6057859
-    - 0.69167066
-    - 0.7905763
-    - 0.86815584
+    - 0.2672948
+    - 0.36168048
+    - 0.43813574
+    - 0.5216284
+    - 0.599357
+    - 0.68280435
+    - 0.793728
+    - 0.91044164
     - 1
     lengthsTable: []
   inspectorMode: 0
@@ -936,7 +1368,7 @@ MonoBehaviour:
   path:
     wpLengths:
     - 0
-    - 0.6209978
+    - 0.6209985
     - 0.21928349
     - 0.17762609
     - 0.2230408
@@ -946,7 +1378,7 @@ MonoBehaviour:
     - 0.28372073
     - 0.22908881
     wps:
-    - {x: 0, y: 0, z: 2}
+    - {x: 8.526513e-14, y: 0, z: 2.000001}
     - {x: -0.374632, y: 0, z: 1.5047333}
     - {x: -0.464916, y: 0, z: 1.3048983}
     - {x: -0.511201, y: 0, z: 1.1334085}
@@ -960,18 +1392,18 @@ MonoBehaviour:
     subdivisionsXSegment: 10
     subdivisions: 100
     controlPoints: []
-    length: 2.4199247
+    length: 2.4199257
     isFinalized: 1
     timesTable:
     - 0
-    - 0.25661865
-    - 0.34723446
-    - 0.42063597
-    - 0.51280445
-    - 0.59502923
+    - 0.25661883
+    - 0.3472346
+    - 0.4206361
+    - 0.51280457
+    - 0.5950293
     - 0.68773234
     - 0.7880887
-    - 0.90533227
+    - 0.9053323
     - 1
     lengthsTable: []
   inspectorMode: 0
@@ -1149,17 +1581,17 @@ MonoBehaviour:
   path:
     wpLengths:
     - 0
-    - 0.6524098
-    - 0.29679152
-    - 0.2674898
-    - 0.29957873
-    - 0.2821208
-    - 0.30054286
-    - 0.31460845
-    - 0.34712744
-    - 0.30410802
+    - 0.6209988
+    - 0.21928339
+    - 0.1776254
+    - 0.22304127
+    - 0.19897774
+    - 0.22433458
+    - 0.24285485
+    - 0.28372073
+    - 0.22908881
     wps:
-    - {x: 0, y: 0, z: -2}
+    - {x: -8.526513e-14, y: 0, z: -2.000001}
     - {x: -0.374632, y: 0, z: -1.504733}
     - {x: -0.464916, y: 0, z: -1.304898}
     - {x: -0.511201, y: 0, z: -1.133409}
@@ -1173,18 +1605,18 @@ MonoBehaviour:
     subdivisionsXSegment: 10
     subdivisions: 100
     controlPoints: []
-    length: 2.4513364
+    length: 2.4199257
     isFinalized: 1
     timesTable:
     - 0
-    - 0.26614454
-    - 0.35559916
-    - 0.4280598
-    - 0.51904744
-    - 0.60021853
-    - 0.6917338
-    - 0.79080415
-    - 0.90654534
+    - 0.25661895
+    - 0.34723473
+    - 0.4206359
+    - 0.51280457
+    - 0.5950293
+    - 0.68773234
+    - 0.7880887
+    - 0.9053323
     - 1
     lengthsTable: []
   inspectorMode: 0

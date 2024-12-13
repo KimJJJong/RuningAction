@@ -80,7 +80,9 @@ public class MapIndexManager : MonoBehaviour
 
             MapPrefab nextMap = obj.GetComponent<MapPrefab>();
             float offset =
-                nextMap.prefab_size.x - lastMap.prefab_bounds_min.x + nextMap.prefab_bounds_min.x;
+                nextMap.prefab_bounds.size.x
+                - lastMap.prefab_bounds.min.x
+                + nextMap.prefab_bounds.min.x;
             spawnPos = lastMap.transform.position - new Vector3(offset, 0, 0);
         }
 

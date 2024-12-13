@@ -7,12 +7,9 @@ public class MapPrefab : MonoBehaviour
 {
     public int prefab_id;
     public float prefab_length;
-    public Vector3 prefab_size;
-    public Vector3 prefab_center;
-    public Bounds prefab_bounds;
 
-    public Vector3 prefab_bounds_max;
-    public Vector3 prefab_bounds_min;
+    [HideInInspector]
+    public Bounds prefab_bounds;
 
     private bool in_use = false;
 
@@ -27,7 +24,7 @@ public class MapPrefab : MonoBehaviour
 
     private void Awake()
     {
-        prefab_size = calculatePrefabLength();
+        prefab_bounds = GetGroundBounds();
     }
 
     private void OnEnable()
@@ -73,11 +70,22 @@ public class MapPrefab : MonoBehaviour
                 bounds.Encapsulate(render.bounds);
             }
         }
-        prefab_center = bounds.center;
-        prefab_bounds = bounds;
-        prefab_bounds_max = bounds.max;
-        prefab_bounds_min = bounds.min;
+
         return bounds.size - transform.position;
+    }
+
+    Bounds GetGroundBounds()
+    {
+        Bounds bounds = new Bounds(transform.position, Vector3.zero);
+
+        foreach (Renderer render in this.gameObject.transform.GetComponentsInChildren<Renderer>())
+        {
+            if (render.gameObject.tag == "Ground")
+            {
+                bounds.Encapsulate(render.bounds);
+            }
+        }
+        return bounds;
     }
 
     public void ReleaseObject()

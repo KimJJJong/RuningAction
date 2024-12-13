@@ -117,9 +117,9 @@ public class PlayerManager : MonoBehaviour
             .position;
         rightController.playerObj.transform.position = rightController.playerPosition.back.position;
 
-        leftController.position = EPlayerPosition.Left;
-        centerController.position = EPlayerPosition.Center;
-        rightController.position = EPlayerPosition.Right;
+        leftController.lane = GameManager.Lane.Left;
+        centerController.lane = GameManager.Lane.Center;
+        rightController.lane = GameManager.Lane.Right;
     }
 
     private void SetBall()
@@ -304,6 +304,96 @@ public class PlayerManager : MonoBehaviour
         ctlLock = true;
         OnPass.Invoke(from, to);
     }
+
+    private void LeftPass()
+    {
+        GetCurrentController().SetState(EState.Pass);
+        PlayerController from = GetPlayerControllerByLane(currentLane);
+        PlayerController to;
+
+        if (!GetLeftLaneControllerFromCurrentLane(out to))
+            return;
+    }
+
+    bool GetLeftLaneControllerFromCurrentLane(out PlayerController leftController)
+    {
+        try
+        {
+            int laneValue = (int)currentLane;
+            while (laneValue >= (int)GameManager.Lane.Left)
+            {
+                GameManager.Lane lane = (GameManager.Lane)laneValue;
+                leftController = GetPlayerControllerByLane(lane);
+
+                if (leftController == null)
+                    return false;
+
+                if (!leftController.isDisabled)
+                    return true;
+
+                laneValue--;
+            }
+        }
+        catch (Exception)
+        {
+            leftController = null;
+            return false;
+        }
+        return false;
+    }
+
+    bool GetRightLaneControllerFromCurrentLane(out PlayerController rightController)
+    {
+        try
+        {
+            while (true)
+            {
+                GameManager.Lane lane = (GameManager.Lane)((int)currentLane + 1);
+                rightController = GetPlayerControllerByLane(lane);
+
+                if (rightController == null)
+                    return false;
+
+                if (!rightController.isDisabled)
+                    return true;
+            }
+        }
+        catch (Exception e)
+        {
+            rightController = null;
+            return false;
+        }
+    }
+
+    PassType GetPassType(PlayerController from, PlayerController to)
+    {
+        //TODO: 딕셔너리로 변경 해야됌
+        if (from == leftController)
+        {
+            if (to == centerController)
+                return PassType.LtoC;
+            else if (to == rightController)
+                return PassType.LtoR;
+        }
+        else if (from == centerController)
+        {
+            if (to == leftController)
+                return PassType.CtoL;
+            else if (to == rightController)
+                return PassType.CtoR;
+        }
+        else if (from == rightController)
+        {
+            if (to == leftController)
+                return PassType.RtoL;
+            else if (to == centerController)
+                return PassType.RtoC;
+        }
+
+        return PassType.None;
+    }
+
+    private void RightPass() { }
 
     private void SwitchPlayer(GameManager.Lane lane)
     {

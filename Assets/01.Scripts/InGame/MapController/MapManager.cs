@@ -75,7 +75,10 @@ public class MapManager : MonoBehaviour
         if (is_sync_ready && gameManager.gameState == GameState.Playing)
         {
             MapPrefab firstMap = mapIndexManager.activated_list.First().GetComponent<MapPrefab>();
-            if (firstMap.transform.position.x > transform.position.x + firstMap.prefab_size.x)
+            if (
+                firstMap.transform.position.x
+                > transform.position.x + firstMap.prefab_bounds.size.x
+            )
             {
                 mapIndexManager.deactivateMap();
             }
