@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         public Transform front;
         public Transform back;
+        public Transform retire;
     }
 
     private GameUIManager gameUiManager;
@@ -88,6 +89,12 @@ public class PlayerController : MonoBehaviour
         get => _isDisabled;
     }
 
+    [HideInInspector]
+    public PlayerController leftController;
+
+    [HideInInspector]
+    public PlayerController rightController;
+
     void Awake()
     {
         col = playerObj.GetComponent<CapsuleCollider>();
@@ -103,6 +110,56 @@ public class PlayerController : MonoBehaviour
         gameUiManager = GameUIManager.instance;
         ball = GameManager.Instance.playerManager.ball;
         SetIdleAnimation(idleType);
+
+        HpController.OnHpZero(
+            (playerObj) =>
+            {
+                if (this.playerObj != playerObj)
+                    return;
+
+                SetState(EState.Retire);
+
+                if (leftController != null)
+                    leftController.rightController = rightController;
+
+                if (rightController != null)
+                    rightController.leftController = leftController;
+
+                if (GameManager.Instance.playerManager.GetCurrentController() == this)
+                {
+                    PlayerController to;
+                    if (leftController != null)
+                        to = leftController;
+                    else if (rightController != null)
+                        to = rightController;
+                    else
+                    {
+                        GameManager.Instance.GameOver();
+                        return;
+                    }
+
+                    GameManager.Instance.playerManager.Pass(this, to);
+                }
+
+                MoveRetire();
+            }
+        );
+    }
+
+    public PlayerController GetLeftController()
+    {
+        if (leftController == null)
+            return null;
+
+        return leftController;
+    }
+
+    public PlayerController GetRightController()
+    {
+        if (rightController == null)
+            return null;
+
+        return rightController;
     }
 
     public MoveActionWorker.MoveActionListener MoveFront()
@@ -113,6 +170,11 @@ public class PlayerController : MonoBehaviour
     public MoveActionWorker.MoveActionListener MoveBack()
     {
         return Move(playerPosition.back.position);
+    }
+
+    public MoveActionWorker.MoveActionListener MoveRetire()
+    {
+        return Move(playerPosition.retire.position, 1.5f);
     }
 
     public MoveActionWorker.MoveActionListener Move(Vector3 targetPosition)
@@ -326,6 +388,9 @@ public class PlayerController : MonoBehaviour
 
     public void SetState(EState state)
     {
+        if (_isDisabled)
+            return;
+
         switch (state)
         {
             case EState.Runing:
@@ -380,6 +445,12 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 break;
+            case EState.Retire:
+                {
+                    animator.SetTrigger("isRetire");
+                    _isDisabled = true;
+                }
+                break;
         }
     }
 
@@ -404,6 +475,7 @@ public enum EState
     Throw,
     Batting,
     Pass,
+    Retire,
 }
 
 public enum EPlayerPosition

@@ -1,36 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using DG.Tweening;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
 {
     public static GameUIManager instance;
 
-    [SerializeField] private GameManager gameManager;
+    [SerializeField]
+    private GameManager gameManager;
 
     [Header("InGame UI")]
-    [SerializeField] private GameObject gameUiPanel;
-    [SerializeField] private TextMeshProUGUI countdownText;
-    [SerializeField] private TextMeshProUGUI goalText;
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField]
+    private GameObject gameUiPanel;
 
+    [SerializeField]
+    private TextMeshProUGUI countdownText;
+
+    [SerializeField]
+    private TextMeshProUGUI goalText;
+
+    [SerializeField]
+    private TextMeshProUGUI scoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI coinText;
 
     [Header("GameOver UI")]
-    [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private TextMeshProUGUI runningTimeText;
-    [SerializeField] private TextMeshProUGUI endCoinText;
-    [SerializeField] private TextMeshProUGUI endScoreText;
-    [SerializeField] private Color highScoreColor;
-    [SerializeField] private TextMeshProUGUI highScoreText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private TextMeshProUGUI expText;
-    [SerializeField] private Slider expSlider;
-    [SerializeField] private float expFillSpeedMin = 200f;
-    [SerializeField] private float expFillSpeedMax = 1000f;
+    [SerializeField]
+    private GameObject gameOverPanel;
+
+    [SerializeField]
+    private TextMeshProUGUI runningTimeText;
+
+    [SerializeField]
+    private TextMeshProUGUI endCoinText;
+
+    [SerializeField]
+    private TextMeshProUGUI endScoreText;
+
+    [SerializeField]
+    private Color highScoreColor;
+
+    [SerializeField]
+    private TextMeshProUGUI highScoreText;
+
+    [SerializeField]
+    private TextMeshProUGUI levelText;
+
+    [SerializeField]
+    private TextMeshProUGUI expText;
+
+    [SerializeField]
+    private Slider expSlider;
+
+    [SerializeField]
+    private float expFillSpeedMin = 200f;
+
+    [SerializeField]
+    private float expFillSpeedMax = 1000f;
     private Color defaultScoreColor;
 
     private WaitForSecondsRealtime textEffectTime = new WaitForSecondsRealtime(0.5f);
@@ -156,9 +186,10 @@ public class GameUIManager : MonoBehaviour
             textTMP.text = "0";
 
         Sequence scoreSequence = DOTween.Sequence().SetUpdate(true);
-        scoreSequence.Append(textTMP.transform.DOScale(Vector3.one * 1.5f, 0.2f))
-                     .Append(textTMP.transform.DOScale(Vector3.one, 0.1f))
-                     .Append(textTMP.transform.DOShakeScale(0.3f, 0.2f, 10, 90f));
+        scoreSequence
+            .Append(textTMP.transform.DOScale(Vector3.one * 1.5f, 0.2f))
+            .Append(textTMP.transform.DOScale(Vector3.one, 0.1f))
+            .Append(textTMP.transform.DOShakeScale(0.3f, 0.2f, 10, 90f));
     }
 
     public void UpdateExpSlide(int gainedExp)
@@ -171,7 +202,11 @@ public class GameUIManager : MonoBehaviour
         while (exp > 0)
         {
             float expToFill = Mathf.Min(expSlider.maxValue - expSlider.value, exp);
-            float fillSpeed = Mathf.Lerp(expFillSpeedMin, expFillSpeedMax, exp / expSlider.maxValue);
+            float fillSpeed = Mathf.Lerp(
+                expFillSpeedMin,
+                expFillSpeedMax,
+                exp / expSlider.maxValue
+            );
 
             while (expToFill > 0)
             {

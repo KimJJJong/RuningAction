@@ -164,7 +164,7 @@ public class Ball : MonoBehaviour
 
     private void AddTweenListener(DOTweenPath path)
     {
-        path.onStart.AddListener(() =>
+        path.onPlay.AddListener(() =>
         {
             onPassStart.Invoke();
         });

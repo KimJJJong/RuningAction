@@ -120,6 +120,11 @@ public class PlayerManager : MonoBehaviour
         leftController.lane = GameManager.Lane.Left;
         centerController.lane = GameManager.Lane.Center;
         rightController.lane = GameManager.Lane.Right;
+
+        leftController.rightController = centerController;
+        centerController.leftController = leftController;
+        centerController.rightController = rightController;
+        rightController.leftController = centerController;
     }
 
     private void SetBall()
@@ -182,12 +187,14 @@ public class PlayerManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MasterAudio.PlaySound("pass_1");
-            Pass(true);
+            //Pass(true);
+            LeftPass();
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             MasterAudio.PlaySound("pass_1");
-            Pass(false);
+            //Pass(false);
+            RightPass();
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -246,123 +253,40 @@ public class PlayerManager : MonoBehaviour
         GetCurrentController().Slide();
     }
 
-    private void Pass(bool isLeft)
+    public void Pass(PlayerController from, PlayerController to)
     {
+        PassType passType = GetPassType(from, to);
+        if (passType == PassType.None)
+            return;
+
         GetCurrentController().SetState(EState.Pass);
-
-        PlayerController from =
-            (currentLane == GameManager.Lane.Left) ? leftController
-            : (currentLane == GameManager.Lane.Center) ? centerController
-            : (currentLane == GameManager.Lane.Right) ? rightController
-            : null;
-
-        if (from == null)
-            return;
-
-        PlayerController to = from;
-
-        if (isLeft)
-        {
-            to =
-                (currentLane == GameManager.Lane.Center) ? leftController
-                : currentLane == GameManager.Lane.Right ? centerController
-                : from;
-
-            if (currentLane == GameManager.Lane.Right)
-            {
-                soccerBall.GetComponent<Ball>().Pass(PassType.RtoC, passSpeed);
-                SwitchPlayer(GameManager.Lane.Center);
-            }
-            else if (currentLane == GameManager.Lane.Center)
-            {
-                soccerBall.GetComponent<Ball>().Pass(PassType.CtoL, passSpeed);
-                SwitchPlayer(GameManager.Lane.Left);
-            }
-            //SwitchPlayer(-1);
-        }
-        else
-        {
-            to =
-                (currentLane == GameManager.Lane.Left) ? centerController
-                : currentLane == GameManager.Lane.Center ? rightController
-                : from;
-            if (currentLane == GameManager.Lane.Left)
-            {
-                soccerBall.GetComponent<Ball>().Pass(PassType.LtoC, passSpeed);
-                SwitchPlayer(GameManager.Lane.Center);
-            }
-            else if (currentLane == GameManager.Lane.Center)
-            {
-                soccerBall.GetComponent<Ball>().Pass(PassType.CtoR, passSpeed);
-                SwitchPlayer(GameManager.Lane.Right);
-            }
-            //SwitchPlayer(1);
-        }
-
-        if (from == to)
-            return;
-        ctlLock = true;
+        soccerBall.GetComponent<Ball>().Pass(passType, passSpeed);
+        SwitchPlayer(to.lane);
         OnPass.Invoke(from, to);
     }
 
     private void LeftPass()
     {
-        GetCurrentController().SetState(EState.Pass);
         PlayerController from = GetPlayerControllerByLane(currentLane);
         PlayerController to;
 
-        if (!GetLeftLaneControllerFromCurrentLane(out to))
+        to = from.GetLeftController();
+        if (to == null)
             return;
+
+        Pass(from, to);
     }
 
-    bool GetLeftLaneControllerFromCurrentLane(out PlayerController leftController)
+    private void RightPass()
     {
-        try
-        {
-            int laneValue = (int)currentLane;
-            while (laneValue >= (int)GameManager.Lane.Left)
-            {
-                GameManager.Lane lane = (GameManager.Lane)laneValue;
-                leftController = GetPlayerControllerByLane(lane);
+        PlayerController from = GetPlayerControllerByLane(currentLane);
+        PlayerController to;
 
-                if (leftController == null)
-                    return false;
+        to = from.GetRightController();
+        if (to == null)
+            return;
 
-                if (!leftController.isDisabled)
-                    return true;
-
-                laneValue--;
-            }
-        }
-        catch (Exception)
-        {
-            leftController = null;
-            return false;
-        }
-        return false;
-    }
-
-    bool GetRightLaneControllerFromCurrentLane(out PlayerController rightController)
-    {
-        try
-        {
-            while (true)
-            {
-                GameManager.Lane lane = (GameManager.Lane)((int)currentLane + 1);
-                rightController = GetPlayerControllerByLane(lane);
-
-                if (rightController == null)
-                    return false;
-
-                if (!rightController.isDisabled)
-                    return true;
-            }
-        }
-        catch (Exception e)
-        {
-            rightController = null;
-            return false;
-        }
+        Pass(from, to);
     }
 
     PassType GetPassType(PlayerController from, PlayerController to)
@@ -393,8 +317,6 @@ public class PlayerManager : MonoBehaviour
         return PassType.None;
     }
 
-    private void RightPass() { }
-
     private void SwitchPlayer(GameManager.Lane lane)
     {
         PlayerController oldPlayerCtl = GetPlayerControllerByLane(currentLane);
@@ -410,7 +332,7 @@ public class PlayerManager : MonoBehaviour
         newPlayerCtl.MoveFront();
     }
 
-    private PlayerController GetPlayerControllerByLane(GameManager.Lane playerNum)
+    public PlayerController GetPlayerControllerByLane(GameManager.Lane playerNum)
     {
         return playerNum switch
         {

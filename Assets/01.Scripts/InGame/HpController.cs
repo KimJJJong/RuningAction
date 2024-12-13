@@ -121,7 +121,7 @@ public class HpController : MonoBehaviour
                 HpBar.value = _hp;
         }
 
-        onHpZero?.Invoke(gameObject);
+        onHpZero?.Invoke(this.gameObject);
     }
 
     private void UpdateHp(float value)
@@ -131,7 +131,7 @@ public class HpController : MonoBehaviour
         if (_hp > 0)
             return;
 
-        onHpZero?.Invoke(this.gameObject);
+        //onHpZero?.Invoke(this.gameObject);
     }
 
     public delegate void BaseAction(GameObject gameObject);

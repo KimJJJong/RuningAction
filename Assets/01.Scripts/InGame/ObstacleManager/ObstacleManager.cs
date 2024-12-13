@@ -42,7 +42,7 @@ public class ObstacleManager : MonoBehaviour
         //TODO: Do the damage according to damage variable
 
         //if 같은 레인이면
-
-        HpController.Damage(player, damage);
+        if (GameManager.Instance.playerManager.GetCurrentPlayer() == player)
+            HpController.Damage(player, damage);
     }
 }
