@@ -12,7 +12,6 @@ public class MapIndexManager : MonoBehaviour
     public List<IObjectPool<GameObject>> map_poll = new List<IObjectPool<GameObject>>();
     private List<MapPrefab> clone_list;
     public List<GameObject> activated_list = new List<GameObject>();
-    
 
     private int[] map_order_list;
     public int cur_order;
@@ -52,11 +51,11 @@ public class MapIndexManager : MonoBehaviour
     {
         map_order_list = new int[10];
         map_order_list[0] = 0;
-        map_order_list[1] = 0;
+        map_order_list[1] = 1;
         map_order_list[2] = 0;
         map_order_list[3] = 0;
         map_order_list[4] = 0;
-        map_order_list[5] = 0;
+        map_order_list[5] = 1;
         map_order_list[6] = 0;
         map_order_list[7] = 0;
         map_order_list[8] = 0;
@@ -79,7 +78,12 @@ public class MapIndexManager : MonoBehaviour
         {
             MapPrefab lastMap = activated_list.Last().GetComponent<MapPrefab>();
 
-            spawnPos = lastMap.transform.position - new Vector3(lastMap.prefab_size.x, 0, 0);
+            MapPrefab nextMap = obj.GetComponent<MapPrefab>();
+            float offset =
+                nextMap.prefab_bounds.size.x
+                - lastMap.prefab_bounds.min.x
+                + nextMap.prefab_bounds.min.x;
+            spawnPos = lastMap.transform.position - new Vector3(offset, 0, 0);
         }
 
         activated_list.Add(obj);
@@ -124,7 +128,7 @@ public class MapIndexManager : MonoBehaviour
         cur_map_idx = idx;
 
         map_poll[cur_map_idx].Get();
-        ++cur_order;        
+        ++cur_order;
     }
 
     public void deactivateMap()

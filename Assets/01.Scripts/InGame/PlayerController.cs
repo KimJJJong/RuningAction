@@ -69,17 +69,24 @@ public class PlayerController : MonoBehaviour
     public bool autoDodge = false;
     public float dodgeDuration = 3f;
 
-    private EPlayerPosition _position;
+    private GameManager.Lane _lane;
 
-    public EPlayerPosition position
+    public GameManager.Lane lane
     {
-        get => _position;
-        set => _position = value;
+        get => _lane;
+        set => _lane = value;
     }
 
     MoveActionWorker actionWorker = new MoveActionWorker();
 
     private Ball ball;
+
+    private bool _isDisabled = false;
+
+    public bool isDisabled
+    {
+        get => _isDisabled;
+    }
 
     void Awake()
     {

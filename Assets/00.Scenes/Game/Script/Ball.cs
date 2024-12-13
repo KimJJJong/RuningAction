@@ -7,10 +7,13 @@ using UnityEngine.Events;
 
 public enum PassType
 {
+    None = -1,
     CtoR,
     CtoL,
     RtoC,
+    RtoL,
     LtoC,
+    LtoR,
 }
 
 public class Ball : MonoBehaviour
@@ -148,8 +151,12 @@ public class Ball : MonoBehaviour
                 passList.Add(PassType.CtoL, tweenPath);
             else if (tweenPath.id == "RtoC")
                 passList.Add(PassType.RtoC, tweenPath);
+            else if (tweenPath.id == "RtoL")
+                passList.Add(PassType.RtoL, tweenPath);
             else if (tweenPath.id == "LtoC")
                 passList.Add(PassType.LtoC, tweenPath);
+            else if (tweenPath.id == "LtoR")
+                passList.Add(PassType.LtoR, tweenPath);
 
             AddTweenListener(tweenPath);
         }
