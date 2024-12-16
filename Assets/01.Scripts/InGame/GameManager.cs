@@ -89,15 +89,15 @@ public class GameManager : MonoBehaviour
     {
         OnGameStateChange = new GameStateChangeEvent();
         _instance = GetComponent<GameManager>();
+
+        lanePositions[Lane.Left] = mapCenter - laneGap;
+        lanePositions[Lane.Center] = mapCenter;
+        lanePositions[Lane.Right] = mapCenter + laneGap;
     }
 
     private void Start()
     {
         gameUiManager.SetGamePlayPanel();
-
-        lanePositions[Lane.Left] = mapCenter - laneGap;
-        lanePositions[Lane.Center] = mapCenter;
-        lanePositions[Lane.Right] = mapCenter + laneGap;
     }
 
     private void Update()

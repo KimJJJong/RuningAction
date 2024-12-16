@@ -5,13 +5,22 @@ using UnityEngine;
 public class SoccerBall : MonoBehaviour
 {
     public int ballLine;
-    [SerializeField] private float moveSpeed = 50f;
-    [SerializeField] private float rotationSpeed = 100f;
-    [SerializeField] private float rotationSpeedY = 100f;
-    [SerializeField] private float rotationSpeedZ = 100f;
+
+    [SerializeField]
+    private float moveSpeed = 50f;
+
+    [SerializeField]
+    private float rotationSpeed = 100f;
+
+    [SerializeField]
+    private float rotationSpeedY = 100f;
+
+    [SerializeField]
+    private float rotationSpeedZ = 100f;
 
     private bool isShooting = false;
     private ShotOnGoal shotOnGoal;
+
     private void Start()
     {
         shotOnGoal = transform.parent.GetComponent<ShotOnGoal>();
@@ -49,6 +58,5 @@ public class SoccerBall : MonoBehaviour
             GetComponent<TrailRenderer>().enabled = false;
             shotOnGoal.PlayGoalEvent();
         }
-
     }
 }

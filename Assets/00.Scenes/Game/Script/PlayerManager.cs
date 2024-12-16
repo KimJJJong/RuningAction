@@ -289,6 +289,8 @@ public class PlayerManager : MonoBehaviour
         Pass(from, to);
     }
 
+    //public void Shoot() { }
+
     PassType GetPassType(PlayerController from, PlayerController to)
     {
         //TODO: 딕셔너리로 변경 해야됌
