@@ -51,11 +51,11 @@ public class MapIndexManager : MonoBehaviour
     {
         map_order_list = new int[10];
         map_order_list[0] = 0;
-        map_order_list[1] = 1;
+        map_order_list[1] = 0;
         map_order_list[2] = 0;
         map_order_list[3] = 0;
         map_order_list[4] = 0;
-        map_order_list[5] = 1;
+        map_order_list[5] = 0;
         map_order_list[6] = 0;
         map_order_list[7] = 0;
         map_order_list[8] = 0;

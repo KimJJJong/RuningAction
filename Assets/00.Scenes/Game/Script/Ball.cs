@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,7 @@ public class Ball : MonoBehaviour
     private Dictionary<PassType, DOTweenPath> passList = new Dictionary<PassType, DOTweenPath>();
     public Vector3 ballOffset;
     public float ballRotationSpeed;
+    bool shootFlag = false;
 
     MoveActionWorker actionWorker = new MoveActionWorker();
 
@@ -56,6 +58,8 @@ public class Ball : MonoBehaviour
 
     public void Jump(float force, float duration)
     {
+        if (shootFlag)
+            return;
         //Vector3 positionOffset = transform.position;
         Tweener up = DOTween
             .To(
@@ -86,7 +90,43 @@ public class Ball : MonoBehaviour
         actionWorker.Clear().AddAction(action);
     }
 
-    public void Shoot() { }
+    public MoveActionWorker.MoveActionListener Shoot()
+    {
+        Vector3 endPos = ballObject.transform.position + Vector3.left * 15;
+        endPos.y += 2;
+
+        Tweener shoot = DOTween.To(
+            () => ballObject.transform.position,
+            t => ballObject.transform.position = t,
+            endPos,
+            1f / GameManager.Instance.gameSpeed
+        );
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(shoot)
+            .AddStartCallBack(() =>
+            {
+                shootFlag = true;
+            })
+            .AddFinishCallBack(() =>
+            {
+                shootFlag = false;
+                GameManager.Lane lane = GameManager
+                    .Instance.playerManager.GetCurrentController()
+                    .lane;
+                ballObject.transform.position = new Vector3(
+                    ballOffset.x,
+                    ballOffset.y,
+                    GameManager.Instance.lanePositions[lane]
+                );
+            })
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
+
+        return action.listener;
+    }
 
     public void Pass(PassType passType)
     {
@@ -95,6 +135,9 @@ public class Ball : MonoBehaviour
 
     public void Pass(PassType passType, float duration)
     {
+        if (shootFlag)
+            return;
+
         DOTweenPath pass;
 
         if (!passList.TryGetValue(passType, out pass))
