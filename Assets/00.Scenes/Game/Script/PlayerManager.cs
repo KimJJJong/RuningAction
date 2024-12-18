@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DarkTonic.MasterAudio;
 using DG.Tweening;
 using UnityEngine;
@@ -75,6 +76,9 @@ public class PlayerManager : MonoBehaviour
 
     public float passSpeed = 0.5f;
     private bool ctlLock = true;
+
+    private List<Action> recordedActions = new List<Action>();
+    private float lastInputTime = 0f;
 
     public void Awake()
     {
@@ -167,62 +171,57 @@ public class PlayerManager : MonoBehaviour
     {
         if (GameManager.Instance.gameState == GameState.Playing)
         {
-            Controll();
+            if (!ctlLock)
+            {
+                if (recordedActions.Count > 0)
+                {
+                    recordedActions.Last()();
+                    recordedActions.Clear();
+                }
+            }
+
+            KeyInputEventHandler();
         }
     }
 
-    private void Controll()
+    void KeyActionTask(Action action)
     {
-        if (ctlLock)
+        action();
+    }
+
+    private void KeyInputEventHandler()
+    {
+        if (lastInputTime > Time.time - 0.1f)
             return;
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            Jump();
+            //Jump();
+            recordedActions.Add(() => Jump());
+            lastInputTime = Time.time;
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Slide();
+            //Slide();
+            recordedActions.Add(() => Slide());
+            lastInputTime = Time.time;
         }
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            MasterAudio.PlaySound("pass_1");
-            //Pass(true);
-            LeftPass();
+            recordedActions.Add(() =>
+            {
+                MasterAudio.PlaySound("pass_1");
+                LeftPass();
+            });
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            MasterAudio.PlaySound("pass_1");
-            //Pass(false);
-            RightPass();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            GetCurrentController()
-                .Jump()
-                ?.OnComplete(() =>
-                {
-                    Debug.Log("Z Move Complete");
-                })
-                ?.OnFinish(() =>
-                {
-                    Debug.Log("Z Move Finish");
-                });
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            GetCurrentController()
-                .MoveBack()
-                .OnComplete(() =>
-                {
-                    Debug.Log("X Move Complete");
-                })
-                .OnFinish(() =>
-                {
-                    Debug.Log("X Move Finish");
-                });
+            recordedActions.Add(() =>
+            {
+                MasterAudio.PlaySound("pass_1");
+                RightPass();
+            });
+            lastInputTime = Time.time;
         }
     }
 
