@@ -249,7 +249,10 @@ public class PlayerManager : MonoBehaviour
 
     private void Slide()
     {
-        GetCurrentController().Slide();
+        float slideSpd = Math.Max(1f / GameManager.Instance.gameSpeed, 0.5f);
+
+        GetCurrentController().Slide(slideSpd);
+        ball.Down(slideSpd);
     }
 
     public void Pass(PlayerController from, PlayerController to)

@@ -56,15 +56,44 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void Down(float duration)
+    {
+        if (shootFlag)
+            return;
+
+        Tweener down = DOTween
+            .To(
+                () =>
+                {
+                    return transform.position;
+                },
+                position => transform.position = position,
+                ballOffset,
+                duration
+            )
+            .SetEase(Ease.OutQuart);
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(down)
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
+    }
+
     public void Jump(float force, float duration)
     {
         if (shootFlag)
             return;
+
         //Vector3 positionOffset = transform.position;
         Tweener up = DOTween
             .To(
                 () => transform.position,
-                position => transform.position = position,
+                position =>
+                {
+                    transform.position = position;
+                },
                 transform.position + Vector3.up * force,
                 duration / 2f
             )
@@ -90,16 +119,16 @@ public class Ball : MonoBehaviour
         actionWorker.Clear().AddAction(action);
     }
 
-    public MoveActionWorker.MoveActionListener Shoot()
+    public MoveActionWorker.MoveActionListener Shoot(float dist, float duration)
     {
-        Vector3 endPos = ballObject.transform.position + Vector3.left * 15;
-        endPos.y += 2;
+        Vector3 endPos = ballObject.transform.position + Vector3.left * dist;
+        endPos.y += 1.5f;
 
         Tweener shoot = DOTween.To(
             () => ballObject.transform.position,
             t => ballObject.transform.position = t,
             endPos,
-            1f / GameManager.Instance.gameSpeed
+            duration
         );
 
         MoveActionWorker.MoveAction action = MoveActionWorker
@@ -109,6 +138,27 @@ public class Ball : MonoBehaviour
             {
                 shootFlag = true;
             })
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
+
+        return action.listener;
+    }
+
+    public void ShootBlockAction()
+    {
+        if (!shootFlag)
+            return;
+        Tweener tweener = DOTween.To(
+            () => ballObject.transform.position,
+            t => ballObject.transform.position = t,
+            ballObject.transform.position + Vector3.right * 15,
+            1.0f
+        );
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(tweener)
             .AddFinishCallBack(() =>
             {
                 shootFlag = false;
@@ -124,8 +174,49 @@ public class Ball : MonoBehaviour
             .Build();
 
         actionWorker.Clear().AddAction(action);
+    }
 
-        return action.listener;
+    public void ShootSuccessAction(GameObject target)
+    {
+        if (!shootFlag)
+            return;
+
+        float offsetY = ballObject.transform.position.y;
+
+        Tweener tweener = DOTween.To(
+            () => 0f,
+            t =>
+            {
+                float height = t < 0.5f ? 1 : (-4f * (t - 0.5f) * (t - 0.5f) + 1f);
+                Vector3 tmp = target.transform.position;
+                tmp.x = Math.Max(ballObject.transform.position.x, tmp.x) - 4f * t;
+                tmp.y = Math.Max(offsetY * height, ballOffset.y);
+                tmp.z = ballObject.transform.position.z;
+                ballObject.transform.position = tmp;
+            },
+            1f,
+            1.0f
+        );
+        //.SetEase(Ease.OutCubic);
+
+        MoveActionWorker.MoveAction action = MoveActionWorker
+            .ActionBuilder()
+            .SetTweener(tweener)
+            .AddFinishCallBack(() =>
+            {
+                shootFlag = false;
+                GameManager.Lane lane = GameManager
+                    .Instance.playerManager.GetCurrentController()
+                    .lane;
+                ballObject.transform.position = new Vector3(
+                    ballOffset.x,
+                    ballOffset.y,
+                    GameManager.Instance.lanePositions[lane]
+                );
+            })
+            .Build();
+
+        actionWorker.Clear().AddAction(action);
     }
 
     public void Pass(PassType passType)

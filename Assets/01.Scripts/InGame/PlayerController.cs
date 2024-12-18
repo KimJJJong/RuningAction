@@ -314,12 +314,12 @@ public class PlayerController : MonoBehaviour
         return action.listener;
     }
 
-    public MoveActionWorker.MoveActionListener Slide()
+    public MoveActionWorker.MoveActionListener Slide(float duration)
     {
         if (isSliding)
             return null;
 
-        float slideSpd = Math.Max(1f / GameManager.Instance.gameSpeed, 0.5f);
+        //float slideSpd = Math.Max(1f / GameManager.Instance.gameSpeed, 0.5f);
 
         Tweener tweener = DOTween
             .To(
@@ -333,7 +333,7 @@ public class PlayerController : MonoBehaviour
                     playerObj.transform.position = tmp;
                 },
                 playerObj.transform.position - Vector3.up * playerObj.transform.position.y,
-                slideSpd
+                duration
             )
             .SetEase(Ease.OutQuart);
 
@@ -415,7 +415,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case EState.Down:
                 {
-                    Slide();
+                    //Slide();
                 }
                 break;
             case EState.Kick:
