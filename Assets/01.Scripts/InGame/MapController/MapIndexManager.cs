@@ -50,10 +50,10 @@ public class MapIndexManager : MonoBehaviour
     private void setMapPattern()
     {
         map_order_list = new int[10];
-        map_order_list[0] = 0;
-        map_order_list[1] = 0;
-        map_order_list[2] = 0;
-        map_order_list[3] = 0;
+        map_order_list[0] = 3;
+        map_order_list[1] = 3;
+        map_order_list[2] = 3;
+        map_order_list[3] = 3;
         map_order_list[4] = 0;
         map_order_list[5] = 0;
         map_order_list[6] = 0;
