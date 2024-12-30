@@ -106,7 +106,7 @@ public class Ball : MonoBehaviour
                     return transform.position;
                 },
                 position => transform.position = position,
-                ballOffset,
+                GameManager.Instance.playerManager.transform.position + ballOffset,
                 duration / 2f
             )
             .SetEase(Ease.InQuad);
@@ -261,7 +261,7 @@ public class Ball : MonoBehaviour
                     return transform.position;
                 },
                 position => transform.position = position,
-                ballOffset,
+                GameManager.Instance.playerManager.transform.position + ballOffset,
                 duration * 0.7f
             )
             .SetEase(Ease.OutSine);

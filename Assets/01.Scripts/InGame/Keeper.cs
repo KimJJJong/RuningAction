@@ -12,13 +12,19 @@ public class Keeper : MonoBehaviour
     public GameObject goalNetObj;
     public BallCollisionAction OnBallCollision;
 
-    // Start is called before the first frame update
+    Cloth netCloth;
+
     void Start()
     {
         OnBallCollision = () =>
         {
             GameManager.Instance.playerManager.ball.ShootBlockAction();
         };
+
+        netCloth = goalNetObj.GetComponent<Cloth>();
+
+        //netCloth.enableContinuousCollision = false;
+        //netCloth.clothSolverFrequency = 5f;
 
         SphereCollider sc =
             GameManager.Instance.playerManager.ball.ballObject.GetComponent<SphereCollider>();
@@ -27,12 +33,23 @@ public class Keeper : MonoBehaviour
             ClothSphereColliderPair[] ClothColliders = new ClothSphereColliderPair[1];
 
             ClothColliders[0] = new ClothSphereColliderPair(sc);
-            goalNetObj.GetComponent<Cloth>().sphereColliders = ClothColliders;
+            netCloth.sphereColliders = ClothColliders;
         }
+
+        //netCloth.SetEnabledFading(true, 5f);
+
+        //StartCoroutine(EnableClothAfterDelay());
     }
 
-    // Update is called once per frame
-    void Update() { }
+    //private void Update() { }
+
+    private IEnumerator EnableClothAfterDelay()
+    {
+        yield return new WaitForSeconds(5f); // 잠시 기다린 후 활성화
+        netCloth.enableContinuousCollision = true;
+        netCloth.clothSolverFrequency = 20f;
+        //netCloth.enabled = true;
+    }
 
     public void SetKeeperPosition(GameManager.Lane lane)
     {

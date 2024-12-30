@@ -236,8 +236,9 @@ public class PlayerController : MonoBehaviour
 
         float jumpForce = force;
 
-        Vector3 down = playerObj.transform.position - Vector3.up * playerObj.transform.position.y;
         Vector3 up = playerObj.transform.position + Vector3.up * jumpForce;
+        Vector3 down = playerObj.transform.position;
+        down.y = GameManager.Instance.playerManager.transform.position.y;
 
         //Jump-up
         Tweener jumpUp = DOTween

@@ -8,16 +8,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [Header("[Start Pos]")]
-    [SerializeField]
-    private Transform[] leftPos;
-
-    [SerializeField]
-    private Transform[] centerPos;
-
-    [SerializeField]
-    private Transform[] rightPos;
-
     [Header("[Controller]")]
     [SerializeField]
     private PlayerController leftController;
@@ -237,7 +227,7 @@ public class PlayerManager : MonoBehaviour
             0.5f
         );
 
-        float jumpForce = GameManager.Instance.playerManager.jumpHeight;
+        float jumpForce = jumpHeight;
 
         for (int i = 0; i < controller.jumpCount; i++)
             jumpForce *= 0.6f;
@@ -292,6 +282,21 @@ public class PlayerManager : MonoBehaviour
     }
 
     //public void Shoot() { }
+    public void MapChangeWithJumpAnim(Vector3 MapStartPoint)
+    {
+        //Time.timeScale = 0.1f;
+        //GameManager.Instance.gameSpeed = 0.0f;
+        //GameManager.Instance.GameCinematicStart();
+        DOTween.CompleteAll();
+
+        float jumpPower = Mathf.Abs(MapStartPoint.y - transform.position.y) + jumpHeight;
+        transform
+            .DOJump(MapStartPoint, 10f, 1, 3f)
+            .OnComplete(() => {
+                //Time.timeScale = 1;
+                //GameManager.Instance.GameCinematicEnd();
+            });
+    }
 
     PassType GetPassType(PlayerController from, PlayerController to)
     {
@@ -356,32 +361,6 @@ public class PlayerManager : MonoBehaviour
             2 => rightController.playerObj,
             _ => null,
         };
-    }
-
-    private void SetSwitchPositions(
-        int playerNum,
-        out Vector3 startPos,
-        out Vector3 endPos,
-        bool isFront
-    )
-    {
-        Transform[] positions = playerNum switch
-        {
-            0 => leftPos,
-            1 => centerPos,
-            2 => rightPos,
-            _ => null,
-        };
-
-        if (positions != null)
-        {
-            startPos = isFront ? positions[1].position : positions[0].position;
-            endPos = isFront ? positions[0].position : positions[1].position;
-        }
-        else
-        {
-            startPos = endPos = Vector3.zero;
-        }
     }
 
     public GameObject GetCurrentPlayer()

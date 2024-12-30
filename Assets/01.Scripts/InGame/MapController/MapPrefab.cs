@@ -47,6 +47,46 @@ public class MapPrefab : MonoBehaviour
                 objects_to_reset[i].rotation = objects_to_reset_org_rot[i];
             }
         }
+
+        rayFlag = true;
+    }
+
+    public float rayDistance = 15.0f;
+
+    public bool rayFlag = true;
+
+    private void Update()
+    {
+        if (!rayFlag)
+            return;
+
+        Vector3 origin = transform.position;
+        //origin.x = prefab_bounds.size.x - origin.x;
+        origin.y = GameManager.Instance.playerManager.transform.position.y;
+        Ray ray = new Ray(origin, Vector3.right);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, rayDistance))
+        {
+            //for debugginh
+            //Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
+            //Debug.Log("Hit Object Tag: " + hit.collider.tag);
+
+            if (hit.transform.gameObject == GameManager.Instance.playerManager.gameObject)
+            {
+                Debug.Log("aaaaaaaaaaaaaaaa");
+                float y =
+                    prefab_bounds.size.y - GameManager.Instance.playerManager.transform.position.y;
+
+                if (y > 1.0f)
+                {
+                    rayFlag = false;
+                    Vector3 target = transform.position;
+                    target.y = prefab_bounds.size.y;
+                    target.x = 0;
+                    GameManager.Instance.playerManager.MapChangeWithJumpAnim(target);
+                }
+            }
+        }
     }
 
     public int getID()

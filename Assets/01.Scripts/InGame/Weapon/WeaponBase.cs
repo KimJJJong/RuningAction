@@ -16,7 +16,7 @@ public class WeaponBase : MonoBehaviour
 
     private WeaponState curState = WeaponState.Activable;
 
-    List<PassiveSkill> passiveSkills = new List<PassiveSkill>();
+    List<PassiveSkillBase> passiveSkills = new List<PassiveSkillBase>();
     List<ActiveSkillBase> activeSkills = new List<ActiveSkillBase>();
 
     private bool isActivable = true;
@@ -41,7 +41,7 @@ public class WeaponBase : MonoBehaviour
 
     private void Start()
     {
-        passiveSkills = GetComponents<PassiveSkill>().ToList();
+        passiveSkills = GetComponents<PassiveSkillBase>().ToList();
         activeSkills = GetComponents<ActiveSkillBase>().ToList();
     }
 

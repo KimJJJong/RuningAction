@@ -93,6 +93,8 @@ public class GameManager : MonoBehaviour
         lanePositions[Lane.Left] = mapCenter - laneGap;
         lanePositions[Lane.Center] = mapCenter;
         lanePositions[Lane.Right] = mapCenter + laneGap;
+
+        recordGameSpeed = game_speed;
     }
 
     private void Start()
@@ -117,6 +119,21 @@ public class GameManager : MonoBehaviour
         OnGameStateChange.Invoke(gameState);
 
         camera_manager.CameraSetting();
+    }
+
+    float recordGameSpeed;
+
+    public void GameCinematicStart()
+    {
+        gameState = GameState.Cinematic;
+        recordGameSpeed = game_speed;
+        game_speed = 0;
+    }
+
+    public void GameCinematicEnd()
+    {
+        gameState = GameState.Playing;
+        game_speed = recordGameSpeed;
     }
 
     public void GameOver()
@@ -158,4 +175,5 @@ public enum GameState
     NotPlaying = 0,
     Playing,
     GameOver,
+    Cinematic,
 }

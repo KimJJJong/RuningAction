@@ -18,7 +18,7 @@ public class PlayerAI : MonoBehaviour
     }
 
     //TODO: fix magic number, 5.0f
-    public float rayDistance = 5.0f;
+    public float rayDistance = 15.0f;
 
     void Update()
     {

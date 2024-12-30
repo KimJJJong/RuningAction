@@ -26,8 +26,9 @@ public class MapIndexManager : MonoBehaviour
                 actionOnGet: OnTakeFromPool,
                 actionOnRelease: OnReturnedToPool,
                 actionOnDestroy: OnDestroyPoolObject,
+                collectionCheck: true,
                 defaultCapacity: 1,
-                maxSize: 1
+                maxSize: 2
             );
             map_poll.Add(pool);
         }
@@ -36,9 +37,14 @@ public class MapIndexManager : MonoBehaviour
         for (int i = 0; i < map_list.Count; i++)
         {
             cur_map_idx = i;
-            GameObject obj = CreatePooledItem();
-            MapPrefab mapPrefab = obj.GetComponent<MapPrefab>();
-            mapPrefab.pool.Release(mapPrefab.gameObject);
+            int loop = 1;
+            while (loop > 0)
+            {
+                GameObject obj = CreatePooledItem();
+                MapPrefab mapPrefab = obj.GetComponent<MapPrefab>();
+                mapPrefab.pool.Release(mapPrefab.gameObject);
+                loop--;
+            }
         }
 
         setMapPattern();
@@ -50,10 +56,10 @@ public class MapIndexManager : MonoBehaviour
     private void setMapPattern()
     {
         map_order_list = new int[10];
-        map_order_list[0] = 3;
+        map_order_list[0] = 0;
         map_order_list[1] = 3;
-        map_order_list[2] = 3;
-        map_order_list[3] = 3;
+        map_order_list[2] = 0;
+        map_order_list[3] = 0;
         map_order_list[4] = 0;
         map_order_list[5] = 0;
         map_order_list[6] = 0;
@@ -69,6 +75,13 @@ public class MapIndexManager : MonoBehaviour
         MapPrefab mapPrefab = mapObject.GetComponent<MapPrefab>();
         mapPrefab.pool = map_poll[cur_map_idx];
         return mapObject;
+    }
+
+    private AsyncInstantiateOperation<GameObject> AsyncInstantiation()
+    {
+        var handle = UnityEngine.Object.InstantiateAsync(map_list[cur_map_idx].gameObject);
+        handle.allowSceneActivation = false;
+        return handle;
     }
 
     private void OnTakeFromPool(GameObject obj)
