@@ -92,9 +92,7 @@ public class MapManager : MonoBehaviour
 
             map_speed = initial_map_speed * GameManager.Instance.gameSpeed * Time.deltaTime;
 
-            foreach (GameObject obj in mapIndexManager.activated_list)
-                obj.transform.Translate(orientation.normalized * map_speed);
-
+            MapTranslate(map_speed);
             //map_speed *= GameManager.Instance.gameSpeed;
 
 
@@ -123,6 +121,12 @@ public class MapManager : MonoBehaviour
     public GameObject GetCurrentMapObj()
     {
         return mapIndexManager.activated_list.First();
+    }
+
+    public void MapTranslate(float value)
+    {
+        foreach (GameObject obj in mapIndexManager.activated_list)
+            obj.transform.Translate(orientation.normalized * value);
     }
 
     IEnumerator SyncGameManager()

@@ -281,6 +281,12 @@ public class PlayerManager : MonoBehaviour
         Pass(from, to);
     }
 
+    public enum MapChangeAction
+    {
+        Jump,
+        Down,
+    }
+
     //public void Shoot() { }
     public void MapChangeWithJumpAnim(Vector3 MapStartPoint)
     {
@@ -289,13 +295,47 @@ public class PlayerManager : MonoBehaviour
         //GameManager.Instance.GameCinematicStart();
         DOTween.CompleteAll();
 
+        MapChangeAction mapChangeAction = MapChangeAction.Jump;
+
+        if (transform.position.y > MapStartPoint.y)
+            mapChangeAction = MapChangeAction.Down;
+
         float jumpPower = Mathf.Abs(MapStartPoint.y - transform.position.y) + jumpHeight;
+
+        float duration = 3.0f;
         transform
-            .DOJump(MapStartPoint, 10f, 1, 3f)
-            .OnComplete(() => {
+            .DOJump(Vector3.up * MapStartPoint.y, jumpPower, 1, duration)
+            .OnPlay(() =>
+            {
+                GameManager.Instance.GameCinematicStart();
+                leftController.playerObj.GetComponent<Rigidbody>().useGravity = false;
+                centerController.playerObj.GetComponent<Rigidbody>().useGravity = false;
+                rightController.playerObj.GetComponent<Rigidbody>().useGravity = false;
+            })
+            .OnComplete(() =>
+            {
                 //Time.timeScale = 1;
-                //GameManager.Instance.GameCinematicEnd();
+
+                GameManager.Instance.GameCinematicEnd();
+                leftController.playerObj.GetComponent<Rigidbody>().useGravity = true;
+                centerController.playerObj.GetComponent<Rigidbody>().useGravity = true;
+                rightController.playerObj.GetComponent<Rigidbody>().useGravity = true;
             });
+
+        float endX = Mathf.Abs(MapStartPoint.x - transform.position.x) / duration;
+        float del = 0;
+        DOTween.To(
+            () => 0,
+            t =>
+            {
+                float tt = t - del;
+                del = t;
+                float x = endX * tt;
+                GameManager.Instance.mapManager.MapTranslate(x);
+            },
+            duration,
+            duration
+        );
     }
 
     PassType GetPassType(PlayerController from, PlayerController to)

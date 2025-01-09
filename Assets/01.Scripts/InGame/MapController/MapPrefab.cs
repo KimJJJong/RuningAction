@@ -57,7 +57,7 @@ public class MapPrefab : MonoBehaviour
 
     private void Update()
     {
-        if (!rayFlag)
+        /* if (!rayFlag)
             return;
 
         Vector3 origin = transform.position;
@@ -86,7 +86,7 @@ public class MapPrefab : MonoBehaviour
                     GameManager.Instance.playerManager.MapChangeWithJumpAnim(target);
                 }
             }
-        }
+        } */
     }
 
     public int getID()
